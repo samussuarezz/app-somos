@@ -77,8 +77,8 @@ PWA_HEAD = """<meta name="theme-color" content="#0a0a0a">
 <meta name="apple-mobile-web-app-title" content="Somos">
 <meta name="description" content="Prototipo conceptual de la app de Somos para jóvenes que se van a vivir solos. Proyecto de Laboratorio de Prospectiva, Colegiatura Colombiana.">
 <link rel="manifest" href="manifest.webmanifest">
-<link rel="icon" type="image/png" href="icons/icon-192.png">
-<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">"""
+<link rel="icon" type="image/png" href="icon-192.png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">"""
 
 
 def b64(p):
@@ -142,7 +142,7 @@ def build(real_fonts: bool) -> str:
 SW = """// Guarda la app para abrirla sin conexión. La versión cambia con cada build, así el teléfono
 // recibe los cambios nuevos la próxima vez que abra la app con internet.
 const VERSION = "somos-__V__";
-const SHELL = ["./", "index.html", "manifest.webmanifest", "icons/icon-192.png", "icons/icon-512.png", "icons/apple-touch-icon.png"];
+const SHELL = ["./", "index.html", "manifest.webmanifest", "icon-192.png", "icon-512.png", "apple-touch-icon.png"];
 self.addEventListener("install", (e) => { e.waitUntil(caches.open(VERSION).then((c) => c.addAll(SHELL)).then(() => self.skipWaiting())); });
 self.addEventListener("activate", (e) => {
   e.waitUntil(caches.keys().then((ks) => Promise.all(ks.filter((k) => k !== VERSION).map((k) => caches.delete(k)))).then(() => self.clients.claim()));
