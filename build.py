@@ -70,10 +70,13 @@ ICONS = {
 
 GOOGLE_FONTS = '<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Red+Hat+Display:wght@400;500&display=swap">'
 
+# La barra de estado va opaca ("black"), no "black-translucent": desde iOS 26, con la translúcida
+# la app instalada queda corta abajo (una franja negra fuera de la página) y el iPhone desenfoca el encabezado.
+# WebKit bug 301994. iOS lee esta etiqueta solo al instalar: para ver un cambio hay que borrar la app y agregarla otra vez.
 PWA_HEAD = """<meta name="theme-color" content="#0a0a0a">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
 <meta name="apple-mobile-web-app-title" content="Somos">
 <meta name="description" content="Prototipo conceptual de la app de Somos para jóvenes que se van a vivir solos. Proyecto de Laboratorio de Prospectiva, Colegiatura Colombiana.">
 <link rel="manifest" href="manifest.webmanifest">
