@@ -784,6 +784,14 @@ h1, h2, h3 { font-weight: 400; text-wrap: balance; }
   .app { width: 100%; height: 100%; border-radius: 0; }
   .panel { display: none; }
   .splash__logo { width: 94%; margin-left: -47%; }
+  /* Instalada en iPhone: el fondo de la página es el de la barra de pestañas. En instalaciones anteriores,
+     iOS pinta con ese color la franja que queda debajo de la página, así la barra se ve pegada al borde. */
+  html.is-standalone { background: var(--surface-raised); }
+  /* Instalación anterior con barra translúcida: el encabezado baja para salir de la zona que el iPhone desenfoca. */
+  html.is-old-install { --inset-top: calc(env(safe-area-inset-top, 0px) + 14px); }
+}
+@media (display-mode: standalone) and (max-width: 520px) {
+  html { background: var(--surface-raised); }
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -1185,6 +1193,7 @@ h1, h2, h3 { font-weight: 400; text-wrap: balance; }
                 <button class="btn btn--secondary" type="button" data-nav="welcome">Nuevo usuario</button>
                 <button class="btn btn--primary only-new" type="button" data-nav="install">Simular instalación</button>
               </div>
+              <p class="label muted" id="screenDiag"></p>
             </div>
             <p class="label credit">Prototipo conceptual. No es la app oficial de Somos. Samuel Suárez · Laboratorio de Prospectiva · Colegiatura Colombiana.</p>
           </section>
@@ -2849,7 +2858,41 @@ function welcomeToHome() {
 }
 function afterSplash() {
   if (!DATA.client && HASH === "mudanza" && !afterSplash.done) { afterSplash.done = true; setTimeout(() => openMove(true), 250); }
+  else setTimeout(reinstallNotice, 450);
 }
+
+/* ============ iPhone: instalación anterior con barra translúcida ============ */
+/* Desde iOS 26, una app instalada con la barra de estado translúcida queda corta abajo y el iPhone desenfoca el encabezado.
+   La versión actual pide la barra opaca, pero el iPhone guarda esa configuración al instalar: hay que volver a agregarla. */
+function screenInfo() {
+  const p = document.createElement("div");
+  p.style.cssText = "position:fixed;left:0;top:0;width:0;height:0;visibility:hidden;pointer-events:none;padding-top:env(safe-area-inset-top);padding-bottom:env(safe-area-inset-bottom)";
+  document.body.appendChild(p);
+  const cs = getComputedStyle(p), top = parseFloat(cs.paddingTop) || 0, bottom = parseFloat(cs.paddingBottom) || 0;
+  p.remove();
+  const standalone = navigator.standalone === true || !!(window.matchMedia && matchMedia("(display-mode: standalone)").matches);
+  return { standalone, top, bottom, vw: innerWidth, vh: innerHeight, sw: screen.width, sh: screen.height };
+}
+function checkScreen() {
+  const s = screenInfo(), old = s.standalone && s.top > 20;
+  document.documentElement.classList.toggle("is-standalone", s.standalone);
+  document.documentElement.classList.toggle("is-old-install", old);
+  const d = $("#screenDiag");
+  if (d) d.textContent = `Pantalla: ${s.standalone ? "app instalada" : "navegador"}${s.standalone ? (old ? ", barra translúcida (instalación anterior)" : ", barra opaca") : ""}. Ventana ${s.vw}×${s.vh}, pantalla ${s.sw}×${s.sh}, márgenes ${Math.round(s.top)} arriba y ${Math.round(s.bottom)} abajo.`;
+  return old;
+}
+function reinstallNotice() {
+  if (!checkScreen()) return;
+  try { if (localStorage.getItem("somos-aviso-reinstalar") === "1") return; localStorage.setItem("somos-aviso-reinstalar", "1"); } catch (e) { /* sin almacenamiento: se muestra igual */ }
+  openSheet(sheetHead("Vuelve a agregar la app", "Tu iPhone guardó la configuración anterior") +
+    `<div class="state state--warning">${ic("alert")}<div class="state__body"><p class="state__title">Instalación anterior</p><p class="state__text">Por eso queda un espacio abajo y el logo se ve borroso. Se arregla instalándola otra vez.</p></div></div>
+     <p class="body-s"><b>1.</b> Mantén presionado el ícono de Somos y elige <b>Eliminar app</b>.</p>
+     <p class="body-s"><b>2.</b> Abre el link en Safari y recarga la página.</p>
+     <p class="body-s"><b>3.</b> Toca Compartir y luego <b>Agregar a pantalla de inicio</b>.</p>
+     <button class="btn btn--primary btn--block" type="button" data-action="close-sheet">Entendido</button>`);
+}
+checkScreen();
+window.addEventListener("resize", checkScreen);
 
 /* Estado del cliente: nuevo (espera la instalación) o activo */
 function applyClientState() {
