@@ -767,6 +767,14 @@ h1, h2, h3 { font-weight: 400; text-wrap: balance; }
   .app { width: 100%; height: 100%; border-radius: 0; }
   .panel { display: none; }
   .splash__logo { width: 94%; margin-left: -47%; }
+  /* Instalada en iPhone: el fondo de la página es el de la barra de pestañas. En instalaciones anteriores,
+     iOS pinta con ese color la franja que queda debajo de la página, así la barra se ve pegada al borde. */
+  html.is-standalone { background: var(--surface-raised); }
+  /* Instalación anterior con barra translúcida: el encabezado baja para salir de la zona que el iPhone desenfoca. */
+  html.is-old-install { --inset-top: calc(env(safe-area-inset-top, 0px) + 14px); }
+}
+@media (display-mode: standalone) and (max-width: 520px) {
+  html { background: var(--surface-raised); }
 }
 
 @media (prefers-reduced-motion: reduce) {
