@@ -26,6 +26,7 @@ La app trabaja en los tres momentos del planning:
    - **iPhone (Safari):** botón Compartir → *Agregar a pantalla de inicio*.
    - **Android (Chrome):** menú ⋮ → *Instalar app* o *Agregar a pantalla principal*.
 3. Se abre a pantalla completa y funciona sin conexión. Cuando subes cambios, el teléfono los recibe la próxima vez que abre la app con internet.
+4. Si cambia el ícono, el nombre o la barra de estado, borra la app de la pantalla de inicio y agrégala otra vez: el iPhone guarda esa configuración en el momento de instalarla.
 
 ### Entradas para pruebas con usuarios
 
