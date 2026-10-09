@@ -12,6 +12,7 @@
             <button class="avatar" data-action="open-account" aria-label="Tu cuenta">S</button>
           </div>
         </header>
+        <div class="offline" id="offline" role="status" hidden>{{I:wifiOff}}<span>Sin conexión. Te mostramos lo último que vimos.</span></div>
 
         <main class="screens" id="screens">
 
@@ -113,6 +114,8 @@
               <div id="speedMsg"></div>
               <button class="btn btn--primary btn--block btn--lg" id="runTest" type="button" data-action="speedtest">Medir velocidad</button>
               <p class="label muted">Medimos desde tu Orb. Es la velocidad que llega a tu casa, sin contar el Wi‑Fi de tu celular.</p>
+              <button class="btn btn--secondary btn--block" id="runPhone" type="button" data-action="phonetest">{{I:phone}}Medir desde este celular</button>
+              <p class="label muted">Es una prueba real: mide lo que le llega a este celular por Wi‑Fi o por datos. Usa hasta 60 MB y se hace con los servidores de Cloudflare.</p>
             </div>
 
             <div class="sec" id="wifiSec">
@@ -158,12 +161,20 @@
                 <button class="btn btn--secondary hold" type="button" id="holdBtn" style="align-self:flex-start;margin-top:6px"><span class="hold__fill"></span><span id="holdTxt">Mantén para reiniciar</span></button>
               </div>
             </div>
+
+            <div class="sec">
+              <div class="sec__row"><span class="label label--caps">Lo que te prometimos</span><span class="label">Revisado hoy</span></div>
+            </div>
+            <button class="card card--tap" type="button" data-action="open-promise">
+              <span class="card__top"><span class="h3">4 de 4 cumplidas</span><span class="pill">{{I:check}}Al día</span></span>
+              <span class="body-s muted">Velocidad, fecha de instalación, precio y permanencia: lo que te dijimos al venderte, al lado de lo que pasó.</span>
+            </button>
           </section>
 
           <!-- PAGOS -->
           <section class="screen" id="scr-2" aria-label="Pagos">
             <div class="sec">
-              <div class="sec__row"><span class="label label--caps">Pagos</span><span class="label">Cliente desde feb. 2026</span></div>
+              <div class="sec__row"><span class="label label--caps">Pagos</span><span class="label" id="payMeta">Cliente desde feb. 2026</span></div>
               <h2 class="h2">Tu factura</h2>
             </div>
             <div class="card only-new" id="newBill"></div>
@@ -311,7 +322,11 @@
                 <button class="btn btn--secondary" type="button" data-nav="unstable" data-unstable-label><span class="ul">Simular inestabilidad</span></button>
                 <button class="btn btn--secondary" type="button" data-nav="splash">Ver apertura</button>
                 <button class="btn btn--secondary" type="button" data-nav="welcome">Nuevo usuario</button>
-                <button class="btn btn--primary only-new" type="button" data-nav="install">Simular instalación</button>
+                <button class="btn btn--primary only-new" type="button" data-nav="tech">Simular el día de instalación</button>
+                <button class="btn btn--secondary only-new" type="button" data-nav="install">Instalar ya</button>
+                <button class="btn btn--secondary only-active" type="button" data-nav="firstday">Ver el primer día</button>
+                <button class="btn btn--secondary" type="button" data-nav="offline"><span data-offline-label>Simular sin conexión</span></button>
+                <button class="btn btn--secondary" type="button" data-nav="payfail"><span data-payfail-label>Simular pago rechazado</span></button>
               </div>
               <p class="label muted" id="screenDiag"></p>
             </div>
@@ -333,6 +348,7 @@
           <div class="page__bar">
             <button class="icon-btn" type="button" data-action="close-page" aria-label="Volver">{{I:back}}</button>
             <div class="page__title"><span class="h3">Notificaciones</span><span class="label muted" id="notifMeta">Todo al día</span></div>
+            <button class="icon-btn" type="button" data-nav="prefs" aria-label="Qué avisos recibir">{{I:sliders}}</button>
           </div>
           <div class="page__scroll" id="notifList"></div>
         </section>
@@ -383,6 +399,17 @@
           <div class="mv-foot" id="mvFoot"></div>
         </section>
 
+        <!-- Primer día (después de la instalación) -->
+        <section class="page page--move" id="pageFirst" aria-label="Tu primer día">
+          <div class="page__bar">
+            <button class="icon-btn" type="button" data-action="fd-back" aria-label="Volver">{{I:back}}</button>
+            <div class="page__title"><span class="body">Tu primer día</span><span class="label muted" id="fdStepLabel">Paso 1 de 3</span></div>
+          </div>
+          <div class="mv-progress" aria-hidden="true"><span id="fdProg"></span></div>
+          <div class="page__scroll" id="fdBody"></div>
+          <div class="mv-foot" id="fdFoot"></div>
+        </section>
+
         <div class="scrim" id="scrim" data-action="close-sheet"></div>
         <section class="sheet" id="sheet" role="dialog" aria-modal="true" aria-labelledby="sheetTitle" hidden>
           <div class="sheet__grab" id="sheetGrab"><span></span></div>
@@ -416,7 +443,7 @@
 
   <aside class="panel" aria-label="Recorrido del prototipo">
     <div class="panel__head">
-      <div class="sec"><div class="sec__row"><span class="label label--caps">Prototipo conceptual</span><span class="label">v2 · oct. 2026</span></div></div>
+      <div class="sec"><div class="sec__row"><span class="label label--caps">Prototipo conceptual</span><span class="label">v3 · oct. 2026</span></div></div>
       <h1>App Somos</h1>
       <p class="panel__lead">Para quien se va a vivir solo por primera vez: revisa si Somos llega a su torre, contrata sin trámites y llega a una casa con internet. Después, su red, su Orb y su factura en un solo lugar.</p>
     </div>
@@ -425,8 +452,9 @@
       <div class="index-grid">
         <button class="index-row" type="button" data-nav="welcome">Bienvenida</button>
         <button class="index-row" type="button" data-nav="mudanza">Me mudo</button>
+        <button class="index-row" type="button" data-nav="tech">Día de instalar</button>
+        <button class="index-row" type="button" data-nav="firstday">Primer día</button>
       </div>
-      <button class="index-row" type="button" data-nav="install">Simular instalación<span class="label">tras Me mudo</span></button>
     </div>
     <div class="panel__group">
       <p class="label label--caps muted">Cliente</p>
@@ -446,6 +474,8 @@
     <div class="panel__group">
       <p class="label label--caps muted">Simula un evento</p>
       <button class="index-row" type="button" data-nav="unstable" data-unstable-label><span class="ul">Simular inestabilidad</span><span class="label">push</span></button>
+      <button class="index-row" type="button" data-nav="offline"><span data-offline-label>Simular sin conexión</span><span class="label">banner</span></button>
+      <button class="index-row" type="button" data-nav="payfail"><span data-payfail-label>Simular pago rechazado</span><span class="label">el siguiente</span></button>
       <button class="index-row" type="button" data-nav="splash">Ver la apertura otra vez<span class="label">4 s</span></button>
     </div>
     <p class="label panel__note">Datos de ejemplo. Beneficios, coberturas y políticas son propuestas de este prototipo, no condiciones reales de Somos. Planes y precios de referencia tomados de somosinternet.com (Medellín, estratos 1 a 3).</p>
