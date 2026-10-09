@@ -412,4 +412,16 @@ if ("serviceWorker" in navigator && location.protocol === "https:") {
   window.addEventListener("load", () => navigator.serviceWorker.register("sw.js").catch(() => {}));
 }
 
+/* En el teléfono, con la app instalada (iOS), el alto de la página a veces se queda corto: lo fijamos al alto real de la pantalla. */
+function fixStandaloneHeight() {
+  const standalone = window.navigator.standalone || (window.matchMedia && matchMedia("(display-mode: standalone)").matches);
+  if (!standalone) return;
+  const portrait = innerHeight >= innerWidth;
+  const h = Math.max(innerHeight, document.documentElement.clientHeight, portrait ? screen.height : screen.width);
+  document.documentElement.style.setProperty("--app-h", h + "px");
+}
+fixStandaloneHeight();
+window.addEventListener("resize", fixStandaloneHeight);
+window.addEventListener("orientationchange", () => setTimeout(fixStandaloneHeight, 300));
+
 init();
