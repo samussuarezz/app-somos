@@ -11,15 +11,15 @@ DATA.client = HASH === "cliente" ? "active" : null; // null = aún no elige; "ne
 DATA.userName = "Samu";
 
 const LUGARES = [
-  { id: "mirador", city: "Medellín", name: "Conjunto Mirador de Laureles", addr: "Cra. 76 #33-40, Laureles", towers: ["Torre 1", "Torre 2", "Torre 3"], cover: { "Torre 1": true, "Torre 2": false, "Torre 3": true }, vecinos: { "Torre 1": 14, "Torre 3": 9 }, speed: { "Torre 1": 872, "Torre 3": 866 } },
-  { id: "nogal", city: "Medellín", name: "Edificio Nogal", addr: "Calle 10 Sur #43-12, Envigado", cover: true, vecinos: 11, speed: 869 },
-  { id: "altos", city: "Medellín", name: "Unidad Altos del Norte", addr: "Cra. 50 #52-30, Bello", towers: ["Bloque A", "Bloque B"], cover: { "Bloque A": false, "Bloque B": false } },
-  { id: "calle60", city: "Bogotá", name: "Edificio Calle 60", addr: "Cra. 7 #59-40, Chapinero", cover: true, vecinos: 18, speed: 874 },
-  { id: "prados", city: "Bogotá", name: "Conjunto Prados de Suba", addr: "Calle 145 #91-20, Suba", towers: ["Torre 1", "Torre 2"], cover: { "Torre 1": true, "Torre 2": false }, vecinos: { "Torre 1": 7 }, speed: { "Torre 1": 861 } }
+  { id: "mirador", city: "Medellín", name: "Conjunto Mirador de Laureles", addr: "Cra. 76 #33-40, Laureles", estrato: 3, towers: ["Torre 1", "Torre 2", "Torre 3"], cover: { "Torre 1": true, "Torre 2": false, "Torre 3": true }, vecinos: { "Torre 1": 14, "Torre 3": 9 }, speed: { "Torre 1": 872, "Torre 3": 866 } },
+  { id: "nogal", city: "Medellín", name: "Edificio Nogal", addr: "Calle 10 Sur #43-12, Envigado", estrato: 4, cover: true, vecinos: 11, speed: 869 },
+  { id: "altos", city: "Medellín", name: "Unidad Altos del Norte", addr: "Cra. 50 #52-30, Bello", estrato: 2, towers: ["Bloque A", "Bloque B"], cover: { "Bloque A": false, "Bloque B": false } },
+  { id: "calle60", city: "Bogotá", name: "Edificio Calle 60", addr: "Cra. 7 #59-40, Chapinero", estrato: 4, cover: true, vecinos: 18, speed: 874 },
+  { id: "prados", city: "Bogotá", name: "Conjunto Prados de Suba", addr: "Calle 145 #91-20, Suba", estrato: 3, towers: ["Torre 1", "Torre 2"], cover: { "Torre 1": true, "Torre 2": false }, vecinos: { "Torre 1": 7 }, speed: { "Torre 1": 861 } }
 ];
 const PLANES = {
-  essential: { name: "Essential", n: 1, price: { "1-3": 63000, "4-6": 75000 }, rows: [["Velocidad", "Hasta 900 MBPS"], ["Puntos por cable", "Hasta 2"], ["Orb 2", "No incluido"], ["Soporte", "24/7"]] },
-  pro: { name: "Pro", n: 2, price: { "1-3": 100000, "4-6": 120000 }, rows: [["Velocidad", "Hasta 2.0 GBPS"], ["Puntos por cable", "Ilimitados"], ["Orb 2", "1 incluido"], ["Soporte", "VIP 24/7"]] }
+  essential: { name: "Essential", n: 1, fit: "Para ti y tu roomie: series en 4K, videollamadas y juegos al mismo tiempo.", price: { "1-3": 63000, "4-6": 75000 }, rows: [["Velocidad", "Hasta 900 MBPS"], ["Puntos por cable", "Hasta 2"], ["Orb 2", "No incluido"], ["Soporte", "24/7"]] },
+  pro: { name: "Pro", n: 2, fit: "Para casas de 4 o más, o si descargan juegos y archivos grandes seguido.", price: { "1-3": 100000, "4-6": 120000 }, rows: [["Velocidad", "Hasta 2.0 GBPS"], ["Puntos por cable", "Ilimitados"], ["Orb 2", "1 incluido"], ["Soporte", "VIP 24/7"]] }
 };
 const MV_STEPS = ["donde", "cobertura", "plan", "datos", "instalacion", "listo"];
 const SLOTS_INST = [
@@ -29,7 +29,7 @@ const SLOTS_INST = [
 const slotDe = (id) => SLOTS_INST.find((x) => x.id === id) || SLOTS_INST[0];
 const MV = {};
 function resetMove() {
-  Object.assign(MV, { step: 0, city: "Medellín", place: null, free: "", tower: null, apt: "504", estrato: "1-3", plan: "essential",
+  Object.assign(MV, { step: 0, city: "Medellín", place: null, free: "", tower: null, apt: "504", estrato: "1-3", estratoEdit: false, needs: { people: 2, acts: [] }, plan: "essential",
     name: "Valentina Ríos", cc: "1.036.000.000", phone: "300 000 0000", mail: "valentina@correo.com", split: false, day: null, slot: null, requested: null });
 }
 resetMove();
@@ -73,11 +73,12 @@ function towersArt() {
 }
 
 function placeBtn(pl) {
-  const on = MV.place && MV.place.id === pl.id;
-  return `<button class="method" type="button" role="radio" aria-checked="${on}" data-action="mv-place" data-id="${pl.id}">
+  const on = MV.place && MV.place.id === pl.id, saved = isSaved(pl.id);
+  return `<div class="place-row"><button class="method" type="button" role="radio" aria-checked="${on}" data-action="mv-place" data-id="${pl.id}">
     <span class="list-item__icon" style="width:40px;height:40px">${ic(pl.towers ? "users" : "pin", "i--20")}</span>
     <span class="list-item__main"><span class="body">${pl.name}</span><span class="label muted">${pl.addr}${pl.towers ? ` · ${pl.towers.length} torres` : ""}</span></span>
-    <span class="method__radio"></span></button>`;
+    <span class="method__radio"></span></button>
+    <button class="icon-btn save-btn" type="button" aria-pressed="${saved}" data-action="save-place" data-id="${pl.id}" aria-label="Guardar ${pl.name} para comparar">${ic("bookmark")}</button></div>`;
 }
 function suggestions() {
   const q = MV.free.trim().toLowerCase();
@@ -91,6 +92,7 @@ function mvStepHTML() {
     return {
       body: `<div class="mv-step step-in">
         <div class="mv-lead"><h2 class="h2">¿A dónde te mudas?</h2><p class="body-s muted">Revisamos tu edificio y, si es un conjunto, tu torre. A veces llegamos a una torre y a otra todavía no.</p></div>
+        <div id="mvSaved">${savedStrip()}</div>
         <div class="field"><span class="label">Ciudad</span><div class="chips">${["Medellín", "Bogotá"].map((c) => `<button class="chip" type="button" aria-pressed="${MV.city === c}" data-action="mv-city" data-v="${c}">${c}</button>`).join("")}</div></div>
         <div class="field"><label for="mvAddr">Dirección o nombre del edificio</label>
           <div class="input-wrap"><input class="input" id="mvAddr" name="mvAddr" type="text" autocomplete="off" value="${MV.place ? MV.place.addr : MV.free}" placeholder="Ej.: Cra. 76 #33-40"><span class="icon-btn" aria-hidden="true" style="pointer-events:none">${ic("search")}</span></div></div>
@@ -104,7 +106,7 @@ function mvStepHTML() {
   if (step === "cobertura") {
     const c = coverageOf(), donde = MV.tower ? "tu torre" : "tu edificio";
     const head = c.ok ? `Llegamos a ${donde}` : c.towers && c.others.length ? `Todavía no llegamos a la ${MV.tower}` : "Todavía no llegamos a ese edificio";
-    let body = `<div class="mv-step step-in"><div class="mv-lead"><h2 class="h2">${head}</h2><p class="label muted">${mvTitle()}${MV.apt ? " · apto " + MV.apt : ""}</p></div>${towersArt()}`;
+    let body = `<div class="mv-step step-in"><div class="mv-lead"><h2 class="h2">${head}</h2><p class="label muted">${mvTitle()}${MV.apt ? " · apto " + MV.apt : ""}</p></div>${towersArt()}${MV.place ? saveBigBtn(MV.place) : ""}`;
     let foot = "";
     if (c.ok) {
       body += `<div class="state">${ic("check")}<div class="state__body"><p class="state__title">Puedes tener Somos desde el día que llegues</p><p class="state__text">Fibra óptica hasta tu edificio, sin cláusulas y con 30 días gratis.</p></div></div>
@@ -129,22 +131,29 @@ function mvStepHTML() {
     return { body: body + "</div>", foot };
   }
   if (step === "plan") {
+    const p = MV.place, auto = !!(p && p.estrato && !MV.estratoEdit);
+    if (auto) MV.estrato = p.estrato <= 3 ? "1-3" : "4-6";
     const pr = mvPrice();
+    const estratoField = auto
+      ? `<div class="estrato-auto"><div class="setting__text"><span class="body">Estrato ${p.estrato}</span><span class="label muted">Según la dirección de tu edificio</span></div><button class="link-btn" type="button" data-action="mv-estrato-edit">Cambiar</button></div>`
+      : `<div class="field"><span class="label">Tu estrato</span><div class="chips">${[["1-3", "Estrato 1 a 3"], ["4-6", "Estrato 4 a 6"]].map(([v, t]) => `<button class="chip" type="button" aria-pressed="${MV.estrato === v}" data-action="mv-estrato" data-v="${v}">${t}</button>`).join("")}</div><p class="label muted">¿No lo sabes? Aparece en el recibo de la luz o del agua del apartamento.</p></div>`;
     return {
       body: `<div class="mv-step step-in">
         <div class="mv-lead"><h2 class="h2">Elige tu plan</h2><p class="body-s muted">Los dos son fibra con subida igual a la bajada. Puedes cambiar cuando quieras.</p></div>
-        <div class="field"><span class="label">Tu estrato</span><div class="chips">${[["1-3", "Estrato 1 a 3"], ["4-6", "Estrato 4 a 6"]].map(([v, t]) => `<button class="chip" type="button" aria-pressed="${MV.estrato === v}" data-action="mv-estrato" data-v="${v}">${t}</button>`).join("")}</div></div>
+        ${estratoField}
+        <div id="mvNeeds">${needsHTML()}</div>
         <div role="radiogroup" aria-label="Planes" style="display:flex;flex-direction:column;gap:16px">
         ${Object.entries(PLANES).map(([id, pl]) => `<button class="plan plan--${pl.n} plan-opt" type="button" role="radio" aria-checked="${MV.plan === id}" data-action="mv-plan" data-v="${id}">
             <span class="card__top"><span class="plan__name">${pl.name}</span><span class="method__radio"></span></span>
             <span class="plan__price"><span class="price num">${money(pl.price[MV.estrato])}</span><span class="label muted">/ mes</span></span>
+            <span class="body-s plan__fit">${pl.fit}</span>
             <span class="rows">${pl.rows.map(([a, b]) => `<span><span class="dt">${a}</span><span class="dd">${b}</span></span>`).join("")}</span>
           </button>`).join("")}
         </div>
         <div class="card card--flat"><span class="label label--caps">Lo que vas a pagar</span>
           <dl class="rows">
             <div><dt>Primeros 30 días</dt><dd>$0</dd></div>
-            <div><dt>Desde el día 31</dt><dd>${money(pr)} / mes</dd></div>
+            <div><dt>Desde el día 31</dt><dd id="mvPriceDd">${money(pr)} / mes</dd></div>
             <div><dt>Permanencia</dt><dd>Sin cláusulas</dd></div>
             <div><dt>Estudio de crédito</dt><dd>No lo necesitas</dd></div>
             <div><dt>Cancelar</dt><dd>Cuando quieras, desde la app</dd></div>
@@ -330,6 +339,7 @@ window.addEventListener("resize", checkScreen);
 function applyClientState() {
   const isNew = DATA.client === "new";
   app.classList.toggle("is-new", isNew);
+  $("#payMeta").textContent = isNew ? "Cliente nuevo" : "Cliente desde feb. 2026";
   $("#scr-0 .h1").textContent = `Hola, ${DATA.userName}.`;
   $(".avatar").textContent = DATA.userName.charAt(0).toUpperCase();
   if (isNew) {
@@ -345,8 +355,10 @@ function installDays() {
 }
 function renderNewClient() {
   if (DATA.client !== "new" || !DATA.install) return;
-  const I = DATA.install, d = isoDate(I.day), first = addDays(d, 30);
+  const I = DATA.install, bill = firstBill(I);
   $("#homeNew").innerHTML = `
+    ${techCardHTML()}
+    ${TECH.on ? "" : `<button class="btn btn--secondary btn--block" type="button" data-action="resched">${ic("calendar")}Cambiar la fecha de instalación</button>`}
     <div class="card">
       <span class="label label--caps">Antes de la instalación</span>
       <div>
@@ -355,24 +367,25 @@ function renderNewClient() {
       </div>
     </div>
     <div class="card card--flat">
-      <span class="label label--caps">Tu primer mes</span>
-      <dl class="rows"><div><dt>Hasta el ${first.getDate()} de ${MESES[first.getMonth()]}</dt><dd>$0</dd></div><div><dt>Después</dt><dd>${money(I.price)} / mes</dd></div></dl>
+      <span class="label label--caps">Tu primera factura</span>
+      <div><p class="price num">${money(bill.prorAmt)}</p><p class="label muted">Llega el ${fechaLarga(bill.firstBill)} y cobra solo ${bill.prorDays} días.</p></div>
+      <button class="link-btn" type="button" data-nav="pagos" style="align-self:flex-start">Ver por qué${ic("arrowRight", "i--16")}</button>
     </div>
     <div class="card">
       <span class="card__row">${ic("users")}<span class="label label--caps">Tu código</span></span>
       <p class="body-s muted">Por cada amigo que se pase a Somos te regalamos un mes, hasta 3.</p>
       <div class="code-box"><span class="label">${I.code}</span><button class="btn btn--primary" type="button" data-action="copy" data-copy="${I.code}" data-ok="Código copiado">${ic("copy")}Copiar</button></div>
     </div>`;
-  $("#newBill").innerHTML = `<span class="label label--caps">Tu primera factura</span><p class="invoice__amount num">${money(I.price)}</p>
-    <p class="label muted">Llega el ${first.getDate()} de ${MESES[first.getMonth()]}. Los primeros 30 días desde la instalación no pagas.</p>
-    <dl class="rows"><div><dt>Plan</dt><dd>${PLANES[I.plan].name}</dd></div><div><dt>Permanencia</dt><dd>Sin cláusulas</dd></div><div><dt>Estudio de crédito</dt><dd>No hizo falta</dd></div></dl>`;
+  $("#newBill").innerHTML = billTimelineHTML(I);
 }
 function openInstallSheet() {
   const I = DATA.install; if (!I) return;
   openSheet(sheetHead("Tu instalación", cap(fechaLarga(isoDate(I.day)))) +
     `<dl class="rows"><div><dt>Franja</dt><dd>${slotDe(I.slot).chip}</dd></div><div><dt>Dónde</dt><dd>${I.where}</dd></div><div><dt>Plan</dt><dd>${PLANES[I.plan].name}</dd></div></dl>
-     <p class="body-s muted">El técnico llega con tu Orb, lo instala y mide la velocidad contigo. Toma unos 30 minutos.</p>
-     <button class="btn btn--primary btn--block" type="button" data-nav="install">Simular instalación</button>`);
+     <p class="body-s muted">El técnico llega con tu Orb, lo instala y mide la velocidad contigo. Toma unos 30 minutos. Ese día ves en la app cuando va en camino.</p>
+     <button class="btn btn--secondary btn--block" type="button" data-action="resched">${ic("calendar")}Cambiar la fecha</button>
+     <div class="card demo" style="padding:16px;gap:10px"><span class="label label--caps">Modo demostración</span>
+       <div class="btn-row"><button class="btn btn--primary" type="button" data-nav="tech">Simular el día</button><button class="btn btn--secondary" type="button" data-nav="install">Instalar ya</button></div></div>`);
 }
 function simulateInstall() {
   if (DATA.client !== "new") { toast("Primero haz el flujo Me mudo", "info"); return; }
@@ -387,11 +400,12 @@ function simulateInstall() {
     applyClientState();
     countTo($("#heroNum"), heroTarget(), 1200);
     toast("Instalamos tu Orb. Ya tienes internet.");
+    setTimeout(openFirstDay, REDUCED ? 200 : 1500);
   }, REDUCED ? 100 : 1300);
 }
 function finishMove() {
   const where = mvTitle() + (MV.apt ? ", apto " + MV.apt : "");
-  DATA.install = { day: MV.day, slot: MV.slot, plan: MV.plan, price: mvPrice(), where, checks: {}, code: (MV.name.split(" ")[0] || "AMIGO").toUpperCase().normalize("NFD").replace(/[̀-ͯ]/g, "") + "-" + (MV.apt || "100") };
+  DATA.install = { day: MV.day, slot: MV.slot, plan: MV.plan, price: mvPrice(), where, apt: MV.apt, split: MV.split, checks: {}, code: (MV.name.split(" ")[0] || "AMIGO").toUpperCase().normalize("NFD").replace(/[̀-ͯ]/g, "") + "-" + (MV.apt || "100") };
   DATA.client = "new";
   DATA.userName = (MV.name.trim().split(" ")[0] || "Humano");
   applyClientState();
@@ -427,7 +441,8 @@ document.addEventListener("click", (e) => {
     case "mv-tower": MV.tower = v; $$("[data-action=mv-tower]").forEach((b) => b.setAttribute("aria-pressed", String(b === a))); $("#mvCta").disabled = !mvValid(); break;
     case "mv-request": MV.requested = v === "no" ? "no" : "si"; renderMove(); break;
     case "mv-estrato": MV.estrato = v; renderMove(); break;
-    case "mv-plan": MV.plan = v; $$("[data-action=mv-plan]").forEach((b) => b.setAttribute("aria-checked", String(b === a))); $("#mvFoot .btn").textContent = `Seguir con ${PLANES[v].name}`; $$("#mvBody dd")[1].textContent = `${money(mvPrice())} / mes`; break;
+    case "mv-estrato-edit": MV.estratoEdit = true; renderMove(); setTimeout(() => { const f = $("#mvBody .chip[data-action=mv-estrato]"); f && f.focus({ preventScroll: true }); }, 60); break;
+    case "mv-plan": MV.plan = v; $$("[data-action=mv-plan]").forEach((b) => b.setAttribute("aria-checked", String(b === a))); $("#mvFoot .btn").textContent = `Seguir con ${PLANES[v].name}`; $("#mvPriceDd").textContent = `${money(mvPrice())} / mes`; break;
     case "mv-split": MV.split = !MV.split; a.setAttribute("aria-checked", String(MV.split)); break;
     case "mv-day": MV.day = v; $$("[data-action=mv-day]").forEach((b) => b.setAttribute("aria-pressed", String(b === a))); refreshInstall(); break;
     case "mv-slot": MV.slot = v; $$("[data-action=mv-slot]").forEach((b) => b.setAttribute("aria-pressed", String(b === a))); refreshInstall(); break;
@@ -445,5 +460,3 @@ document.addEventListener("keydown", (e) => { if (e.key === "Escape" && $("#page
 if ("serviceWorker" in navigator && location.protocol === "https:") {
   window.addEventListener("load", () => navigator.serviceWorker.register("sw.js").catch(() => {}));
 }
-
-init();
