@@ -161,7 +161,7 @@ h1, h2, h3 { font-weight: 400; text-wrap: balance; }
 .panel__note { color: var(--ink-muted); }
 
 /* ---------- Tipografía ---------- */
-.label { font-family: var(--font-mono); font-size: 13px; line-height: 1.4; letter-spacing: 0.01em; }
+.label { font-family: var(--font-mono); font-size: 14px; line-height: 1.4; letter-spacing: 0.01em; }
 .label--caps { text-transform: uppercase; letter-spacing: 0.06em; }
 .muted { color: var(--ink-muted); }
 .num { font-variant-numeric: tabular-nums; font-feature-settings: "tnum" 1; }
@@ -265,7 +265,7 @@ h1, h2, h3 { font-weight: 400; text-wrap: balance; }
   min-height: 42px; padding: var(--space-2) var(--space-6);
   border-radius: var(--radius-pill); border: 1px solid var(--line);
   background: transparent; color: var(--ink);
-  font-family: var(--font-mono); font-size: 14px; font-weight: 700; line-height: 1.2;
+  font-family: var(--font-mono); font-size: 15px; font-weight: 700; line-height: 1.2;
   white-space: nowrap; text-decoration: none;
   transition: background-color 120ms linear, color 120ms linear, border-color 120ms linear, opacity 120ms linear;
 }
@@ -280,7 +280,7 @@ h1, h2, h3 { font-weight: 400; text-wrap: balance; }
 .link-btn {
   display: inline-flex; align-items: center; gap: 6px;
   background: none; border: 0; padding: 4px 0;
-  font-family: var(--font-mono); font-size: 13px; font-weight: 700;
+  font-family: var(--font-mono); font-size: 14px; font-weight: 700;
   text-decoration: underline; text-underline-offset: 4px;
 }
 
@@ -316,10 +316,10 @@ h1, h2, h3 { font-weight: 400; text-wrap: balance; }
 .state--warning > .i { color: var(--warning); }
 .state--danger > .i { color: var(--danger); }
 .state__body { display: flex; flex-direction: column; gap: 4px; min-width: 0; flex: 1; }
-.state__title { font-family: var(--font-mono); font-size: 14px; font-weight: 700; line-height: 1.25; color: var(--success); }
+.state__title { font-family: var(--font-mono); font-size: 15px; font-weight: 700; line-height: 1.25; color: var(--success); }
 .state--warning .state__title { color: var(--warning); }
 .state--danger .state__title { color: var(--danger); }
-.state__text { font-family: var(--font-mono); font-size: 13px; line-height: 1.45; }
+.state__text { font-family: var(--font-mono); font-size: 14px; line-height: 1.45; }
 .state .link-btn { align-self: flex-start; margin-top: 4px; }
 
 .pill {
@@ -327,7 +327,7 @@ h1, h2, h3 { font-weight: 400; text-wrap: balance; }
   height: 28px; padding: 0 12px 0 8px; box-sizing: border-box;
   border-radius: var(--radius-pill);
   border: 1px solid var(--success); background: var(--success-ground); color: var(--success);
-  font-family: var(--font-mono); font-size: 13px; font-weight: 700; white-space: nowrap;
+  font-family: var(--font-mono); font-size: 14px; font-weight: 700; white-space: nowrap;
 }
 .pill .i { width: 16px; height: 16px; }
 .pill--warning { border-color: var(--warning); background: var(--warning-ground); color: var(--warning); }
@@ -336,7 +336,7 @@ h1, h2, h3 { font-weight: 400; text-wrap: balance; }
 
 /* Filas de datos (dl) */
 .rows { margin: 0; display: flex; flex-direction: column; }
-.rows > div, .rows > span { display: flex; justify-content: space-between; gap: var(--space-4); padding: 10px 0; border-bottom: 1px solid var(--line-subtle); font-family: var(--font-mono); font-size: 13px; line-height: 1.4; }
+.rows > div, .rows > span { display: flex; justify-content: space-between; gap: var(--space-4); padding: 10px 0; border-bottom: 1px solid var(--line-subtle); font-family: var(--font-mono); font-size: 14px; line-height: 1.4; }
 .rows > div:last-child, .rows > span:last-child { border-bottom: 0; }
 .rows dt, .rows .dt { color: var(--ink-muted); flex: 0 0 auto; max-width: 58%; }
 .rows dd, .rows .dd { margin: 0; font-weight: 700; text-align: right; }
@@ -363,7 +363,7 @@ h1, h2, h3 { font-weight: 400; text-wrap: balance; }
 .chip {
   height: 36px; padding: 0 16px; border-radius: var(--radius-pill);
   border: 1px solid var(--line); background: transparent;
-  font-family: var(--font-mono); font-size: 13px; font-weight: 700;
+  font-family: var(--font-mono); font-size: 14px; font-weight: 700;
   transition: background-color 120ms linear, color 120ms linear;
 }
 .chip[aria-pressed="true"] { background: var(--ink); color: var(--surface); border-color: var(--ink); }
@@ -388,7 +388,7 @@ h1, h2, h3 { font-weight: 400; text-wrap: balance; }
 
 /* Campos */
 .field { display: flex; flex-direction: column; gap: var(--space-2); }
-.field label { font-family: var(--font-mono); font-size: 13px; }
+.field label { font-family: var(--font-mono); font-size: 14px; }
 .input-wrap { position: relative; display: flex; align-items: center; }
 .input {
   width: 100%; box-sizing: border-box; height: 52px;
@@ -413,7 +413,7 @@ h1, h2, h3 { font-weight: 400; text-wrap: balance; }
   position: relative; z-index: 1;
   display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px;
   height: 52px; border: 0; background: none; padding: 0;
-  font-family: var(--font-mono); font-size: 11px; font-weight: 700; color: var(--ink);
+  font-family: var(--font-mono); font-size: 12px; font-weight: 700; color: var(--ink);
   transition: color 160ms linear;
 }
 .tab[aria-selected="true"] { color: var(--surface); }
@@ -491,7 +491,7 @@ h1, h2, h3 { font-weight: 400; text-wrap: balance; }
   display: flex; align-items: center; gap: 10px;
   padding: 12px 18px 12px 14px; border-radius: var(--radius-pill);
   background: var(--ink); color: var(--surface);
-  font-family: var(--font-mono); font-size: 13px; font-weight: 700;
+  font-family: var(--font-mono); font-size: 14px; font-weight: 700;
   transform: translateY(24px); opacity: 0; pointer-events: none;
   transition: transform 420ms var(--ease-spring), opacity 200ms linear;
 }
@@ -593,7 +593,7 @@ h1, h2, h3 { font-weight: 400; text-wrap: balance; }
 .gauge__center { position: absolute; left: 0; right: 0; top: 70px; display: flex; flex-direction: column; align-items: center; gap: 4px; text-align: center; }
 .gauge__num { font-size: 60px; line-height: 1; letter-spacing: -0.02em; }
 .phases { display: flex; justify-content: center; gap: var(--space-2); }
-.phase { font-family: var(--font-mono); font-size: 12px; font-weight: 700; padding: 5px 10px; border-radius: var(--radius-pill); border: 1px solid var(--line-subtle); color: var(--ink); opacity: 0.55; transition: opacity 150ms linear, border-color 150ms linear; }
+.phase { font-family: var(--font-mono); font-size: 13px; font-weight: 700; padding: 5px 10px; border-radius: var(--radius-pill); border: 1px solid var(--line-subtle); color: var(--ink); opacity: 0.55; transition: opacity 150ms linear, border-color 150ms linear; }
 .phase.is-on { opacity: 1; border-color: var(--plan-1); color: var(--plan-1); background: var(--plan-1-ground); }
 .phase.is-done { opacity: 1; }
 .results { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--space-2); }
@@ -615,7 +615,7 @@ h1, h2, h3 { font-weight: 400; text-wrap: balance; }
 .hold__fill { position: absolute; inset: 0; background: var(--ink); transform: scaleX(0); transform-origin: left; z-index: -1; }
 .hold.is-holding { color: var(--surface); border-color: var(--ink); }
 
-.rate { font-family: var(--font-mono); font-size: 13px; font-weight: 700; }
+.rate { font-family: var(--font-mono); font-size: 14px; font-weight: 700; }
 .bars { display: flex; align-items: flex-end; gap: 2px; height: 12px; }
 .bars i { width: 3px; background: var(--ink); border-radius: 1px; }
 .bars i.off { background: rgba(255, 255, 255, 0.2); }
@@ -863,10 +863,10 @@ h1, h2, h3 { font-weight: 400; text-wrap: balance; }
 .plan-opt.plan--2[aria-checked="true"] .method__radio::after { background: var(--plan-2); }
 .cal-head { display: flex; justify-content: space-between; align-items: baseline; }
 .cal { display: grid; grid-template-columns: repeat(7, 1fr); gap: 6px; }
-.cal__wd { text-align: center; font-family: var(--font-mono); font-size: 13px; color: var(--ink-muted); }
+.cal__wd { text-align: center; font-family: var(--font-mono); font-size: 14px; color: var(--ink-muted); }
 .day {
   aspect-ratio: 1; border-radius: 50%; border: 1px solid var(--line-subtle); background: transparent; padding: 0;
-  display: grid; place-items: center; font-family: var(--font-mono); font-size: 14px; font-weight: 700; color: var(--ink);
+  display: grid; place-items: center; font-family: var(--font-mono); font-size: 15px; font-weight: 700; color: var(--ink);
   transition: background-color 120ms linear, color 120ms linear;
 }
 .day[aria-pressed="true"] { background: var(--ink); color: var(--surface); border-color: var(--ink); }
@@ -874,10 +874,88 @@ h1, h2, h3 { font-weight: 400; text-wrap: balance; }
 .day.is-first { border-color: var(--line); }
 .mv-done .lamp { width: 150px; }
 
+/* ---------- v3: mejoras de experiencia ---------- */
+.btn--sm { min-height: 36px; padding: 6px 14px; font-size: 14px; }
+.state--info { border-color: var(--plan-1); background: var(--plan-1-ground); }
+.state--info > .i, .state--info .state__title { color: var(--plan-1); }
+.done-badge--danger { border-color: var(--danger); background: var(--danger-ground); color: var(--danger); }
+
+/* Comparar apartamentos */
+.place-row { display: flex; align-items: center; gap: 8px; }
+.place-row .method { flex: 1; min-width: 0; }
+.save-btn { width: 48px; height: 48px; flex: none; border-color: var(--line-subtle); }
+.save-btn[aria-pressed="true"] { background: var(--ink); color: var(--surface); border-color: var(--ink); }
+.save-btn[aria-pressed="true"] .i, .save-big[aria-pressed="true"] .i { fill: currentColor; }
+.save-big[aria-pressed="true"] { border-color: var(--ink); }
+.saved-hint { display: flex; align-items: center; gap: 8px; }
+.saved-strip { display: flex; flex-direction: column; gap: 10px; padding: 14px 16px; border: 1px solid var(--line); border-radius: var(--radius-sm); background: var(--surface-raised); }
+.saved-strip__top { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+.saved-strip__names { display: flex; flex-wrap: wrap; gap: 6px; }
+.saved-strip__names .pill { height: auto; min-height: 28px; white-space: normal; padding: 4px 12px; }
+.cmp-list { display: flex; flex-direction: column; gap: 14px; }
+.cmp { display: flex; flex-direction: column; gap: 10px; padding: 16px; border: 1px solid var(--line); border-radius: var(--radius-lg); background: var(--surface); }
+.cmp.is-off { border-style: dashed; }
+.cmp.is-off .rows dd { color: var(--ink-muted); }
+.cmp__head { display: flex; align-items: flex-start; justify-content: space-between; gap: 10px; }
+
+/* Estrato y planes */
+.estrato-auto { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 14px 16px; border: 1px solid var(--line); border-radius: var(--radius-sm); }
+.plan__fit { color: var(--ink); }
+.needs .field { gap: 8px; }
+.needs__toggle { display: flex; align-items: center; justify-content: space-between; gap: 12px; width: 100%; padding: 0; border: 0; background: none; color: inherit; text-align: left; }
+.needs__toggle > .i { width: 18px; height: 18px; transition: transform 200ms var(--ease-out); }
+.needs.is-open .needs__toggle > .i { transform: rotate(180deg); }
+.needs__body { display: flex; flex-direction: column; gap: 16px; animation: stepIn 300ms var(--ease-out) both; }
+
+/* Técnico en camino */
+.tech { gap: 14px; }
+.tech__who { display: flex; align-items: center; gap: 12px; }
+.tech__av { width: 44px; height: 44px; border-radius: 50%; display: grid; place-items: center; flex: none; background: var(--ink); color: var(--surface); font-family: var(--font-mono); font-weight: 700; font-size: 14px; }
+.route { position: relative; height: 34px; margin: 4px 14px 0; }
+.route__line { position: absolute; left: 0; right: 0; top: 16px; height: 2px; background-image: linear-gradient(90deg, var(--line) 50%, transparent 50%); background-size: 8px 2px; }
+.route__line i { position: absolute; left: 0; top: 0; height: 2px; background: var(--ink); transition: width 500ms var(--ease-out); }
+.route__van { position: absolute; top: 2px; width: 30px; height: 30px; margin-left: -15px; border-radius: 50%; display: grid; place-items: center; background: var(--ink); color: var(--surface); transition: left 500ms var(--ease-out); }
+.route__van .i { width: 18px; height: 18px; }
+.route__ends { display: flex; justify-content: space-between; }
+
+/* Primer día: lo que te prometimos */
+.promise { display: flex; flex-direction: column; }
+.promise__row { display: flex; gap: 12px; padding: 14px 0; border-bottom: 1px solid var(--line-subtle); }
+.promise__row:last-child { border-bottom: 0; }
+.promise__ok { width: 28px; height: 28px; border-radius: 50%; display: grid; place-items: center; flex: none; border: 1px solid var(--success); background: var(--success-ground); color: var(--success); }
+.promise__ok .i { width: 16px; height: 16px; }
+.promise__main { display: flex; flex-direction: column; gap: 3px; min-width: 0; }
+.promise__got { color: var(--success); font-weight: 700; }
+
+/* Primera factura */
+.timeline { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; }
+.timeline__item { position: relative; display: flex; align-items: flex-start; gap: 12px; padding: 10px 0; }
+.timeline__item::before { content: ""; position: absolute; left: 5px; top: 0; bottom: 0; width: 1px; background: var(--line); }
+.timeline__item:first-child::before { top: 16px; }
+.timeline__item:last-child::before { bottom: calc(100% - 16px); }
+.timeline__dot { position: relative; width: 11px; height: 11px; border-radius: 50%; margin-top: 5px; flex: none; background: var(--surface); border: 1px solid var(--ink); }
+.timeline__item.is-key .timeline__dot { background: var(--ink); }
+.timeline__main { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 2px; }
+.timeline__amt { font-weight: 700; white-space: nowrap; }
+
+/* Avisos */
+.pref-list { display: flex; flex-direction: column; gap: 18px; }
+
+/* Sin conexión */
+.offline {
+  position: absolute; z-index: 21; left: 0; right: 0; margin: 0 auto; top: calc(var(--inset-top) + 66px);
+  width: max-content; max-width: calc(100% - 48px); box-sizing: border-box;
+  display: flex; align-items: center; gap: 10px; padding: 10px 16px 10px 12px; border-radius: var(--radius-pill);
+  background: var(--warning-ground); border: 1px solid var(--warning); color: var(--warning);
+  font-family: var(--font-mono); font-size: 14px; font-weight: 700; animation: stepIn 360ms var(--ease-out) both;
+}
+.offline .i { width: 18px; height: 18px; }
+.app.is-offline .screen { padding-top: calc(var(--inset-top) + 136px); }
+
 </style>
 </head>
 <body>
-<svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs><symbol id="i-home" viewBox="0 0 24 24"><path d="M3 10.5 12 3l9 7.5M5 9v12h5v-6h4v6h5V9"/></symbol><symbol id="i-orb" viewBox="0 0 24 24"><path d="M12 16a6.5 6.5 0 1 0 0-13 6.5 6.5 0 0 0 0 13ZM6 20.5h12M8.2 16.8 7.5 20.5M15.8 16.8l.7 3.7"/></symbol><symbol id="i-receipt" viewBox="0 0 24 24"><path d="M6 3h12v18l-3-2-3 2-3-2-3 2V3ZM9 8h6M9 12h6M9 16h3"/></symbol><symbol id="i-gift" viewBox="0 0 24 24"><path d="M4 11h16v10H4zM3 7h18v4H3zM12 7v14M12 7C10.5 3.5 7 3.2 7 5.2S9.6 7 12 7Zm0 0c1.5-3.5 5-3.8 5-1.8S14.4 7 12 7Z"/></symbol><symbol id="i-support" viewBox="0 0 24 24"><path d="M4 14v-2a8 8 0 0 1 16 0v2M4 13h3v6H4zM17 13h3v6h-3zM20 19c0 1.5-1.5 2.5-4 2.5h-3"/></symbol><symbol id="i-bell" viewBox="0 0 24 24"><path d="M6 17v-6a6 6 0 0 1 12 0v6l1.5 2h-15L6 17ZM10 21.5h4"/></symbol><symbol id="i-wifi" viewBox="0 0 24 24"><path d="M2.5 9a14 14 0 0 1 19 0M5.5 12.5a9.5 9.5 0 0 1 13 0M8.5 16a5 5 0 0 1 7 0M12 19.5v.5"/></symbol><symbol id="i-devices" viewBox="0 0 24 24"><path d="M3 5h14v9H3zM1.5 17h14M17.5 9h5v11h-5zM19.5 17.5h1"/></symbol><symbol id="i-phone" viewBox="0 0 24 24"><path d="M7 2.5h10v19H7zM11 18.5h2"/></symbol><symbol id="i-laptop" viewBox="0 0 24 24"><path d="M4 5h16v11H4zM2 19h20"/></symbol><symbol id="i-gamepad" viewBox="0 0 24 24"><path d="M7 8h10a4 4 0 0 1 4 4v1.5a3.5 3.5 0 0 1-6.3 2.1L14 15h-4l-.7.6A3.5 3.5 0 0 1 3 13.5V12a4 4 0 0 1 4-4ZM7.5 10.5v3M6 12h3M15.5 11h.5M17.5 13h.5"/></symbol><symbol id="i-tv" viewBox="0 0 24 24"><path d="M3 6h18v11H3zM8 21h8M9 2l3 4 3-4"/></symbol><symbol id="i-tablet" viewBox="0 0 24 24"><path d="M5 2.5h14v19H5zM11 18.5h2"/></symbol><symbol id="i-speaker" viewBox="0 0 24 24"><path d="M7 2.5h10v19H7zM12 16.5a3 3 0 1 0 0-6 3 3 0 0 0 0 6ZM12 6.5v.5"/></symbol><symbol id="i-watch" viewBox="0 0 24 24"><path d="M8 6h8v12H8zM9 6l1-3.5h4L15 6M9 18l1 3.5h4l1-3.5M12 9.5V12l1.5 1.5"/></symbol><symbol id="i-bulb" viewBox="0 0 24 24"><path d="M9 18h6M10 21h4M12 3a6 6 0 0 0-3.5 10.9V16h7v-2.1A6 6 0 0 0 12 3Z"/></symbol><symbol id="i-check" viewBox="0 0 24 24"><path d="M4 12l5 5L20 6"/></symbol><symbol id="i-alert" viewBox="0 0 24 24"><path d="M12 3 2 20h20L12 3ZM12 10v5M12 17.5v.5"/></symbol><symbol id="i-close" viewBox="0 0 24 24"><path d="M5 5l14 14M19 5 5 19"/></symbol><symbol id="i-back" viewBox="0 0 24 24"><path d="M15 4 7 12l8 8"/></symbol><symbol id="i-chevR" viewBox="0 0 24 24"><path d="M9 5l7 7-7 7"/></symbol><symbol id="i-chevD" viewBox="0 0 24 24"><path d="M5 9l7 7 7-7"/></symbol><symbol id="i-arrowRight" viewBox="0 0 24 24"><path d="M4 12h15M13 6l6 6-6 6"/></symbol><symbol id="i-eye" viewBox="0 0 24 24"><path d="M2 12s3.5-6.5 10-6.5S22 12 22 12s-3.5 6.5-10 6.5S2 12 2 12ZM12 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z"/></symbol><symbol id="i-eyeOff" viewBox="0 0 24 24"><path d="M2 12s3.5-6.5 10-6.5S22 12 22 12s-3.5 6.5-10 6.5S2 12 2 12ZM12 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6ZM4 4l16 16"/></symbol><symbol id="i-qr" viewBox="0 0 24 24"><path d="M3 3h7v7H3zM14 3h7v7h-7zM3 14h7v7H3zM14 14h3v3h-3zM18 18h3v3h-3zM6 6h1v1H6zM17 6h1v1h-1zM6 17h1v1H6z"/></symbol><symbol id="i-copy" viewBox="0 0 24 24"><path d="M8 8h12v12H8zM4 16V4h12"/></symbol><symbol id="i-lock" viewBox="0 0 24 24"><path d="M5 10h14v11H5zM8 10V7a4 4 0 0 1 8 0v3M12 14v3"/></symbol><symbol id="i-search" viewBox="0 0 24 24"><path d="M10.5 17a6.5 6.5 0 1 0 0-13 6.5 6.5 0 0 0 0 13ZM15.5 15.5 21 21"/></symbol><symbol id="i-pin" viewBox="0 0 24 24"><path d="M12 21s-7-6.5-7-12a7 7 0 0 1 14 0c0 5.5-7 12-7 12ZM12 11.5a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5Z"/></symbol><symbol id="i-box" viewBox="0 0 24 24"><path d="M3 7.5 12 3l9 4.5v9L12 21l-9-4.5v-9ZM3 7.5l9 4.5 9-4.5M12 12v9M7.5 5.2l9 4.5"/></symbol><symbol id="i-users" viewBox="0 0 24 24"><path d="M9 11a4 4 0 1 0 0-8 4 4 0 0 0 0 8ZM2 21a7 7 0 0 1 14 0M15.5 3.3a4 4 0 0 1 0 7.4M22 21a7 7 0 0 0-4-6.3"/></symbol><symbol id="i-pulse" viewBox="0 0 24 24"><path d="M2 12h5l3-7 4 14 3-7h5"/></symbol><symbol id="i-chat" viewBox="0 0 24 24"><path d="M4 5h16v11H9l-5 4V5Z"/></symbol><symbol id="i-bubble" viewBox="0 0 24 24"><path d="M4.5 20.5 6 16.3A8.5 8.5 0 1 1 8.2 18.6l-3.7 1.9ZM9 10.5h6M9 13.5h4"/></symbol><symbol id="i-calendar" viewBox="0 0 24 24"><path d="M4 5h16v16H4zM4 10h16M8 3v4M16 3v4"/></symbol><symbol id="i-send" viewBox="0 0 24 24"><path d="M3 20.5 21 12 3 3.5l3 8.5-3 8.5ZM6 12h8"/></symbol><symbol id="i-clock" viewBox="0 0 24 24"><path d="M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18ZM12 7v5l3 2"/></symbol><symbol id="i-info" viewBox="0 0 24 24"><path d="M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18ZM12 11v6M12 7.5v.5"/></symbol><symbol id="i-block" viewBox="0 0 24 24"><path d="M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18ZM5.6 5.6l12.8 12.8"/></symbol><symbol id="i-pause" viewBox="0 0 24 24"><path d="M8 5v14M16 5v14"/></symbol><symbol id="i-bank" viewBox="0 0 24 24"><path d="M3 9h18L12 3 3 9ZM5.5 9v9M9.8 9v9M14.2 9v9M18.5 9v9M3 21h18"/></symbol><symbol id="i-card" viewBox="0 0 24 24"><path d="M2 5h20v14H2zM2 10h20M6 15h4"/></symbol><symbol id="i-wallet" viewBox="0 0 24 24"><path d="M3 6h17v14H3zM3 6l12-3v3M15 11h6v4h-6z"/></symbol></defs></svg>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs><symbol id="i-home" viewBox="0 0 24 24"><path d="M3 10.5 12 3l9 7.5M5 9v12h5v-6h4v6h5V9"/></symbol><symbol id="i-orb" viewBox="0 0 24 24"><path d="M12 16a6.5 6.5 0 1 0 0-13 6.5 6.5 0 0 0 0 13ZM6 20.5h12M8.2 16.8 7.5 20.5M15.8 16.8l.7 3.7"/></symbol><symbol id="i-receipt" viewBox="0 0 24 24"><path d="M6 3h12v18l-3-2-3 2-3-2-3 2V3ZM9 8h6M9 12h6M9 16h3"/></symbol><symbol id="i-gift" viewBox="0 0 24 24"><path d="M4 11h16v10H4zM3 7h18v4H3zM12 7v14M12 7C10.5 3.5 7 3.2 7 5.2S9.6 7 12 7Zm0 0c1.5-3.5 5-3.8 5-1.8S14.4 7 12 7Z"/></symbol><symbol id="i-support" viewBox="0 0 24 24"><path d="M4 14v-2a8 8 0 0 1 16 0v2M4 13h3v6H4zM17 13h3v6h-3zM20 19c0 1.5-1.5 2.5-4 2.5h-3"/></symbol><symbol id="i-bell" viewBox="0 0 24 24"><path d="M6 17v-6a6 6 0 0 1 12 0v6l1.5 2h-15L6 17ZM10 21.5h4"/></symbol><symbol id="i-wifi" viewBox="0 0 24 24"><path d="M2.5 9a14 14 0 0 1 19 0M5.5 12.5a9.5 9.5 0 0 1 13 0M8.5 16a5 5 0 0 1 7 0M12 19.5v.5"/></symbol><symbol id="i-devices" viewBox="0 0 24 24"><path d="M3 5h14v9H3zM1.5 17h14M17.5 9h5v11h-5zM19.5 17.5h1"/></symbol><symbol id="i-phone" viewBox="0 0 24 24"><path d="M7 2.5h10v19H7zM11 18.5h2"/></symbol><symbol id="i-laptop" viewBox="0 0 24 24"><path d="M4 5h16v11H4zM2 19h20"/></symbol><symbol id="i-gamepad" viewBox="0 0 24 24"><path d="M7 8h10a4 4 0 0 1 4 4v1.5a3.5 3.5 0 0 1-6.3 2.1L14 15h-4l-.7.6A3.5 3.5 0 0 1 3 13.5V12a4 4 0 0 1 4-4ZM7.5 10.5v3M6 12h3M15.5 11h.5M17.5 13h.5"/></symbol><symbol id="i-tv" viewBox="0 0 24 24"><path d="M3 6h18v11H3zM8 21h8M9 2l3 4 3-4"/></symbol><symbol id="i-tablet" viewBox="0 0 24 24"><path d="M5 2.5h14v19H5zM11 18.5h2"/></symbol><symbol id="i-speaker" viewBox="0 0 24 24"><path d="M7 2.5h10v19H7zM12 16.5a3 3 0 1 0 0-6 3 3 0 0 0 0 6ZM12 6.5v.5"/></symbol><symbol id="i-watch" viewBox="0 0 24 24"><path d="M8 6h8v12H8zM9 6l1-3.5h4L15 6M9 18l1 3.5h4l1-3.5M12 9.5V12l1.5 1.5"/></symbol><symbol id="i-bulb" viewBox="0 0 24 24"><path d="M9 18h6M10 21h4M12 3a6 6 0 0 0-3.5 10.9V16h7v-2.1A6 6 0 0 0 12 3Z"/></symbol><symbol id="i-check" viewBox="0 0 24 24"><path d="M4 12l5 5L20 6"/></symbol><symbol id="i-alert" viewBox="0 0 24 24"><path d="M12 3 2 20h20L12 3ZM12 10v5M12 17.5v.5"/></symbol><symbol id="i-close" viewBox="0 0 24 24"><path d="M5 5l14 14M19 5 5 19"/></symbol><symbol id="i-back" viewBox="0 0 24 24"><path d="M15 4 7 12l8 8"/></symbol><symbol id="i-chevR" viewBox="0 0 24 24"><path d="M9 5l7 7-7 7"/></symbol><symbol id="i-chevD" viewBox="0 0 24 24"><path d="M5 9l7 7 7-7"/></symbol><symbol id="i-arrowRight" viewBox="0 0 24 24"><path d="M4 12h15M13 6l6 6-6 6"/></symbol><symbol id="i-eye" viewBox="0 0 24 24"><path d="M2 12s3.5-6.5 10-6.5S22 12 22 12s-3.5 6.5-10 6.5S2 12 2 12ZM12 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z"/></symbol><symbol id="i-eyeOff" viewBox="0 0 24 24"><path d="M2 12s3.5-6.5 10-6.5S22 12 22 12s-3.5 6.5-10 6.5S2 12 2 12ZM12 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6ZM4 4l16 16"/></symbol><symbol id="i-qr" viewBox="0 0 24 24"><path d="M3 3h7v7H3zM14 3h7v7h-7zM3 14h7v7H3zM14 14h3v3h-3zM18 18h3v3h-3zM6 6h1v1H6zM17 6h1v1h-1zM6 17h1v1H6z"/></symbol><symbol id="i-copy" viewBox="0 0 24 24"><path d="M8 8h12v12H8zM4 16V4h12"/></symbol><symbol id="i-lock" viewBox="0 0 24 24"><path d="M5 10h14v11H5zM8 10V7a4 4 0 0 1 8 0v3M12 14v3"/></symbol><symbol id="i-search" viewBox="0 0 24 24"><path d="M10.5 17a6.5 6.5 0 1 0 0-13 6.5 6.5 0 0 0 0 13ZM15.5 15.5 21 21"/></symbol><symbol id="i-pin" viewBox="0 0 24 24"><path d="M12 21s-7-6.5-7-12a7 7 0 0 1 14 0c0 5.5-7 12-7 12ZM12 11.5a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5Z"/></symbol><symbol id="i-box" viewBox="0 0 24 24"><path d="M3 7.5 12 3l9 4.5v9L12 21l-9-4.5v-9ZM3 7.5l9 4.5 9-4.5M12 12v9M7.5 5.2l9 4.5"/></symbol><symbol id="i-users" viewBox="0 0 24 24"><path d="M9 11a4 4 0 1 0 0-8 4 4 0 0 0 0 8ZM2 21a7 7 0 0 1 14 0M15.5 3.3a4 4 0 0 1 0 7.4M22 21a7 7 0 0 0-4-6.3"/></symbol><symbol id="i-pulse" viewBox="0 0 24 24"><path d="M2 12h5l3-7 4 14 3-7h5"/></symbol><symbol id="i-chat" viewBox="0 0 24 24"><path d="M4 5h16v11H9l-5 4V5Z"/></symbol><symbol id="i-bubble" viewBox="0 0 24 24"><path d="M4.5 20.5 6 16.3A8.5 8.5 0 1 1 8.2 18.6l-3.7 1.9ZM9 10.5h6M9 13.5h4"/></symbol><symbol id="i-calendar" viewBox="0 0 24 24"><path d="M4 5h16v16H4zM4 10h16M8 3v4M16 3v4"/></symbol><symbol id="i-send" viewBox="0 0 24 24"><path d="M3 20.5 21 12 3 3.5l3 8.5-3 8.5ZM6 12h8"/></symbol><symbol id="i-clock" viewBox="0 0 24 24"><path d="M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18ZM12 7v5l3 2"/></symbol><symbol id="i-info" viewBox="0 0 24 24"><path d="M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18ZM12 11v6M12 7.5v.5"/></symbol><symbol id="i-block" viewBox="0 0 24 24"><path d="M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18ZM5.6 5.6l12.8 12.8"/></symbol><symbol id="i-pause" viewBox="0 0 24 24"><path d="M8 5v14M16 5v14"/></symbol><symbol id="i-bank" viewBox="0 0 24 24"><path d="M3 9h18L12 3 3 9ZM5.5 9v9M9.8 9v9M14.2 9v9M18.5 9v9M3 21h18"/></symbol><symbol id="i-card" viewBox="0 0 24 24"><path d="M2 5h20v14H2zM2 10h20M6 15h4"/></symbol><symbol id="i-wallet" viewBox="0 0 24 24"><path d="M3 6h17v14H3zM3 6l12-3v3M15 11h6v4h-6z"/></symbol><symbol id="i-bookmark" viewBox="0 0 24 24"><path d="M6 3h12v18l-6-4.5L6 21V3Z"/></symbol><symbol id="i-van" viewBox="0 0 24 24"><path d="M2 7h12v9H2zM14 10h4l3 3v3h-7zM7.5 18a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0ZM18.5 18a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0Z"/></symbol><symbol id="i-sliders" viewBox="0 0 24 24"><path d="M4 7h9M17 7h3M15 4v6M4 17h3M11 17h9M9 14v6"/></symbol><symbol id="i-wifiOff" viewBox="0 0 24 24"><path d="M2 8.5a15 15 0 0 1 20 0M5.5 12a10 10 0 0 1 13 0M9 15.5a5 5 0 0 1 6 0M12 19.5v.5M3 3l18 18"/></symbol><symbol id="i-moon" viewBox="0 0 24 24"><path d="M20 14.5A8 8 0 1 1 9.5 4a6.5 6.5 0 0 0 10.5 10.5Z"/></symbol><symbol id="i-compare" viewBox="0 0 24 24"><path d="M4 5h7v14H4zM13 5h7v14h-7z"/></symbol><symbol id="i-refresh" viewBox="0 0 24 24"><path d="M20 12a8 8 0 1 1-2.3-5.6M20 4v4.5h-4.5"/></symbol><symbol id="i-edit" viewBox="0 0 24 24"><path d="M4 20h4L19 9l-4-4L4 16v4ZM13 7l4 4"/></symbol><symbol id="i-star" viewBox="0 0 24 24"><path d="M12 3l2.6 5.6 6.1.7-4.5 4.2 1.2 6L12 16.6 6.6 19.5l1.2-6L3.3 9.3l6.1-.7L12 3Z"/></symbol></defs></svg>
 <div class="stage">
   <div class="device-slot" id="deviceSlot">
     <div class="device" id="device">
@@ -892,6 +970,7 @@ h1, h2, h3 { font-weight: 400; text-wrap: balance; }
             <button class="avatar" data-action="open-account" aria-label="Tu cuenta">S</button>
           </div>
         </header>
+        <div class="offline" id="offline" role="status" hidden><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-wifiOff"></use></svg><span>Sin conexión. Te mostramos lo último que vimos.</span></div>
 
         <main class="screens" id="screens">
 
@@ -993,6 +1072,8 @@ h1, h2, h3 { font-weight: 400; text-wrap: balance; }
               <div id="speedMsg"></div>
               <button class="btn btn--primary btn--block btn--lg" id="runTest" type="button" data-action="speedtest">Medir velocidad</button>
               <p class="label muted">Medimos desde tu Orb. Es la velocidad que llega a tu casa, sin contar el Wi‑Fi de tu celular.</p>
+              <button class="btn btn--secondary btn--block" id="runPhone" type="button" data-action="phonetest"><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-phone"></use></svg>Medir desde este celular</button>
+              <p class="label muted">Es una prueba real: mide lo que le llega a este celular por Wi‑Fi o por datos. Usa hasta 60 MB y se hace con los servidores de Cloudflare.</p>
             </div>
 
             <div class="sec" id="wifiSec">
@@ -1038,12 +1119,20 @@ h1, h2, h3 { font-weight: 400; text-wrap: balance; }
                 <button class="btn btn--secondary hold" type="button" id="holdBtn" style="align-self:flex-start;margin-top:6px"><span class="hold__fill"></span><span id="holdTxt">Mantén para reiniciar</span></button>
               </div>
             </div>
+
+            <div class="sec">
+              <div class="sec__row"><span class="label label--caps">Lo que te prometimos</span><span class="label">Revisado hoy</span></div>
+            </div>
+            <button class="card card--tap" type="button" data-action="open-promise">
+              <span class="card__top"><span class="h3">4 de 4 cumplidas</span><span class="pill"><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-check"></use></svg>Al día</span></span>
+              <span class="body-s muted">Velocidad, fecha de instalación, precio y permanencia: lo que te dijimos al venderte, al lado de lo que pasó.</span>
+            </button>
           </section>
 
           <!-- PAGOS -->
           <section class="screen" id="scr-2" aria-label="Pagos">
             <div class="sec">
-              <div class="sec__row"><span class="label label--caps">Pagos</span><span class="label">Cliente desde feb. 2026</span></div>
+              <div class="sec__row"><span class="label label--caps">Pagos</span><span class="label" id="payMeta">Cliente desde feb. 2026</span></div>
               <h2 class="h2">Tu factura</h2>
             </div>
             <div class="card only-new" id="newBill"></div>
@@ -1191,7 +1280,11 @@ h1, h2, h3 { font-weight: 400; text-wrap: balance; }
                 <button class="btn btn--secondary" type="button" data-nav="unstable" data-unstable-label><span class="ul">Simular inestabilidad</span></button>
                 <button class="btn btn--secondary" type="button" data-nav="splash">Ver apertura</button>
                 <button class="btn btn--secondary" type="button" data-nav="welcome">Nuevo usuario</button>
-                <button class="btn btn--primary only-new" type="button" data-nav="install">Simular instalación</button>
+                <button class="btn btn--primary only-new" type="button" data-nav="tech">Simular el día de instalación</button>
+                <button class="btn btn--secondary only-new" type="button" data-nav="install">Instalar ya</button>
+                <button class="btn btn--secondary only-active" type="button" data-nav="firstday">Ver el primer día</button>
+                <button class="btn btn--secondary" type="button" data-nav="offline"><span data-offline-label>Simular sin conexión</span></button>
+                <button class="btn btn--secondary" type="button" data-nav="payfail"><span data-payfail-label>Simular pago rechazado</span></button>
               </div>
               <p class="label muted" id="screenDiag"></p>
             </div>
@@ -1213,6 +1306,7 @@ h1, h2, h3 { font-weight: 400; text-wrap: balance; }
           <div class="page__bar">
             <button class="icon-btn" type="button" data-action="close-page" aria-label="Volver"><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-back"></use></svg></button>
             <div class="page__title"><span class="h3">Notificaciones</span><span class="label muted" id="notifMeta">Todo al día</span></div>
+            <button class="icon-btn" type="button" data-nav="prefs" aria-label="Qué avisos recibir"><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-sliders"></use></svg></button>
           </div>
           <div class="page__scroll" id="notifList"></div>
         </section>
@@ -1263,6 +1357,17 @@ h1, h2, h3 { font-weight: 400; text-wrap: balance; }
           <div class="mv-foot" id="mvFoot"></div>
         </section>
 
+        <!-- Primer día (después de la instalación) -->
+        <section class="page page--move" id="pageFirst" aria-label="Tu primer día">
+          <div class="page__bar">
+            <button class="icon-btn" type="button" data-action="fd-back" aria-label="Volver"><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-back"></use></svg></button>
+            <div class="page__title"><span class="body">Tu primer día</span><span class="label muted" id="fdStepLabel">Paso 1 de 3</span></div>
+          </div>
+          <div class="mv-progress" aria-hidden="true"><span id="fdProg"></span></div>
+          <div class="page__scroll" id="fdBody"></div>
+          <div class="mv-foot" id="fdFoot"></div>
+        </section>
+
         <div class="scrim" id="scrim" data-action="close-sheet"></div>
         <section class="sheet" id="sheet" role="dialog" aria-modal="true" aria-labelledby="sheetTitle" hidden>
           <div class="sheet__grab" id="sheetGrab"><span></span></div>
@@ -1296,7 +1401,7 @@ h1, h2, h3 { font-weight: 400; text-wrap: balance; }
 
   <aside class="panel" aria-label="Recorrido del prototipo">
     <div class="panel__head">
-      <div class="sec"><div class="sec__row"><span class="label label--caps">Prototipo conceptual</span><span class="label">v2 · oct. 2026</span></div></div>
+      <div class="sec"><div class="sec__row"><span class="label label--caps">Prototipo conceptual</span><span class="label">v3 · oct. 2026</span></div></div>
       <h1>App Somos</h1>
       <p class="panel__lead">Para quien se va a vivir solo por primera vez: revisa si Somos llega a su torre, contrata sin trámites y llega a una casa con internet. Después, su red, su Orb y su factura en un solo lugar.</p>
     </div>
@@ -1305,8 +1410,9 @@ h1, h2, h3 { font-weight: 400; text-wrap: balance; }
       <div class="index-grid">
         <button class="index-row" type="button" data-nav="welcome">Bienvenida</button>
         <button class="index-row" type="button" data-nav="mudanza">Me mudo</button>
+        <button class="index-row" type="button" data-nav="tech">Día de instalar</button>
+        <button class="index-row" type="button" data-nav="firstday">Primer día</button>
       </div>
-      <button class="index-row" type="button" data-nav="install">Simular instalación<span class="label">tras Me mudo</span></button>
     </div>
     <div class="panel__group">
       <p class="label label--caps muted">Cliente</p>
@@ -1326,6 +1432,8 @@ h1, h2, h3 { font-weight: 400; text-wrap: balance; }
     <div class="panel__group">
       <p class="label label--caps muted">Simula un evento</p>
       <button class="index-row" type="button" data-nav="unstable" data-unstable-label><span class="ul">Simular inestabilidad</span><span class="label">push</span></button>
+      <button class="index-row" type="button" data-nav="offline"><span data-offline-label>Simular sin conexión</span><span class="label">banner</span></button>
+      <button class="index-row" type="button" data-nav="payfail"><span data-payfail-label>Simular pago rechazado</span><span class="label">el siguiente</span></button>
       <button class="index-row" type="button" data-nav="splash">Ver la apertura otra vez<span class="label">4 s</span></button>
     </div>
     <p class="label panel__note">Datos de ejemplo. Beneficios, coberturas y políticas son propuestas de este prototipo, no condiciones reales de Somos. Planes y precios de referencia tomados de somosinternet.com (Medellín, estratos 1 a 3).</p>
@@ -1889,6 +1997,11 @@ function go(t) {
   }
   if (t === "mudanza") { showWelcome(true); openMove(true); return; }
   if (t === "install") { simulateInstall(); return; }
+  if (t === "tech") { startTechDay(); return; }
+  if (t === "offline") { toggleOffline(); return; }
+  if (t === "payfail") { togglePayFail(); return; }
+  if (t === "firstday") { openFirstDay(); return; }
+  if (t === "prefs") { openPrefs(); return; }
   if (t !== "splash") {
     if (!DATA.client) { DATA.client = "active"; applyClientState(); }
     hideWelcome(); closeMove();
@@ -1935,6 +2048,7 @@ function heroTarget() { if (DATA.client === "new") return installDays(); return 
 function renderHero(animate = true) {
   const pill = $("#heroPill"), sub = $("#heroSub"), hero = $("#hero");
   hero.classList.toggle("is-off", DATA.client === "new");
+  if (DATA.client === "new" && DATA.install && TECH.on) { heroTech(); return; }
   if (DATA.client === "new" && DATA.install) {
     const d = isoDate(DATA.install.day), n = installDays();
     pill.className = "pill pill--neutral"; pill.innerHTML = "Por instalar";
@@ -2018,7 +2132,7 @@ function setGauge(val) {
 }
 let testing = false;
 function runSpeedTest() {
-  if (testing) return;
+  if (testing || phoneTesting) return;
   testing = true;
   const btn = $("#runTest"); btn.disabled = true; btn.textContent = "Midiendo…";
   $("#speedMsg").innerHTML = "";
@@ -2028,6 +2142,7 @@ function runSpeedTest() {
   const T = { ping: u ? 38 : 3, down: Math.round(u ? 188 + Math.random() * 40 : 869 + Math.random() * 10), up: Math.round(u ? 170 + Math.random() * 36 : 859 + Math.random() * 10) };
   const num = $("#gNum"), unit = $("#gUnit"), cap = $("#gCap");
   cap.textContent = "Midiendo desde tu Orb";
+  $("#runPhone").disabled = true;
   const t0 = performance.now(), D = REDUCED ? 0.25 : 1;
   let phase = "";
   const setPhase = (p) => { if (phase === p) return; $$(".phase").forEach((el) => { if (el.dataset.ph === phase) { el.classList.remove("is-on"); el.classList.add("is-done"); } if (el.dataset.ph === p) el.classList.add("is-on"); }); phase = p; };
@@ -2053,8 +2168,8 @@ function runSpeedTest() {
       if (!u) { DATA.down = T.down; DATA.up = T.up; DATA.ping = T.ping; renderHero(); }
       $("#speedMsg").innerHTML = u
         ? `<div class="state state--warning step-in">${ic("alert")}<div class="state__body"><p class="state__title">Tu velocidad está más baja</p><p class="state__text">Es por la intermitencia en tu zona. Ya estamos trabajando y te avisamos cuando quede.</p></div></div>`
-        : `<div class="state step-in">${ic("check")}<div class="state__body"><p class="state__title">Recibes lo que contrataste</p><p class="state__text">Tu plan Essential es de hasta 900 MBPS por cable, y la subida es casi igual a la bajada.</p></div></div>`;
-      btn.disabled = false; btn.textContent = "Medir de nuevo"; testing = false;
+        : `<div class="state step-in">${ic("check")}<div class="state__body"><p class="state__title">Recibes lo que contrataste</p><p class="state__text">Tu plan Essential es de hasta 900 MBPS por cable, y la subida es casi igual a la bajada. ${enLaVida(T.down)}</p></div></div>`;
+      btn.disabled = false; btn.textContent = "Medir de nuevo"; testing = false; $("#runPhone").disabled = false;
       return;
     }
     requestAnimationFrame(f);
@@ -2259,6 +2374,7 @@ function processPayment() {
   const m = METHODS.find((x) => x.id === payMethod);
   swapSheet(`<div class="center-col"><svg class="spinner" viewBox="0 0 56 56" aria-hidden="true"><circle cx="28" cy="28" r="24"/></svg><p class="h3">Procesando tu pago con ${m.name}…</p><p class="label muted">No cierres la app.</p></div>`);
   setTimeout(() => {
+    if (STATE.payFail) { STATE.payFail = false; refreshDemoLabels(); payFailed(m); return; }
     DATA.paid = true;
     renderInvoice(); renderHistory(); renderHomeBill();
     DATA.notifs.unshift({ id: "pay-oct", tone: "success", icon: "check", title: `Recibimos tu pago de ${FACT.mes}`, text: `$63.000 con ${m.name}. Quedaste al día.`, when: "Hoy", time: hora(new Date()), unread: false });
@@ -2415,10 +2531,10 @@ function setUnstable(on) {
   DATA.notifs = DATA.notifs.filter((n) => n.id !== "zone" && n.id !== "zone-ok");
   if (on) {
     DATA.notifs.unshift({ id: "zone", tone: "warning", icon: "alert", title: "Intermitencia en tu zona", text: `Ya estamos trabajando en Laureles. Estimamos que a las ${ETA} vuelva la normalidad.`, when: "Hoy", time: "ahora", unread: true, action: { label: "Ver detalle", act: "alert-detail" } });
-    push({ title: "Intermitencia en tu zona", text: `Ya estamos trabajando en Laureles. Estimamos que a las ${ETA} vuelva la normalidad.`, tone: "warning", icon: "alert", onTap: alertDetail });
+    notify("fallas", { title: "Intermitencia en tu zona", text: `Ya estamos trabajando en Laureles. Estimamos que a las ${ETA} vuelva la normalidad.`, tone: "warning", icon: "alert", onTap: alertDetail });
   } else {
     DATA.notifs.unshift({ id: "zone-ok", tone: "success", icon: "check", title: "Tu red volvió a la normalidad", text: "Gracias por la paciencia. Todo está en orden.", when: "Hoy", time: "ahora", unread: true });
-    push({ title: "Tu red volvió a la normalidad", text: "Gracias por la paciencia. Todo está en orden.", tone: "success", icon: "check" });
+    notify("fallas", { title: "Tu red volvió a la normalidad", text: "Gracias por la paciencia. Todo está en orden.", tone: "success", icon: "check" });
   }
   renderNotifs();
 }
@@ -2433,9 +2549,10 @@ function openAccount() {
       <div><dt>Estrato</dt><dd>3</dd></div>
       <div><dt>Permanencia</dt><dd>Sin cláusulas</dd></div>
     </dl>
+    <button class="channel" type="button" data-nav="prefs"><span class="list-item__icon">${ic("sliders")}</span><span class="channel__main"><span class="body">Qué avisos recibir</span><span class="label muted">Fallas, factura, instalación y horario de silencio</span></span>${ic("chevR")}</button>
     <div class="card demo" style="padding:20px">
       <span class="label label--caps">Modo demostración</span>
-      <div class="btn-row"><button class="btn btn--secondary" type="button" data-nav="unstable" data-unstable-label><span class="ul">${STATE.unstable ? "Volver a la normalidad" : "Simular inestabilidad"}</span></button><button class="btn btn--secondary" type="button" data-nav="splash">Ver apertura</button><button class="btn btn--secondary" type="button" data-nav="welcome">Nuevo usuario</button>${DATA.client === "new" ? `<button class="btn btn--primary" type="button" data-nav="install">Simular instalación</button>` : ""}</div>
+      <div class="btn-row"><button class="btn btn--secondary" type="button" data-nav="unstable" data-unstable-label><span class="ul">${STATE.unstable ? "Volver a la normalidad" : "Simular inestabilidad"}</span></button><button class="btn btn--secondary" type="button" data-nav="splash">Ver apertura</button><button class="btn btn--secondary" type="button" data-nav="welcome">Nuevo usuario</button>${DATA.client === "new" ? `<button class="btn btn--primary" type="button" data-nav="tech">Simular el día de instalación</button><button class="btn btn--secondary" type="button" data-nav="install">Instalar ya</button>` : `<button class="btn btn--secondary" type="button" data-nav="firstday">Ver el primer día</button>`}${demoToggles()}</div>
     </div>
     <p class="label muted">Prototipo conceptual. No es la app oficial de Somos.</p>`);
 }
@@ -2579,15 +2696,15 @@ DATA.client = HASH === "cliente" ? "active" : null; // null = aún no elige; "ne
 DATA.userName = "Samu";
 
 const LUGARES = [
-  { id: "mirador", city: "Medellín", name: "Conjunto Mirador de Laureles", addr: "Cra. 76 #33-40, Laureles", towers: ["Torre 1", "Torre 2", "Torre 3"], cover: { "Torre 1": true, "Torre 2": false, "Torre 3": true }, vecinos: { "Torre 1": 14, "Torre 3": 9 }, speed: { "Torre 1": 872, "Torre 3": 866 } },
-  { id: "nogal", city: "Medellín", name: "Edificio Nogal", addr: "Calle 10 Sur #43-12, Envigado", cover: true, vecinos: 11, speed: 869 },
-  { id: "altos", city: "Medellín", name: "Unidad Altos del Norte", addr: "Cra. 50 #52-30, Bello", towers: ["Bloque A", "Bloque B"], cover: { "Bloque A": false, "Bloque B": false } },
-  { id: "calle60", city: "Bogotá", name: "Edificio Calle 60", addr: "Cra. 7 #59-40, Chapinero", cover: true, vecinos: 18, speed: 874 },
-  { id: "prados", city: "Bogotá", name: "Conjunto Prados de Suba", addr: "Calle 145 #91-20, Suba", towers: ["Torre 1", "Torre 2"], cover: { "Torre 1": true, "Torre 2": false }, vecinos: { "Torre 1": 7 }, speed: { "Torre 1": 861 } }
+  { id: "mirador", city: "Medellín", name: "Conjunto Mirador de Laureles", addr: "Cra. 76 #33-40, Laureles", estrato: 3, towers: ["Torre 1", "Torre 2", "Torre 3"], cover: { "Torre 1": true, "Torre 2": false, "Torre 3": true }, vecinos: { "Torre 1": 14, "Torre 3": 9 }, speed: { "Torre 1": 872, "Torre 3": 866 } },
+  { id: "nogal", city: "Medellín", name: "Edificio Nogal", addr: "Calle 10 Sur #43-12, Envigado", estrato: 4, cover: true, vecinos: 11, speed: 869 },
+  { id: "altos", city: "Medellín", name: "Unidad Altos del Norte", addr: "Cra. 50 #52-30, Bello", estrato: 2, towers: ["Bloque A", "Bloque B"], cover: { "Bloque A": false, "Bloque B": false } },
+  { id: "calle60", city: "Bogotá", name: "Edificio Calle 60", addr: "Cra. 7 #59-40, Chapinero", estrato: 4, cover: true, vecinos: 18, speed: 874 },
+  { id: "prados", city: "Bogotá", name: "Conjunto Prados de Suba", addr: "Calle 145 #91-20, Suba", estrato: 3, towers: ["Torre 1", "Torre 2"], cover: { "Torre 1": true, "Torre 2": false }, vecinos: { "Torre 1": 7 }, speed: { "Torre 1": 861 } }
 ];
 const PLANES = {
-  essential: { name: "Essential", n: 1, price: { "1-3": 63000, "4-6": 75000 }, rows: [["Velocidad", "Hasta 900 MBPS"], ["Puntos por cable", "Hasta 2"], ["Orb 2", "No incluido"], ["Soporte", "24/7"]] },
-  pro: { name: "Pro", n: 2, price: { "1-3": 100000, "4-6": 120000 }, rows: [["Velocidad", "Hasta 2.0 GBPS"], ["Puntos por cable", "Ilimitados"], ["Orb 2", "1 incluido"], ["Soporte", "VIP 24/7"]] }
+  essential: { name: "Essential", n: 1, fit: "Para ti y tu roomie: series en 4K, videollamadas y juegos al mismo tiempo.", price: { "1-3": 63000, "4-6": 75000 }, rows: [["Velocidad", "Hasta 900 MBPS"], ["Puntos por cable", "Hasta 2"], ["Orb 2", "No incluido"], ["Soporte", "24/7"]] },
+  pro: { name: "Pro", n: 2, fit: "Para casas de 4 o más, o si descargan juegos y archivos grandes seguido.", price: { "1-3": 100000, "4-6": 120000 }, rows: [["Velocidad", "Hasta 2.0 GBPS"], ["Puntos por cable", "Ilimitados"], ["Orb 2", "1 incluido"], ["Soporte", "VIP 24/7"]] }
 };
 const MV_STEPS = ["donde", "cobertura", "plan", "datos", "instalacion", "listo"];
 const SLOTS_INST = [
@@ -2597,7 +2714,7 @@ const SLOTS_INST = [
 const slotDe = (id) => SLOTS_INST.find((x) => x.id === id) || SLOTS_INST[0];
 const MV = {};
 function resetMove() {
-  Object.assign(MV, { step: 0, city: "Medellín", place: null, free: "", tower: null, apt: "504", estrato: "1-3", plan: "essential",
+  Object.assign(MV, { step: 0, city: "Medellín", place: null, free: "", tower: null, apt: "504", estrato: "1-3", estratoEdit: false, needs: { people: 2, acts: [] }, plan: "essential",
     name: "Valentina Ríos", cc: "1.036.000.000", phone: "300 000 0000", mail: "valentina@correo.com", split: false, day: null, slot: null, requested: null });
 }
 resetMove();
@@ -2641,11 +2758,12 @@ function towersArt() {
 }
 
 function placeBtn(pl) {
-  const on = MV.place && MV.place.id === pl.id;
-  return `<button class="method" type="button" role="radio" aria-checked="${on}" data-action="mv-place" data-id="${pl.id}">
+  const on = MV.place && MV.place.id === pl.id, saved = isSaved(pl.id);
+  return `<div class="place-row"><button class="method" type="button" role="radio" aria-checked="${on}" data-action="mv-place" data-id="${pl.id}">
     <span class="list-item__icon" style="width:40px;height:40px">${ic(pl.towers ? "users" : "pin", "i--20")}</span>
     <span class="list-item__main"><span class="body">${pl.name}</span><span class="label muted">${pl.addr}${pl.towers ? ` · ${pl.towers.length} torres` : ""}</span></span>
-    <span class="method__radio"></span></button>`;
+    <span class="method__radio"></span></button>
+    <button class="icon-btn save-btn" type="button" aria-pressed="${saved}" data-action="save-place" data-id="${pl.id}" aria-label="Guardar ${pl.name} para comparar">${ic("bookmark")}</button></div>`;
 }
 function suggestions() {
   const q = MV.free.trim().toLowerCase();
@@ -2659,6 +2777,7 @@ function mvStepHTML() {
     return {
       body: `<div class="mv-step step-in">
         <div class="mv-lead"><h2 class="h2">¿A dónde te mudas?</h2><p class="body-s muted">Revisamos tu edificio y, si es un conjunto, tu torre. A veces llegamos a una torre y a otra todavía no.</p></div>
+        <div id="mvSaved">${savedStrip()}</div>
         <div class="field"><span class="label">Ciudad</span><div class="chips">${["Medellín", "Bogotá"].map((c) => `<button class="chip" type="button" aria-pressed="${MV.city === c}" data-action="mv-city" data-v="${c}">${c}</button>`).join("")}</div></div>
         <div class="field"><label for="mvAddr">Dirección o nombre del edificio</label>
           <div class="input-wrap"><input class="input" id="mvAddr" name="mvAddr" type="text" autocomplete="off" value="${MV.place ? MV.place.addr : MV.free}" placeholder="Ej.: Cra. 76 #33-40"><span class="icon-btn" aria-hidden="true" style="pointer-events:none">${ic("search")}</span></div></div>
@@ -2672,7 +2791,7 @@ function mvStepHTML() {
   if (step === "cobertura") {
     const c = coverageOf(), donde = MV.tower ? "tu torre" : "tu edificio";
     const head = c.ok ? `Llegamos a ${donde}` : c.towers && c.others.length ? `Todavía no llegamos a la ${MV.tower}` : "Todavía no llegamos a ese edificio";
-    let body = `<div class="mv-step step-in"><div class="mv-lead"><h2 class="h2">${head}</h2><p class="label muted">${mvTitle()}${MV.apt ? " · apto " + MV.apt : ""}</p></div>${towersArt()}`;
+    let body = `<div class="mv-step step-in"><div class="mv-lead"><h2 class="h2">${head}</h2><p class="label muted">${mvTitle()}${MV.apt ? " · apto " + MV.apt : ""}</p></div>${towersArt()}${MV.place ? saveBigBtn(MV.place) : ""}`;
     let foot = "";
     if (c.ok) {
       body += `<div class="state">${ic("check")}<div class="state__body"><p class="state__title">Puedes tener Somos desde el día que llegues</p><p class="state__text">Fibra óptica hasta tu edificio, sin cláusulas y con 30 días gratis.</p></div></div>
@@ -2697,22 +2816,29 @@ function mvStepHTML() {
     return { body: body + "</div>", foot };
   }
   if (step === "plan") {
+    const p = MV.place, auto = !!(p && p.estrato && !MV.estratoEdit);
+    if (auto) MV.estrato = p.estrato <= 3 ? "1-3" : "4-6";
     const pr = mvPrice();
+    const estratoField = auto
+      ? `<div class="estrato-auto"><div class="setting__text"><span class="body">Estrato ${p.estrato}</span><span class="label muted">Según la dirección de tu edificio</span></div><button class="link-btn" type="button" data-action="mv-estrato-edit">Cambiar</button></div>`
+      : `<div class="field"><span class="label">Tu estrato</span><div class="chips">${[["1-3", "Estrato 1 a 3"], ["4-6", "Estrato 4 a 6"]].map(([v, t]) => `<button class="chip" type="button" aria-pressed="${MV.estrato === v}" data-action="mv-estrato" data-v="${v}">${t}</button>`).join("")}</div><p class="label muted">¿No lo sabes? Aparece en el recibo de la luz o del agua del apartamento.</p></div>`;
     return {
       body: `<div class="mv-step step-in">
         <div class="mv-lead"><h2 class="h2">Elige tu plan</h2><p class="body-s muted">Los dos son fibra con subida igual a la bajada. Puedes cambiar cuando quieras.</p></div>
-        <div class="field"><span class="label">Tu estrato</span><div class="chips">${[["1-3", "Estrato 1 a 3"], ["4-6", "Estrato 4 a 6"]].map(([v, t]) => `<button class="chip" type="button" aria-pressed="${MV.estrato === v}" data-action="mv-estrato" data-v="${v}">${t}</button>`).join("")}</div></div>
+        ${estratoField}
+        <div id="mvNeeds">${needsHTML()}</div>
         <div role="radiogroup" aria-label="Planes" style="display:flex;flex-direction:column;gap:16px">
         ${Object.entries(PLANES).map(([id, pl]) => `<button class="plan plan--${pl.n} plan-opt" type="button" role="radio" aria-checked="${MV.plan === id}" data-action="mv-plan" data-v="${id}">
             <span class="card__top"><span class="plan__name">${pl.name}</span><span class="method__radio"></span></span>
             <span class="plan__price"><span class="price num">${money(pl.price[MV.estrato])}</span><span class="label muted">/ mes</span></span>
+            <span class="body-s plan__fit">${pl.fit}</span>
             <span class="rows">${pl.rows.map(([a, b]) => `<span><span class="dt">${a}</span><span class="dd">${b}</span></span>`).join("")}</span>
           </button>`).join("")}
         </div>
         <div class="card card--flat"><span class="label label--caps">Lo que vas a pagar</span>
           <dl class="rows">
             <div><dt>Primeros 30 días</dt><dd>$0</dd></div>
-            <div><dt>Desde el día 31</dt><dd>${money(pr)} / mes</dd></div>
+            <div><dt>Desde el día 31</dt><dd id="mvPriceDd">${money(pr)} / mes</dd></div>
             <div><dt>Permanencia</dt><dd>Sin cláusulas</dd></div>
             <div><dt>Estudio de crédito</dt><dd>No lo necesitas</dd></div>
             <div><dt>Cancelar</dt><dd>Cuando quieras, desde la app</dd></div>
@@ -2898,6 +3024,7 @@ window.addEventListener("resize", checkScreen);
 function applyClientState() {
   const isNew = DATA.client === "new";
   app.classList.toggle("is-new", isNew);
+  $("#payMeta").textContent = isNew ? "Cliente nuevo" : "Cliente desde feb. 2026";
   $("#scr-0 .h1").textContent = `Hola, ${DATA.userName}.`;
   $(".avatar").textContent = DATA.userName.charAt(0).toUpperCase();
   if (isNew) {
@@ -2913,8 +3040,10 @@ function installDays() {
 }
 function renderNewClient() {
   if (DATA.client !== "new" || !DATA.install) return;
-  const I = DATA.install, d = isoDate(I.day), first = addDays(d, 30);
+  const I = DATA.install, bill = firstBill(I);
   $("#homeNew").innerHTML = `
+    ${techCardHTML()}
+    ${TECH.on ? "" : `<button class="btn btn--secondary btn--block" type="button" data-action="resched">${ic("calendar")}Cambiar la fecha de instalación</button>`}
     <div class="card">
       <span class="label label--caps">Antes de la instalación</span>
       <div>
@@ -2923,24 +3052,25 @@ function renderNewClient() {
       </div>
     </div>
     <div class="card card--flat">
-      <span class="label label--caps">Tu primer mes</span>
-      <dl class="rows"><div><dt>Hasta el ${first.getDate()} de ${MESES[first.getMonth()]}</dt><dd>$0</dd></div><div><dt>Después</dt><dd>${money(I.price)} / mes</dd></div></dl>
+      <span class="label label--caps">Tu primera factura</span>
+      <div><p class="price num">${money(bill.prorAmt)}</p><p class="label muted">Llega el ${fechaLarga(bill.firstBill)} y cobra solo ${bill.prorDays} días.</p></div>
+      <button class="link-btn" type="button" data-nav="pagos" style="align-self:flex-start">Ver por qué${ic("arrowRight", "i--16")}</button>
     </div>
     <div class="card">
       <span class="card__row">${ic("users")}<span class="label label--caps">Tu código</span></span>
       <p class="body-s muted">Por cada amigo que se pase a Somos te regalamos un mes, hasta 3.</p>
       <div class="code-box"><span class="label">${I.code}</span><button class="btn btn--primary" type="button" data-action="copy" data-copy="${I.code}" data-ok="Código copiado">${ic("copy")}Copiar</button></div>
     </div>`;
-  $("#newBill").innerHTML = `<span class="label label--caps">Tu primera factura</span><p class="invoice__amount num">${money(I.price)}</p>
-    <p class="label muted">Llega el ${first.getDate()} de ${MESES[first.getMonth()]}. Los primeros 30 días desde la instalación no pagas.</p>
-    <dl class="rows"><div><dt>Plan</dt><dd>${PLANES[I.plan].name}</dd></div><div><dt>Permanencia</dt><dd>Sin cláusulas</dd></div><div><dt>Estudio de crédito</dt><dd>No hizo falta</dd></div></dl>`;
+  $("#newBill").innerHTML = billTimelineHTML(I);
 }
 function openInstallSheet() {
   const I = DATA.install; if (!I) return;
   openSheet(sheetHead("Tu instalación", cap(fechaLarga(isoDate(I.day)))) +
     `<dl class="rows"><div><dt>Franja</dt><dd>${slotDe(I.slot).chip}</dd></div><div><dt>Dónde</dt><dd>${I.where}</dd></div><div><dt>Plan</dt><dd>${PLANES[I.plan].name}</dd></div></dl>
-     <p class="body-s muted">El técnico llega con tu Orb, lo instala y mide la velocidad contigo. Toma unos 30 minutos.</p>
-     <button class="btn btn--primary btn--block" type="button" data-nav="install">Simular instalación</button>`);
+     <p class="body-s muted">El técnico llega con tu Orb, lo instala y mide la velocidad contigo. Toma unos 30 minutos. Ese día ves en la app cuando va en camino.</p>
+     <button class="btn btn--secondary btn--block" type="button" data-action="resched">${ic("calendar")}Cambiar la fecha</button>
+     <div class="card demo" style="padding:16px;gap:10px"><span class="label label--caps">Modo demostración</span>
+       <div class="btn-row"><button class="btn btn--primary" type="button" data-nav="tech">Simular el día</button><button class="btn btn--secondary" type="button" data-nav="install">Instalar ya</button></div></div>`);
 }
 function simulateInstall() {
   if (DATA.client !== "new") { toast("Primero haz el flujo Me mudo", "info"); return; }
@@ -2955,11 +3085,12 @@ function simulateInstall() {
     applyClientState();
     countTo($("#heroNum"), heroTarget(), 1200);
     toast("Instalamos tu Orb. Ya tienes internet.");
+    setTimeout(openFirstDay, REDUCED ? 200 : 1500);
   }, REDUCED ? 100 : 1300);
 }
 function finishMove() {
   const where = mvTitle() + (MV.apt ? ", apto " + MV.apt : "");
-  DATA.install = { day: MV.day, slot: MV.slot, plan: MV.plan, price: mvPrice(), where, checks: {}, code: (MV.name.split(" ")[0] || "AMIGO").toUpperCase().normalize("NFD").replace(/[̀-ͯ]/g, "") + "-" + (MV.apt || "100") };
+  DATA.install = { day: MV.day, slot: MV.slot, plan: MV.plan, price: mvPrice(), where, apt: MV.apt, split: MV.split, checks: {}, code: (MV.name.split(" ")[0] || "AMIGO").toUpperCase().normalize("NFD").replace(/[̀-ͯ]/g, "") + "-" + (MV.apt || "100") };
   DATA.client = "new";
   DATA.userName = (MV.name.trim().split(" ")[0] || "Humano");
   applyClientState();
@@ -2995,7 +3126,8 @@ document.addEventListener("click", (e) => {
     case "mv-tower": MV.tower = v; $$("[data-action=mv-tower]").forEach((b) => b.setAttribute("aria-pressed", String(b === a))); $("#mvCta").disabled = !mvValid(); break;
     case "mv-request": MV.requested = v === "no" ? "no" : "si"; renderMove(); break;
     case "mv-estrato": MV.estrato = v; renderMove(); break;
-    case "mv-plan": MV.plan = v; $$("[data-action=mv-plan]").forEach((b) => b.setAttribute("aria-checked", String(b === a))); $("#mvFoot .btn").textContent = `Seguir con ${PLANES[v].name}`; $$("#mvBody dd")[1].textContent = `${money(mvPrice())} / mes`; break;
+    case "mv-estrato-edit": MV.estratoEdit = true; renderMove(); setTimeout(() => { const f = $("#mvBody .chip[data-action=mv-estrato]"); f && f.focus({ preventScroll: true }); }, 60); break;
+    case "mv-plan": MV.plan = v; $$("[data-action=mv-plan]").forEach((b) => b.setAttribute("aria-checked", String(b === a))); $("#mvFoot .btn").textContent = `Seguir con ${PLANES[v].name}`; $("#mvPriceDd").textContent = `${money(mvPrice())} / mes`; break;
     case "mv-split": MV.split = !MV.split; a.setAttribute("aria-checked", String(MV.split)); break;
     case "mv-day": MV.day = v; $$("[data-action=mv-day]").forEach((b) => b.setAttribute("aria-pressed", String(b === a))); refreshInstall(); break;
     case "mv-slot": MV.slot = v; $$("[data-action=mv-slot]").forEach((b) => b.setAttribute("aria-pressed", String(b === a))); refreshInstall(); break;
@@ -3014,6 +3146,525 @@ if ("serviceWorker" in navigator && location.protocol === "https:") {
   window.addEventListener("load", () => navigator.serviceWorker.register("sw.js").catch(() => {}));
 }
 
+/* ============ Mejoras de experiencia (v3, oct. 2026) ============
+   1. Comparar apartamentos          5. Técnico en camino             9. Prueba real desde el celular
+   2. Estrato según la dirección      6. Primer día con internet      10. Textos más grandes (styles.css)
+   3. Megas en la vida diaria         7. Primera factura explicada    11. Sin conexión y pago rechazado
+   4. Cambiar la fecha                8. Qué avisos recibir
+   Políticas como "cambiar la fecha sin costo" o el prorrateo de la primera factura son propuestas del prototipo. */
+
+DATA.saved = [];
+DATA.prefs = { fallas: true, dispositivos: true, factura: true, instalacion: true, promos: false, quiet: true };
+STATE.forceOffline = false;
+STATE.payFail = false;
+
+/* ============ 1. Comparar apartamentos ============ */
+const isSaved = (id) => DATA.saved.includes(id);
+const esc = (t) => String(t).replace(/&/g, "&amp;").replace(/"/g, "&quot;").replace(/</g, "&lt;");
+function savedStrip() {
+  const list = DATA.saved.map((id) => LUGARES.find((l) => l.id === id)).filter(Boolean);
+  if (!list.length) return `<p class="label muted saved-hint">${ic("bookmark", "i--16")}¿Estás viendo varios apartamentos? Guarda cada edificio y compáralos.</p>`;
+  return `<div class="saved-strip step-in">
+    <div class="saved-strip__top"><span class="label label--caps">Tus opciones · ${list.length}</span>
+      <button class="btn btn--secondary btn--sm" type="button" data-action="open-compare">${ic("compare")}Comparar</button></div>
+    <div class="saved-strip__names">${list.map((p) => `<span class="pill pill--neutral">${p.name}</span>`).join("")}</div>
+  </div>`;
+}
+function saveBigBtn(p) {
+  const on = isSaved(p.id);
+  return `<button class="btn btn--secondary btn--block save-big" type="button" data-action="save-place" data-id="${p.id}" aria-pressed="${on}">${ic("bookmark")}${on ? "Guardado para comparar" : "Guardar para comparar"}</button>`;
+}
+function toggleSaved(id) {
+  const on = !isSaved(id);
+  DATA.saved = on ? [...DATA.saved, id] : DATA.saved.filter((x) => x !== id);
+  $$(`[data-action="save-place"][data-id="${id}"]`).forEach((b) => {
+    b.setAttribute("aria-pressed", String(on));
+    if (b.classList.contains("save-big")) b.innerHTML = `${ic("bookmark")}${on ? "Guardado para comparar" : "Guardar para comparar"}`;
+  });
+  const box = $("#mvSaved"); if (box) box.innerHTML = savedStrip();
+  if (sheet.classList.contains("is-open") && $("#cmpList")) { if (DATA.saved.length) openCompare(true); else closeSheet(); }
+  toast(on ? (DATA.saved.length > 1 ? "Guardado. Ya puedes compararlos" : "Guardado. Busca otro para comparar") : "Lo quitamos de tus opciones", on ? "bookmark" : "check");
+}
+function coverSummary(p) {
+  if (p.towers) {
+    const yes = p.towers.filter((t) => p.cover[t]), no = p.towers.filter((t) => !p.cover[t]);
+    if (!yes.length) return { ok: false, txt: "Todavía no llegamos" };
+    return { ok: true, partial: no.length > 0, txt: no.length ? `${yes.join(" y ")} sí · ${no.join(" y ")} todavía no` : "Todas las torres" };
+  }
+  return p.cover ? { ok: true, txt: "Todo el edificio" } : { ok: false, txt: "Todavía no llegamos" };
+}
+function placeStats(p) {
+  if (!p.vecinos) return { vecinos: 0, speed: 0 };
+  if (typeof p.vecinos === "number") return { vecinos: p.vecinos, speed: p.speed };
+  const v = Object.values(p.vecinos), sp = Object.values(p.speed || {});
+  return { vecinos: v.reduce((a, b) => a + b, 0), speed: sp.length ? Math.round(sp.reduce((a, b) => a + b, 0) / sp.length) : 0 };
+}
+function openCompare(swap) {
+  const list = DATA.saved.map((id) => LUGARES.find((l) => l.id === id)).filter(Boolean);
+  const cards = list.map((p) => {
+    const c = coverSummary(p), st = placeStats(p), price = PLANES.essential.price[p.estrato <= 3 ? "1-3" : "4-6"];
+    return `<div class="cmp ${c.ok ? "" : "is-off"}">
+      <div class="cmp__head"><div class="list-item__main"><span class="body">${p.name}</span><span class="label muted">${p.addr}</span></div>
+        ${c.ok ? `<span class="pill">${ic("check")}${c.partial ? "Por torre" : "Hay Somos"}</span>` : `<span class="pill pill--warning">${ic("alert")}Todavía no</span>`}</div>
+      <dl class="rows">
+        <div><dt>Cobertura</dt><dd>${c.txt}</dd></div>
+        <div><dt>Vecinos con Somos</dt><dd>${st.vecinos || "—"}</dd></div>
+        <div><dt>Velocidad medida</dt><dd>${st.speed ? st.speed + " MBPS" : "—"}</dd></div>
+        <div><dt>Estrato ${p.estrato}</dt><dd>${money(price)} / mes</dd></div>
+      </dl>
+      ${c.ok ? `<button class="btn btn--primary btn--block" type="button" data-action="cmp-pick" data-id="${p.id}">Elegir este</button>` : `<button class="btn btn--secondary btn--block" type="button" data-action="save-place" data-id="${p.id}">Quitar de mis opciones</button>`}
+    </div>`;
+  }).join("");
+  const html = sheetHead("Compara tus opciones", list.length === 1 ? "Guarda otro edificio para ponerlos lado a lado" : `${list.length} edificios guardados`) +
+    `<div class="cmp-list" id="cmpList">${cards}</div>
+     <p class="label muted">Velocidad medida por los Orb de cada edificio, sin datos de nadie en particular. Precio del plan Essential con IVA.</p>`;
+  if (swap && sheet.classList.contains("is-open")) swapSheet(html); else openSheet(html);
+}
+function pickCompared(id) {
+  const p = LUGARES.find((l) => l.id === id); if (!p) return;
+  closeSheet();
+  MV.city = p.city; MV.place = p; MV.free = ""; MV.estratoEdit = false;
+  MV.tower = p.towers ? p.towers.find((t) => p.cover[t]) || null : null;
+  MV.step = 0; renderMove();
+  toast(p.towers ? "Confirma tu torre abajo" : "Edificio elegido");
+}
+
+/* ============ 3. Megas en la vida diaria ============ */
+const ACTS = [
+  { id: "4k", label: "Series en 4K", mbps: 15 },            // Netflix recomienda 15 MBPS o más para 4K
+  { id: "video", label: "Videollamadas o clases", mbps: 4 },
+  { id: "juego", label: "Juegos en línea", mbps: 5 },
+  { id: "descargas", label: "Descargar juegos grandes", mbps: 0, heavy: true },
+  { id: "vivo", label: "Transmitir en vivo", mbps: 10 }
+];
+const minutosPara = (gb, mbps) => Math.max(1, Math.round((gb * 8000) / mbps / 60));
+function enLaVida(mbps) { return `Con eso, un juego de 100 GB baja en unos ${minutosPara(100, mbps)} minutos por cable.`; }
+function needsHTML() {
+  const N = MV.needs, sel = (id) => N.acts.includes(id);
+  let res = `<p class="label muted">Toca lo que hacen en tu casa y te decimos cuál plan te alcanza.</p>`;
+  if (N.acts.length) {
+    const per = ACTS.filter((a) => sel(a.id)).reduce((s, a) => s + a.mbps, 0), total = Math.max(5, per * N.people);
+    const pro = sel("descargas") && N.people >= 3;
+    res = pro
+      ? `<div class="state state--info step-in">${ic("info")}<div class="state__body"><p class="state__title">Te sirve Pro</p><p class="state__text">Con ${N.people} personas descargando juegos grandes, Pro baja 100 GB en unos ${minutosPara(100, 2000)} minutos. Con Essential, en unos ${minutosPara(100, 900)}.</p><button class="link-btn" type="button" data-action="needs-pick" data-v="pro">Elegir Pro${ic("arrowRight", "i--16")}</button></div></div>`
+      : `<div class="state step-in">${ic("check")}<div class="state__body"><p class="state__title">Te alcanza con Essential</p><p class="state__text">Todos al mismo tiempo usarían unos ${total} MBPS de 900. Te recomendamos el más barato porque te sobra.</p><button class="link-btn" type="button" data-action="needs-pick" data-v="essential">Elegir Essential${ic("arrowRight", "i--16")}</button></div></div>`;
+  }
+  const head = `<button class="needs__toggle" type="button" data-action="needs-toggle" aria-expanded="${!!N.open}" aria-controls="needsBody"><span class="card__row">${ic("pulse")}<span class="label label--caps">¿Cuánto internet necesitas?</span></span>${ic("chevD")}</button>`;
+  if (!N.open) return `<div class="card card--flat needs">${head}<p class="body-s muted">Te ayudamos a elegir según lo que hacen en tu casa.</p></div>`;
+  return `<div class="card card--flat needs is-open">${head}
+    <div class="needs__body" id="needsBody"><div class="field"><span class="label">¿Cuántos viven contigo, contándote?</span><div class="chips">${[1, 2, 3, 4].map((n) => `<button class="chip" type="button" aria-pressed="${N.people === n}" data-action="needs-people" data-v="${n}">${n === 4 ? "4 o más" : n}</button>`).join("")}</div></div>
+    <div class="field"><span class="label">¿Qué hacen?</span><div class="chips">${ACTS.map((a) => `<button class="chip" type="button" aria-pressed="${sel(a.id)}" data-action="needs-act" data-v="${a.id}">${a.label}</button>`).join("")}</div></div>
+    <div id="needsRes">${res}</div></div>
+  </div>`;
+}
+function refreshNeeds() { const box = $("#mvNeeds"); if (box) box.innerHTML = needsHTML(); }
+
+/* ============ 4. Cambiar la fecha ============ */
+const RS = { day: null, slot: null };
+function reschedHTML() {
+  const start = addDays(NOW, 1), pad = (start.getDay() + 6) % 7, days = Array.from({ length: 21 }, (_, i) => addDays(start, i));
+  const meses = [...new Set(days.map((d) => MESES[d.getMonth()]))].join(" y ");
+  const cells = Array.from({ length: pad }, () => "<span></span>").join("") + days.map((d) => {
+    const iso = isoOf(d), off = d.getDay() === 0;
+    return `<button class="day" type="button" data-action="rs-day" data-v="${iso}" aria-pressed="${RS.day === iso}" aria-label="${fechaLarga(d)}${off ? ", sin instalaciones" : ""}" ${off ? "disabled" : ""}>${d.getDate()}</button>`;
+  }).join("");
+  return sheetHead("Cambia la fecha", "Sin costo, hasta un día antes") +
+    `<div class="field"><div class="cal-head"><span class="label">Día</span><span class="label muted">${cap(meses)}</span></div>
+       <div class="cal">${["L", "M", "M", "J", "V", "S", "D"].map((w) => `<span class="cal__wd" aria-hidden="true">${w}</span>`).join("")}${cells}</div></div>
+     <div class="field"><span class="label">Franja</span><div class="chips">${SLOTS_INST.map((t) => `<button class="chip" type="button" aria-pressed="${RS.slot === t.id}" data-action="rs-slot" data-v="${t.id}">${t.chip}</button>`).join("")}</div></div>
+     <button class="btn btn--primary btn--block btn--lg" type="button" data-action="rs-ok" id="rsOk" disabled>Guardar la nueva fecha</button>`;
+}
+const isoOf = (d) => `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
+function openResched() {
+  const I = DATA.install; if (!I) return;
+  RS.day = I.day; RS.slot = I.slot;
+  if (sheet.classList.contains("is-open")) swapSheet(reschedHTML()); else openSheet(reschedHTML());
+}
+function rsRefresh() {
+  const I = DATA.install, changed = RS.day !== I.day || RS.slot !== I.slot;
+  $("#rsOk").disabled = !(RS.day && RS.slot && changed);
+}
+function saveResched() {
+  const I = DATA.install; I.day = RS.day; I.slot = RS.slot;
+  renderHero(true); renderNewClient();
+  const txt = `${cap(fechaLarga(isoDate(I.day)))}, ${slotDe(I.slot).frase}.`;
+  DATA.notifs.unshift({ id: "resched", icon: "calendar", title: "Cambiamos tu instalación", text: txt + " Te escribimos un día antes.", when: "Hoy", time: hora(new Date()), unread: false });
+  renderNotifs();
+  swapSheet(`<div class="center-col"><span class="done-badge"><svg class="i check-draw" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12l5 5L20 6"/></svg></span>
+    <h2 class="h3" id="sheetTitle">Listo, te esperamos ese día</h2><p class="label muted">${txt}</p></div>
+    <button class="btn btn--primary btn--block btn--lg" type="button" data-action="close-sheet">Listo</button>`);
+}
+
+/* ============ 5. Técnico en camino ============ */
+const TECH = { on: false, phase: 0, eta: 15, step: 0, timers: [], name: "Andrés Molina", ini: "AM" };
+const techTitle = () => ["Andrés va saliendo hacia tu casa", `Llega en ${TECH.eta} ${TECH.eta === 1 ? "minuto" : "minutos"}`, "Andrés llegó a tu edificio", "Instalando tu Orb"][TECH.phase];
+function techCardHTML() {
+  if (!TECH.on) return "";
+  const I = DATA.install || {}, prog = TECH.phase === 0 ? 0.04 : TECH.phase === 1 ? (15 - TECH.eta) / 15 : 1;
+  const status = TECH.phase <= 1 ? `<span class="pill pill--neutral">${ic("van")}En camino</span>` : TECH.phase === 2 ? `<span class="pill">${ic("check")}Llegó</span>` : `<span class="pill pill--neutral">${ic("orb")}Instalando</span>`;
+  const mid = TECH.phase <= 1
+    ? `<div class="route" aria-hidden="true"><span class="route__line"><i style="width:${(prog * 100).toFixed(1)}%"></i></span><span class="route__van" style="left:${(prog * 100).toFixed(1)}%">${ic("van")}</span></div>
+       <div class="route__ends"><span class="label muted">Bodega Somos</span><span class="label muted">Tu casa</span></div>`
+    : TECH.phase === 2
+      ? `<p class="body-s muted">Avísale a portería que suba al apto ${I.apt || "504"}. Trae tu Orb y su credencial de Somos.</p>`
+      : `<div class="steps">${["Conectamos la fibra", "Encendemos tu Orb", "Medimos la velocidad contigo"].map((t, i) => `<div class="step ${i < TECH.step ? "is-ok" : i === TECH.step ? "is-run" : "is-wait"}"><span class="step__mark">${i < TECH.step ? ic("check") : ""}</span><span class="step__txt body-s">${t}</span></div>`).join("")}</div>`;
+  return `<div class="card tech" id="techCard" aria-live="polite">
+    <div class="tech__who"><span class="tech__av" aria-hidden="true">${TECH.ini}</span><div class="list-item__main"><span class="body">${TECH.name}</span><span class="label muted">Técnico de Somos</span></div>${status}</div>
+    <p class="h3">${techTitle()}</p>
+    ${mid}
+    <div class="btn-row"><button class="btn btn--secondary" type="button" data-action="tech-call">${ic("phone")}Llamar</button><button class="btn btn--secondary" type="button" data-action="tech-msg">${ic("bubble")}Escribir</button></div>
+  </div>`;
+}
+function heroTech() {
+  const pill = $("#heroPill"), sub = $("#heroSub");
+  $("#heroLabel").textContent = "Hoy es tu instalación";
+  $("#heroLink").innerHTML = "Ver detalle " + ic("arrowRight");
+  if (TECH.phase <= 1) {
+    $("#heroNum").textContent = TECH.phase === 0 ? 15 : TECH.eta;
+    $("#heroUnit").textContent = "minutos para que llegue";
+    pill.className = "pill pill--neutral"; pill.innerHTML = ic("van") + "En camino";
+  } else {
+    $("#heroNum").textContent = "Hoy";
+    $("#heroUnit").textContent = TECH.phase === 2 ? "Andrés ya llegó" : "instalando tu Orb";
+    pill.className = "pill"; pill.innerHTML = ic("check") + (TECH.phase === 2 ? "Llegó" : "Instalando");
+  }
+  sub.innerHTML = `<span>${TECH.name}</span><span>${slotDe(DATA.install.slot).chip}</span>`;
+}
+function renderTech() {
+  const box = $("#techCard");
+  if (box) box.outerHTML = techCardHTML(); else renderNewClient();
+  if (DATA.client === "new") heroTech();
+}
+function startTechDay() {
+  if (DATA.client !== "new" || !DATA.install) { toast("Primero haz el flujo Me mudo", "info"); return; }
+  closeSheet(); closePage(true);
+  TECH.timers.forEach(clearTimeout); TECH.timers = [];
+  Object.assign(TECH, { on: true, phase: 0, eta: 15, step: 0 });
+  DATA.install.day = isoOf(NOW);
+  goTab(0); scrollScreen(0, 0);
+  renderNewClient(); heroTech();
+  const at = (ms, fn) => TECH.timers.push(setTimeout(fn, REDUCED ? Math.min(ms, 300) : ms));
+  notify("instalacion", { title: "Andrés va en camino", text: "Llega en unos 15 minutos con tu Orb.", tone: "success", icon: "van" });
+  let t = 1600;
+  at(t, () => { TECH.phase = 1; renderTech(); });
+  for (let m = 14; m >= 1; m--) { t += 520; at(t, () => { TECH.eta = m; renderTech(); }); }
+  t += 600;
+  at(t, () => { TECH.phase = 2; renderTech(); notify("instalacion", { title: "Andrés llegó a tu edificio", text: `Avísale a portería que suba al apto ${DATA.install.apt || "504"}.`, tone: "success", icon: "check" }); });
+  t += 2600;
+  at(t, () => { TECH.phase = 3; TECH.step = 0; renderTech(); const t0 = performance.now(); heroLamp.mode = "fn"; heroLamp.fn = (now) => 0.04 + Math.min(0.16, (now - t0) / 30000); });
+  [1500, 3000, 4500].forEach((d, i) => at(t + d, () => { TECH.step = i + 1; renderTech(); }));
+  at(t + 5100, () => { TECH.on = false; renderNewClient(); simulateInstall(); });
+}
+
+/* ============ 6. Primer día con internet ============ */
+const FD = { step: 0, name: "", pass: "", saving: false };
+const PALABRAS = ["luz", "nido", "casa", "sol", "fibra", "orb", "cafe", "luna", "rio", "pino", "faro", "mango"];
+function newPass() {
+  const r = (n) => Math.floor(Math.random() * n), a = r(PALABRAS.length), b = (a + 1 + r(PALABRAS.length - 1)) % PALABRAS.length;
+  return `${PALABRAS[a]}-${100 + r(900)}-${PALABRAS[b]}`;
+}
+function promiseRows(fresh) {
+  const I = DATA.install;
+  const fecha = I ? cap(fechaLarga(isoDate(I.day))) + ", " + slotDe(I.slot).frase : "Febrero de 2026, el día que agendaste";
+  const plan = I ? PLANES[I.plan] : PLANES.essential, price = I ? I.price : 63000;
+  const rows = [
+    ["Velocidad", `Hasta ${plan.name === "Pro" ? "2.0 GBPS" : "900 MBPS"} por cable`, `${DATA.down} MBPS medidos ${fresh ? "hoy" : "esta semana"}`],
+    ["Fecha de instalación", fecha, fresh ? `Llegamos ese día a las ${I && I.slot === "pm" ? "2:15 p.m." : "9:40 a.m."}` : "Llegamos ese día"],
+    ["Precio", `30 días gratis, luego ${money(price)} al mes`, "Así quedó en tu factura"],
+    ["Permanencia", "Sin cláusulas", "Así quedó en tu contrato"]
+  ];
+  return `<div class="promise">${rows.map(([k, a, b]) => `<div class="promise__row"><span class="promise__ok">${ic("check")}</span><div class="promise__main"><span class="label label--caps muted">${k}</span><span class="body-s">${a}</span><span class="label promise__got">${b}</span></div></div>`).join("")}</div>
+    <p class="label muted">Si algo no se cumple, te lo decimos nosotros primero y te lo compensamos en la factura.</p>`;
+}
+function openPromise() { openSheet(sheetHead("Lo que te prometimos", "4 de 4 cumplidas") + promiseRows(false)); }
+function fdStepHTML() {
+  const I = DATA.install || {}, who = DATA.userName || "Samu";
+  if (FD.step === 0) {
+    const sug = [`Casa de ${who}`, "El nido", `Apto ${I.apt || "504"}`, "La base"];
+    return {
+      body: `<div class="mv-step step-in">
+        <div class="mv-lead"><h2 class="h2">Ponle nombre a tu Wi‑Fi</h2><p class="body-s muted">Es tu primera casa. Que tu red se llame como tú quieras.</p></div>
+        <div class="field"><label for="fdName">Nombre de la red</label><div class="input-wrap"><input class="input" id="fdName" name="fdName" maxlength="32" autocomplete="off" value="${esc(FD.name)}" style="padding-right:18px"></div>
+          <div class="chips">${sug.map((n) => `<button class="chip" type="button" data-action="fd-suggest" data-v="${n}">${n}</button>`).join("")}</div></div>
+        <div class="field"><label for="fdPass">Clave</label><div class="input-wrap"><input class="input num" id="fdPass" name="fdPass" autocomplete="off" value="${esc(FD.pass)}"><button class="icon-btn" type="button" data-action="fd-newpass" aria-label="Sugerir otra clave">${ic("refresh")}</button></div>
+          <p class="label muted">Te sugerimos una fácil de dictar y difícil de adivinar. Puedes cambiarla.</p></div>
+      </div>`,
+      foot: `<button class="btn btn--primary btn--lg btn--block" type="button" data-action="fd-next" id="fdCta">Guardar y seguir</button>`
+    };
+  }
+  if (FD.step === 1) {
+    const msg = encodeURIComponent(`Wi‑Fi de la casa: ${DATA.ssid}\nClave: ${DATA.pass}`);
+    return {
+      body: `<div class="mv-step step-in">
+        <div class="mv-lead"><h2 class="h2">Compártelo con tu roomie</h2><p class="body-s muted">Que escanee el código con la cámara y queda conectado. Nadie tiene que dictar la clave.</p></div>
+        <div class="qr-card">${QR.svg(wifiString())}<span class="label" style="font-weight:700">${esc(DATA.ssid)}</span></div>
+        <div class="btn-row"><button class="btn btn--secondary" type="button" data-action="copy" data-copy="${esc(DATA.pass)}" data-ok="Clave copiada">${ic("copy")}Copiar clave</button><a class="btn btn--secondary" href="https://wa.me/?text=${msg}" target="_blank" rel="noopener">${ic("bubble")}WhatsApp</a></div>
+        <p class="label muted">Para visitas es mejor la red de invitados: la activas en la pestaña Red y se apaga sola en 24 horas.</p>
+      </div>`,
+      foot: `<button class="btn btn--primary btn--lg btn--block" type="button" data-action="fd-next">Seguir</button>`
+    };
+  }
+  return {
+    body: `<div class="mv-step step-in">
+      <div class="mv-lead"><h2 class="h2">Lo que te prometimos</h2><p class="body-s muted">Lo revisamos contigo el primer día, para que nada quede en letra pequeña.</p></div>
+      ${promiseRows(true)}
+    </div>`,
+    foot: `<button class="btn btn--primary btn--lg btn--block" type="button" data-action="fd-done">Empezar a usar Somos</button>`
+  };
+}
+function renderFirst() {
+  const { body, foot } = fdStepHTML();
+  $("#fdBody").innerHTML = body; $("#fdFoot").innerHTML = foot; $("#fdBody").scrollTop = 0;
+  $("#fdStepLabel").textContent = `Paso ${FD.step + 1} de 3`;
+  $("#fdProg").style.width = ((FD.step + 1) / 3) * 100 + "%";
+  if (FD.step === 0) {
+    const n = $("#fdName"), p = $("#fdPass");
+    const check = () => { FD.name = n.value; FD.pass = p.value; $("#fdCta").disabled = !(n.value.trim() && p.value.length >= 8 && /[a-z]/i.test(p.value) && /\d/.test(p.value)); };
+    n.addEventListener("input", check); p.addEventListener("input", check); check();
+  }
+}
+function openFirstDay() {
+  if (DATA.client !== "active") { DATA.client = "active"; applyClientState(); }
+  hideWelcome(); closeMove(); closeSheet(); closePage(true);
+  Object.assign(FD, { step: 0, name: DATA.ssid.replace(/_5G$/, ""), pass: newPass(), saving: false });
+  renderFirst();
+  $("#pageFirst").classList.add("is-open");
+}
+function closeFirst() { $("#pageFirst").classList.remove("is-open"); }
+function fdNext() {
+  if (FD.step === 0) {
+    if (FD.saving) return;
+    FD.saving = true;
+    $("#fdBody").innerHTML = `<div class="center-col"><svg class="spinner" viewBox="0 0 56 56" aria-hidden="true"><circle cx="28" cy="28" r="24"/></svg><p class="h3">Aplicando en tu Orb…</p><p class="label muted">Toma unos segundos.</p></div>`;
+    $("#fdFoot").innerHTML = "";
+    setTimeout(() => {
+      DATA.ssid = FD.name.trim().slice(0, 32); DATA.pass = FD.pass;
+      ["#ssidLabel", "#homeSsid"].forEach((sel) => ($(sel).textContent = DATA.ssid));
+      maskPass(); FD.saving = false; FD.step = 1; renderFirst();
+    }, REDUCED ? 200 : 1300);
+    return;
+  }
+  FD.step++; renderFirst();
+}
+
+/* ============ 7. Primera factura explicada ============ */
+/* Propuesta: 30 días gratis desde la instalación; luego se cobra por mes calendario el día 1, con los días del primer mes. */
+function firstBill(I) {
+  const d = isoDate(I.day), freeEnd = addDays(d, 29), paidStart = addDays(d, 30);
+  const monthEnd = new Date(paidStart.getFullYear(), paidStart.getMonth() + 1, 0), dim = monthEnd.getDate();
+  const prorDays = dim - paidStart.getDate() + 1, prorAmt = Math.round((I.price * prorDays) / dim / 50) * 50;
+  const firstBill = new Date(monthEnd.getFullYear(), monthEnd.getMonth() + 1, 1), second = new Date(firstBill.getFullYear(), firstBill.getMonth() + 1, 1);
+  return { d, freeEnd, paidStart, monthEnd, dim, prorDays, prorAmt, firstBill, second };
+}
+function billTimelineHTML(I) {
+  const b = firstBill(I), half = (n) => money(Math.round(n / 2 / 50) * 50);
+  const items = [
+    [fechaCorta(b.d), "Instalamos tu Orb", "$0"],
+    [`${fechaCorta(b.d)} al ${fechaCorta(b.freeEnd)}`, "30 días gratis", "$0"],
+    [fechaCorta(b.firstBill), `Primera factura: del ${b.paidStart.getDate()} al ${b.monthEnd.getDate()} de ${MESES[b.monthEnd.getMonth()]}, ${b.prorDays} días`, money(b.prorAmt)],
+    [`Desde el ${fechaCorta(b.second)}`, "Cada mes, el mes completo", money(I.price)]
+  ];
+  return `<span class="label label--caps">Tu primera factura</span>
+    <p class="invoice__amount num">${money(b.prorAmt)}</p>
+    <p class="body-s muted">Llega el ${fechaLarga(b.firstBill)}. Es más baja porque solo cobra los ${b.prorDays} días que usas después de los 30 gratis.</p>
+    <ol class="timeline">${items.map(([w, t, a], i) => `<li class="timeline__item ${i === 2 ? "is-key" : ""}"><span class="timeline__dot"></span><div class="timeline__main"><span class="label muted">${w}</span><span class="body-s">${t}</span></div><span class="label timeline__amt">${a}</span></li>`).join("")}</ol>
+    <p class="label muted">Así se calcula: ${money(I.price)} ÷ ${b.dim} días × ${b.prorDays} días. Vence 5 días después de llegar.</p>
+    ${I.split ? `<div class="state">${ic("users")}<div class="state__body"><p class="state__title">La dividen con tu roomie</p><p class="state__text">Cada uno paga ${half(b.prorAmt)} la primera vez y ${half(I.price)} desde el ${fechaCorta(b.second)}</p></div></div>` : ""}
+    <dl class="rows"><div><dt>Plan</dt><dd>${PLANES[I.plan].name}</dd></div><div><dt>Permanencia</dt><dd>Sin cláusulas</dd></div><div><dt>Estudio de crédito</dt><dd>No hizo falta</dd></div></dl>`;
+}
+
+/* ============ 8. Qué avisos recibir ============ */
+const PREFS = [
+  ["fallas", "Fallas en tu zona", "Te avisamos antes de que llames y cuando quede"],
+  ["dispositivos", "Dispositivos nuevos", "Si alguien entra a tu red sin que lo sepas"],
+  ["factura", "Factura y pagos", "Tres días antes de que venza"],
+  ["instalacion", "Instalación y visitas", "Cuando el técnico va en camino"],
+  ["promos", "Beneficios y promociones", "Máximo uno al mes"]
+];
+function quietNow() { const h = new Date().getHours(); return DATA.prefs.quiet && (h >= 22 || h < 7); }
+function notify(kind, opts) {
+  if (!DATA.prefs[kind]) { toast("No te enviamos el aviso: lo apagaste. Queda en Notificaciones", "bell"); return false; }
+  if (quietNow() && kind !== "fallas" && kind !== "instalacion") { toast("Horario de silencio: queda en Notificaciones", "moon"); return false; }
+  push(opts); return true;
+}
+function openPrefs() {
+  const sw = (k) => `<button class="switch" type="button" role="switch" aria-checked="${!!DATA.prefs[k]}" data-action="pref" data-k="${k}" aria-label="${(PREFS.find((p) => p[0] === k) || [0, "Horario de silencio"])[1]}"></button>`;
+  openSheet(sheetHead("Qué avisos recibir", "Tú decides cuáles te llegan") +
+    `<div class="pref-list">${PREFS.map(([k, t, d]) => `<div class="setting"><div class="setting__text"><span class="body">${t}</span><span class="label muted">${d}</span></div>${sw(k)}</div>`).join("")}</div>
+     <div class="card card--flat" style="gap:12px">
+       <div class="setting"><div class="card__row" style="gap:12px">${ic("moon")}<div class="setting__text"><span class="body">Horario de silencio</span><span class="label muted">De 10:00 p.m. a 7:00 a.m.</span></div></div>${sw("quiet")}</div>
+       <p class="label muted">En ese horario no suena nada. Las fallas en tu zona y el día de tu instalación te llegan igual.</p>
+     </div>
+     <button class="btn btn--primary btn--block" type="button" data-action="close-sheet">Listo</button>`);
+}
+
+/* ============ 9. Prueba real desde el celular ============ */
+const CF = "https://speed.cloudflare.com/";
+let phoneTesting = false;
+const median = (a) => { const s = [...a].sort((x, y) => x - y); return s[Math.floor(s.length / 2)]; };
+async function measurePing() {
+  const lat = [];
+  for (let i = 0; i < 8; i++) {
+    const t0 = performance.now();
+    const r = await fetch(`${CF}__down?bytes=0&r=${Math.random()}`, { cache: "no-store" });
+    await r.arrayBuffer();
+    lat.push(performance.now() - t0);
+    $("#gNum").textContent = Math.round(Math.min(...lat));
+  }
+  lat.shift(); // la primera incluye abrir la conexión
+  return Math.max(1, Math.round(median(lat)));
+}
+async function measureDown(onRate) {
+  const ctrl = new AbortController(), T = 6500, CAP = 40e6, t0 = performance.now();
+  let bytes = 0, tWarm = null, bWarm = 0;
+  const rate = () => { const t = performance.now(); return tWarm !== null && t - tWarm > 250 ? ((bytes - bWarm) * 8) / ((t - tWarm) / 1000) / 1e6 : (bytes * 8) / ((t - t0) / 1000) / 1e6; };
+  const stream = async () => {
+    const r = await fetch(`${CF}__down?bytes=25000000&r=${Math.random()}`, { cache: "no-store", signal: ctrl.signal });
+    if (!r.ok || !r.body) throw new Error("descarga");
+    const rd = r.body.getReader();
+    for (;;) {
+      const { done, value } = await rd.read();
+      if (done) break;
+      bytes += value.length;
+      const t = performance.now() - t0;
+      if (tWarm === null && t > 1000) { tWarm = performance.now(); bWarm = bytes; }
+      onRate(rate());
+      if (t > T || bytes > CAP) { ctrl.abort(); break; }
+    }
+  };
+  const res = await Promise.allSettled([stream(), stream()]);
+  if (!bytes && res.every((x) => x.status === "rejected")) throw new Error("descarga");
+  return rate();
+}
+async function measureUp(onRate) {
+  const T = 5000, CAP = 20e6, t0 = performance.now();
+  let bytes = 0;
+  const worker = async () => {
+    let size = 250e3;
+    while (performance.now() - t0 < T && bytes < CAP) {
+      const r = await fetch(`${CF}__up`, { method: "POST", body: new Uint8Array(size), cache: "no-store" });
+      if (!r.ok) throw new Error("subida");
+      bytes += size; size = Math.min(4e6, size * 2);
+      onRate((bytes * 8) / ((performance.now() - t0) / 1000) / 1e6);
+    }
+  };
+  await Promise.all([worker(), worker()]);
+  return (bytes * 8) / ((performance.now() - t0) / 1000) / 1e6;
+}
+async function runPhoneTest() {
+  if (phoneTesting || testing) return;
+  const btn = $("#runPhone"), orbBtn = $("#runTest"), num = $("#gNum"), unit = $("#gUnit"), capEl = $("#gCap"), msg = $("#speedMsg");
+  if (isOffline()) { msg.innerHTML = speedError(true); return; }
+  phoneTesting = true; btn.disabled = true; orbBtn.disabled = true; btn.lastChild.textContent = "Midiendo…";
+  msg.innerHTML = ""; capEl.textContent = "Midiendo desde este celular";
+  ["rDown", "rUp", "rPing"].forEach((id) => ($("#" + id).textContent = "—"));
+  const ORDER = ["ping", "down", "up"];
+  const setPhase = (p) => $$(".phase").forEach((el) => { const i = ORDER.indexOf(el.dataset.ph), j = p ? ORDER.indexOf(p) : ORDER.length; el.classList.toggle("is-on", i === j); el.classList.toggle("is-done", i < j); });
+  let last = 0;
+  const live = (v) => { const now = performance.now(); if (now - last < 90) return; last = now; num.textContent = Math.round(v); setGauge(v); };
+  try {
+    setPhase("ping"); unit.textContent = "ms de latencia"; setGauge(0);
+    const ping = await measurePing(); $("#rPing").textContent = ping;
+    setPhase("down"); unit.textContent = "MBPS de bajada";
+    const down = Math.round(await measureDown(live)); $("#rDown").textContent = down;
+    setPhase("up"); unit.textContent = "MBPS de subida"; last = 0;
+    const up = Math.round(await measureUp(live)); $("#rUp").textContent = up;
+    setPhase(""); num.textContent = down; unit.textContent = "MBPS de bajada"; setGauge(down);
+    capEl.textContent = "Desde este celular · " + hora(new Date());
+    msg.innerHTML = phoneResult(down);
+  } catch (e) {
+    setPhase(""); num.textContent = "—"; unit.textContent = "Sin resultado"; setGauge(0); capEl.textContent = "Desde este celular";
+    msg.innerHTML = speedError(isOffline());
+  }
+  phoneTesting = false; btn.disabled = false; orbBtn.disabled = false; btn.lastChild.textContent = "Medir otra vez";
+}
+function phoneResult(down) {
+  const vs = `El Orb mide ${DATA.down} MBPS en la entrada de tu casa. La diferencia es normal: por Wi‑Fi influyen la distancia, las paredes y el celular.`;
+  if (down < 50) return `<div class="state state--warning step-in">${ic("alert")}<div class="state__body"><p class="state__title">A este celular le llega poco: ${down} MBPS</p><p class="state__text">Acércate al Orb o conéctate a la red de 5 GHz. Si estás con datos móviles, esto mide tu plan de celular, no tu internet de Somos.</p><button class="link-btn" type="button" data-action="diag-from-alert">Revisar mi conexión${ic("arrowRight", "i--16")}</button></div></div>`;
+  return `<div class="state step-in">${ic("check")}<div class="state__body"><p class="state__title">A este celular le llegan ${down} MBPS</p><p class="state__text">Alcanza para ver 4K en ${Math.floor(down / 15)} pantallas al mismo tiempo. ${vs}</p></div></div>`;
+}
+function speedError(offline) {
+  return `<div class="state state--danger step-in">${ic(offline ? "wifiOff" : "alert")}<div class="state__body"><p class="state__title">${offline ? "Sin conexión" : "No pudimos medir"}</p><p class="state__text">${offline ? "Este celular no tiene internet ahora. Revisa que estés conectado a tu Wi‑Fi y vuelve a intentarlo." : "La prueba se cortó antes de terminar. Puede ser la señal en este momento."}</p><button class="link-btn" type="button" data-action="phonetest">Intentar otra vez${ic("arrowRight", "i--16")}</button></div></div>`;
+}
+
+/* ============ 11. Sin conexión y pago rechazado ============ */
+const isOffline = () => STATE.forceOffline || navigator.onLine === false;
+function renderOffline() {
+  const off = isOffline();
+  $("#offline").hidden = !off;
+  app.classList.toggle("is-offline", off);
+}
+function toggleOffline() {
+  STATE.forceOffline = !STATE.forceOffline;
+  renderOffline(); refreshDemoLabels();
+  toast(STATE.forceOffline ? "Simulamos que no hay conexión" : "Volvió la conexión", STATE.forceOffline ? "wifiOff" : "wifi");
+}
+function togglePayFail() {
+  STATE.payFail = !STATE.payFail; refreshDemoLabels();
+  toast(STATE.payFail ? "El siguiente pago va a fallar. Pruébalo en Pagos" : "Los pagos vuelven a funcionar", "info");
+}
+function refreshDemoLabels() {
+  $$("[data-offline-label]").forEach((el) => (el.textContent = STATE.forceOffline ? "Volver a conectar" : "Simular sin conexión"));
+  $$("[data-payfail-label]").forEach((el) => (el.textContent = STATE.payFail ? "Quitar pago rechazado" : "Simular pago rechazado"));
+}
+function demoToggles() {
+  return `<button class="btn btn--secondary" type="button" data-nav="offline"><span data-offline-label>${STATE.forceOffline ? "Volver a conectar" : "Simular sin conexión"}</span></button><button class="btn btn--secondary" type="button" data-nav="payfail"><span data-payfail-label>${STATE.payFail ? "Quitar pago rechazado" : "Simular pago rechazado"}</span></button>`;
+}
+function payFailed(m) {
+  swapSheet(`<div class="center-col"><span class="done-badge done-badge--danger">${ic("close")}</span>
+      <h2 class="h3" id="sheetTitle">${m.name} no aprobó el pago</h2><p class="label muted">No te cobramos nada. Pasa cuando la notificación vence o no hay saldo suficiente.</p></div>
+    <div class="state state--warning">${ic("info")}<div class="state__body"><p class="state__title">Tu internet sigue igual</p><p class="state__text">Tu factura vence el ${FACT.vence}. Tienes tiempo de pagar sin recargos.</p></div></div>
+    <div class="btn-row"><button class="btn btn--secondary" type="button" data-action="pay-other">Otro medio</button><button class="btn btn--primary" type="button" data-action="pay-retry">Intentar otra vez</button></div>`);
+}
+window.addEventListener("online", renderOffline);
+window.addEventListener("offline", renderOffline);
+/* Sin conexión, lo que necesita internet avisa antes de intentarlo */
+document.addEventListener("click", (e) => {
+  if (!isOffline()) return;
+  const el = e.target.closest('[data-nav="pay"], [data-action="speedtest"], [data-action="diag"], [data-action="pay-retry"], [data-action="v-ok"], [data-action="pw-save"], [data-action="fd-next"], [data-action="rs-ok"]');
+  if (!el) return;
+  e.preventDefault(); e.stopPropagation();
+  toast("Necesitas conexión para esto", "wifiOff");
+}, true);
+$("#composer").addEventListener("submit", (e) => {
+  if (!isOffline()) return;
+  e.preventDefault(); e.stopImmediatePropagation();
+  toast("Sin conexión: tu mensaje sale cuando vuelva", "wifiOff");
+}, true);
+
+/* ============ Eventos ============ */
+document.addEventListener("click", (e) => {
+  const a = e.target.closest("[data-action]");
+  if (!a) return;
+  const v = a.dataset.v;
+  switch (a.dataset.action) {
+    case "save-place": toggleSaved(a.dataset.id); break;
+    case "open-compare": openCompare(); break;
+    case "cmp-pick": pickCompared(a.dataset.id); break;
+    case "needs-toggle": MV.needs.open = !MV.needs.open; refreshNeeds(); break;
+    case "needs-people": MV.needs.people = +v; refreshNeeds(); break;
+    case "needs-act": { const s = MV.needs.acts; MV.needs.acts = s.includes(v) ? s.filter((x) => x !== v) : [...s, v]; refreshNeeds(); break; }
+    case "needs-pick": { const b = $(`[data-action="mv-plan"][data-v="${v}"]`); if (b) { b.click(); b.scrollIntoView({ behavior: REDUCED ? "auto" : "smooth", block: "center" }); } break; }
+    case "resched": openResched(); break;
+    case "rs-day": RS.day = v; $$("[data-action=rs-day]").forEach((b) => b.setAttribute("aria-pressed", String(b === a))); rsRefresh(); break;
+    case "rs-slot": RS.slot = v; $$("[data-action=rs-slot]").forEach((b) => b.setAttribute("aria-pressed", String(b === a))); rsRefresh(); break;
+    case "rs-ok": saveResched(); break;
+    case "tech-call": toast("Llamada simulada a Andrés", "phone"); break;
+    case "tech-msg": toast("Le escribimos a Andrés por WhatsApp", "bubble"); break;
+    case "fd-suggest": FD.name = v; $("#fdName").value = v; $("#fdName").dispatchEvent(new Event("input")); break;
+    case "fd-newpass": FD.pass = newPass(); $("#fdPass").value = FD.pass; $("#fdPass").dispatchEvent(new Event("input")); break;
+    case "fd-next": if (!a.disabled) fdNext(); break;
+    case "fd-back": if (FD.step > 0 && !FD.saving) { FD.step--; renderFirst(); } else if (!FD.saving) closeFirst(); break;
+    case "fd-done": closeFirst(); goTab(0); scrollScreen(0, 0); toast(`Listo. Tu red ${DATA.ssid} ya está activa`); break;
+    case "open-promise": openPromise(); break;
+    case "pref": { const k = a.dataset.k; DATA.prefs[k] = !DATA.prefs[k]; a.setAttribute("aria-checked", String(DATA.prefs[k])); break; }
+    case "phonetest": runPhoneTest(); break;
+    case "pay-retry": processPayment(); break;
+    case "pay-other": swapSheet(payStepHTML(), mountSlider); break;
+  }
+});
+
+renderOffline();
 init();
 
 </script>
