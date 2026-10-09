@@ -39,7 +39,24 @@ Agrega estas terminaciones al link:
 | `…/#invitado` | El link que te manda un amigo: la bienvenida dice quién te invitó |
 | `…/#cliente` | Alguien que ya tiene Somos: entra directo al inicio |
 
-En la pestaña **Ayuda** (o tocando la inicial arriba a la derecha) está el **modo demostración**: simular una falla en la red, simular la instalación, volver a la bienvenida y ver la apertura otra vez.
+En la pestaña **Ayuda** (o tocando la inicial arriba a la derecha) está el **modo demostración**: simular una falla en la red, el día de la instalación con el técnico en camino, el primer día, quedarse sin conexión, un pago rechazado, volver a la bienvenida y ver la apertura otra vez.
+
+## Lo que se cuidó en la experiencia (v3, oct. 2026)
+
+| Momento | Mejora |
+|---|---|
+| Antes de contratar | **Comparar apartamentos:** guarda varios edificios y compáralos (cobertura por torre, vecinos con Somos, velocidad medida, precio). |
+| | **Estrato según la dirección:** el precio sale con el estrato del edificio y se puede corregir. Si no hay dato, la app dice dónde encontrarlo. |
+| | **Megas en la vida diaria:** "¿Cuánto internet necesitas?" recomienda el plan más barato que alcanza. Referencia: Netflix pide 15 MBPS para 4K. |
+| Antes de la instalación | **Cambiar la fecha** en dos toques, sin costo hasta un día antes. |
+| | **Técnico en camino:** nombre, minutos para llegar, aviso al llegar y pasos de la instalación. |
+| El primer día | **Bienvenida en tres pasos:** nombre del Wi‑Fi, compartirlo con el roomie por QR y "Lo que te prometimos" (promesa contra lo medido). |
+| | **Primera factura explicada:** línea de tiempo con los 30 días gratis y el cobro de los días del primer mes. |
+| El día a día | **Qué avisos recibir:** por tipo y con horario de silencio. |
+| | **Prueba real desde el celular** en la pestaña Red, con los servidores de Cloudflare (hasta unos 60 MB). El número grande sigue siendo la medición del Orb. |
+| Siempre | **Textos más grandes** (mínimo 12 px en pestañas y 14 px en etiquetas) y estados de **sin conexión** y **pago rechazado**. |
+
+Cambiar la fecha sin costo, el prorrateo de la primera factura y la compensación si no se cumple una promesa son propuestas de este prototipo, no políticas de Somos.
 
 ## Cómo mejorarla
 
@@ -52,6 +69,7 @@ Todo el código vive en `src/`:
 | `src/core.js` | Utilidades, la lámpara Orb, la apertura en acordeón, hojas, avisos y el QR |
 | `src/screens.js` | Inicio, Red, Pagos, Para ti, Ayuda, chat y notificaciones |
 | `src/mudanza.js` | Bienvenida, flujo Me mudo y estado de cliente nuevo |
+| `src/experiencia.js` | Mejoras v3: comparar, megas, cambiar fecha, técnico, primer día, factura, avisos, prueba real y estados de error. Arranca la app |
 
 Después de editar, arma la app y sube los cambios:
 
