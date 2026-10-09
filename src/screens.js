@@ -98,6 +98,11 @@ function go(t) {
   }
   if (t === "mudanza") { showWelcome(true); openMove(true); return; }
   if (t === "install") { simulateInstall(); return; }
+  if (t === "tech") { startTechDay(); return; }
+  if (t === "offline") { toggleOffline(); return; }
+  if (t === "payfail") { togglePayFail(); return; }
+  if (t === "firstday") { openFirstDay(); return; }
+  if (t === "prefs") { openPrefs(); return; }
   if (t !== "splash") {
     if (!DATA.client) { DATA.client = "active"; applyClientState(); }
     hideWelcome(); closeMove();
@@ -144,6 +149,7 @@ function heroTarget() { if (DATA.client === "new") return installDays(); return 
 function renderHero(animate = true) {
   const pill = $("#heroPill"), sub = $("#heroSub"), hero = $("#hero");
   hero.classList.toggle("is-off", DATA.client === "new");
+  if (DATA.client === "new" && DATA.install && TECH.on) { heroTech(); return; }
   if (DATA.client === "new" && DATA.install) {
     const d = isoDate(DATA.install.day), n = installDays();
     pill.className = "pill pill--neutral"; pill.innerHTML = "Por instalar";
@@ -227,7 +233,7 @@ function setGauge(val) {
 }
 let testing = false;
 function runSpeedTest() {
-  if (testing) return;
+  if (testing || phoneTesting) return;
   testing = true;
   const btn = $("#runTest"); btn.disabled = true; btn.textContent = "Midiendo…";
   $("#speedMsg").innerHTML = "";
@@ -237,6 +243,7 @@ function runSpeedTest() {
   const T = { ping: u ? 38 : 3, down: Math.round(u ? 188 + Math.random() * 40 : 869 + Math.random() * 10), up: Math.round(u ? 170 + Math.random() * 36 : 859 + Math.random() * 10) };
   const num = $("#gNum"), unit = $("#gUnit"), cap = $("#gCap");
   cap.textContent = "Midiendo desde tu Orb";
+  $("#runPhone").disabled = true;
   const t0 = performance.now(), D = REDUCED ? 0.25 : 1;
   let phase = "";
   const setPhase = (p) => { if (phase === p) return; $$(".phase").forEach((el) => { if (el.dataset.ph === phase) { el.classList.remove("is-on"); el.classList.add("is-done"); } if (el.dataset.ph === p) el.classList.add("is-on"); }); phase = p; };
@@ -262,8 +269,8 @@ function runSpeedTest() {
       if (!u) { DATA.down = T.down; DATA.up = T.up; DATA.ping = T.ping; renderHero(); }
       $("#speedMsg").innerHTML = u
         ? `<div class="state state--warning step-in">${ic("alert")}<div class="state__body"><p class="state__title">Tu velocidad está más baja</p><p class="state__text">Es por la intermitencia en tu zona. Ya estamos trabajando y te avisamos cuando quede.</p></div></div>`
-        : `<div class="state step-in">${ic("check")}<div class="state__body"><p class="state__title">Recibes lo que contrataste</p><p class="state__text">Tu plan Essential es de hasta 900 MBPS por cable, y la subida es casi igual a la bajada.</p></div></div>`;
-      btn.disabled = false; btn.textContent = "Medir de nuevo"; testing = false;
+        : `<div class="state step-in">${ic("check")}<div class="state__body"><p class="state__title">Recibes lo que contrataste</p><p class="state__text">Tu plan Essential es de hasta 900 MBPS por cable, y la subida es casi igual a la bajada. ${enLaVida(T.down)}</p></div></div>`;
+      btn.disabled = false; btn.textContent = "Medir de nuevo"; testing = false; $("#runPhone").disabled = false;
       return;
     }
     requestAnimationFrame(f);
@@ -468,6 +475,7 @@ function processPayment() {
   const m = METHODS.find((x) => x.id === payMethod);
   swapSheet(`<div class="center-col"><svg class="spinner" viewBox="0 0 56 56" aria-hidden="true"><circle cx="28" cy="28" r="24"/></svg><p class="h3">Procesando tu pago con ${m.name}…</p><p class="label muted">No cierres la app.</p></div>`);
   setTimeout(() => {
+    if (STATE.payFail) { STATE.payFail = false; refreshDemoLabels(); payFailed(m); return; }
     DATA.paid = true;
     renderInvoice(); renderHistory(); renderHomeBill();
     DATA.notifs.unshift({ id: "pay-oct", tone: "success", icon: "check", title: `Recibimos tu pago de ${FACT.mes}`, text: `$63.000 con ${m.name}. Quedaste al día.`, when: "Hoy", time: hora(new Date()), unread: false });
@@ -624,10 +632,10 @@ function setUnstable(on) {
   DATA.notifs = DATA.notifs.filter((n) => n.id !== "zone" && n.id !== "zone-ok");
   if (on) {
     DATA.notifs.unshift({ id: "zone", tone: "warning", icon: "alert", title: "Intermitencia en tu zona", text: `Ya estamos trabajando en Laureles. Estimamos que a las ${ETA} vuelva la normalidad.`, when: "Hoy", time: "ahora", unread: true, action: { label: "Ver detalle", act: "alert-detail" } });
-    push({ title: "Intermitencia en tu zona", text: `Ya estamos trabajando en Laureles. Estimamos que a las ${ETA} vuelva la normalidad.`, tone: "warning", icon: "alert", onTap: alertDetail });
+    notify("fallas", { title: "Intermitencia en tu zona", text: `Ya estamos trabajando en Laureles. Estimamos que a las ${ETA} vuelva la normalidad.`, tone: "warning", icon: "alert", onTap: alertDetail });
   } else {
     DATA.notifs.unshift({ id: "zone-ok", tone: "success", icon: "check", title: "Tu red volvió a la normalidad", text: "Gracias por la paciencia. Todo está en orden.", when: "Hoy", time: "ahora", unread: true });
-    push({ title: "Tu red volvió a la normalidad", text: "Gracias por la paciencia. Todo está en orden.", tone: "success", icon: "check" });
+    notify("fallas", { title: "Tu red volvió a la normalidad", text: "Gracias por la paciencia. Todo está en orden.", tone: "success", icon: "check" });
   }
   renderNotifs();
 }
@@ -642,9 +650,10 @@ function openAccount() {
       <div><dt>Estrato</dt><dd>3</dd></div>
       <div><dt>Permanencia</dt><dd>Sin cláusulas</dd></div>
     </dl>
+    <button class="channel" type="button" data-nav="prefs"><span class="list-item__icon">${ic("sliders")}</span><span class="channel__main"><span class="body">Qué avisos recibir</span><span class="label muted">Fallas, factura, instalación y horario de silencio</span></span>${ic("chevR")}</button>
     <div class="card demo" style="padding:20px">
       <span class="label label--caps">Modo demostración</span>
-      <div class="btn-row"><button class="btn btn--secondary" type="button" data-nav="unstable" data-unstable-label><span class="ul">${STATE.unstable ? "Volver a la normalidad" : "Simular inestabilidad"}</span></button><button class="btn btn--secondary" type="button" data-nav="splash">Ver apertura</button><button class="btn btn--secondary" type="button" data-nav="welcome">Nuevo usuario</button>${DATA.client === "new" ? `<button class="btn btn--primary" type="button" data-nav="install">Simular instalación</button>` : ""}</div>
+      <div class="btn-row"><button class="btn btn--secondary" type="button" data-nav="unstable" data-unstable-label><span class="ul">${STATE.unstable ? "Volver a la normalidad" : "Simular inestabilidad"}</span></button><button class="btn btn--secondary" type="button" data-nav="splash">Ver apertura</button><button class="btn btn--secondary" type="button" data-nav="welcome">Nuevo usuario</button>${DATA.client === "new" ? `<button class="btn btn--primary" type="button" data-nav="tech">Simular el día de instalación</button><button class="btn btn--secondary" type="button" data-nav="install">Instalar ya</button>` : `<button class="btn btn--secondary" type="button" data-nav="firstday">Ver el primer día</button>`}${demoToggles()}</div>
     </div>
     <p class="label muted">Prototipo conceptual. No es la app oficial de Somos.</p>`);
 }
