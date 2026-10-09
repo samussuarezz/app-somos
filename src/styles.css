@@ -50,6 +50,7 @@
 
   --inset-top: 44px;
   --inset-bottom: 18px;
+  --tab-bottom: 18px;
 }
 
 [hidden] { display: none !important; }
@@ -175,7 +176,7 @@ h1, h2, h3 { font-weight: 400; text-wrap: balance; }
   position: absolute;
   top: 0; left: 0; right: 0;
   z-index: 20;
-  padding: calc(var(--inset-top) + 4px) var(--space-6) 10px;
+  padding: var(--inset-top) var(--space-6) 10px;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -222,7 +223,7 @@ h1, h2, h3 { font-weight: 400; text-wrap: balance; }
   overflow-x: hidden;
   overscroll-behavior: contain;
   scrollbar-width: none;
-  padding: calc(var(--inset-top) + 68px) var(--space-6) calc(var(--inset-bottom) + 108px);
+  padding: calc(var(--inset-top) + 68px) var(--space-6) calc(var(--tab-bottom) + 92px);
   box-sizing: border-box;
   display: flex;
   flex-direction: column;
@@ -386,7 +387,7 @@ h1, h2, h3 { font-weight: 400; text-wrap: balance; }
 /* Barra de pestañas */
 .tabbar {
   position: absolute; left: 0; right: 0; bottom: 0; z-index: 25;
-  padding: 10px 12px calc(var(--inset-bottom) + 6px);
+  padding: 8px 12px var(--tab-bottom);
   background: var(--surface-raised);
   border-top: 1px solid var(--line-subtle);
   display: grid; grid-template-columns: repeat(5, 1fr);
@@ -394,14 +395,14 @@ h1, h2, h3 { font-weight: 400; text-wrap: balance; }
 .tab {
   position: relative; z-index: 1;
   display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px;
-  height: 56px; border: 0; background: none; padding: 0;
+  height: 52px; border: 0; background: none; padding: 0;
   font-family: var(--font-mono); font-size: 11px; font-weight: 700; color: var(--ink);
   transition: color 160ms linear;
 }
 .tab[aria-selected="true"] { color: var(--surface); }
 .tab .i { width: 22px; height: 22px; }
 .tab__ind {
-  position: absolute; top: 10px; left: 12px; height: 56px; width: 60px;
+  position: absolute; top: 8px; left: 12px; height: 52px; width: 60px;
   border-radius: 20px; background: var(--ink); z-index: 0;
 }
 
@@ -444,7 +445,7 @@ h1, h2, h3 { font-weight: 400; text-wrap: balance; }
 }
 .page.is-open { transform: none; visibility: visible; transition: transform 420ms var(--ease-sheet), visibility 0s; }
 .page__bar {
-  padding: calc(var(--inset-top) + 4px) var(--space-6) 12px;
+  padding: var(--inset-top) var(--space-6) 12px;
   display: flex; align-items: center; gap: var(--space-4);
   border-bottom: 1px solid var(--line-subtle);
 }
@@ -468,7 +469,7 @@ h1, h2, h3 { font-weight: 400; text-wrap: balance; }
 
 /* Toast */
 .toast {
-  position: absolute; z-index: 56; left: 0; right: 0; margin: 0 auto; bottom: calc(var(--inset-bottom) + 96px);
+  position: absolute; z-index: 56; left: 0; right: 0; margin: 0 auto; bottom: calc(var(--tab-bottom) + 80px);
   width: max-content; max-width: calc(100% - 48px); box-sizing: border-box;
   display: flex; align-items: center; gap: 10px;
   padding: 12px 18px 12px 14px; border-radius: var(--radius-pill);
@@ -756,9 +757,9 @@ h1, h2, h3 { font-weight: 400; text-wrap: balance; }
 }
 @media (max-width: 520px) {
   /* En el teléfono la app ocupa la pantalla completa y respeta la isla, la muesca y la barra de inicio. */
-  :root { --inset-top: calc(env(safe-area-inset-top, 0px) + 8px); --inset-bottom: calc(env(safe-area-inset-bottom, 0px) + 6px); }
+  :root { --inset-top: max(env(safe-area-inset-top, 0px), 10px); --inset-bottom: env(safe-area-inset-bottom, 0px); --tab-bottom: max(calc(env(safe-area-inset-bottom, 0px) - 12px), 10px); }
   html, body { overflow: hidden; overscroll-behavior: none; }
-  .stage { display: block; padding: 0; height: 100%; background-image: none; }
+  .stage { display: block; padding: 0; position: fixed; top: 0; left: 0; width: 100%; height: 100%; height: var(--app-h, 100dvh); background-image: none; }
   .device-slot { width: 100%; height: 100%; }
   .device { width: 100%; height: 100%; padding: 0; border: 0; border-radius: 0; background: var(--surface); transform: none !important; }
   .device::before { display: none; }
@@ -794,7 +795,7 @@ h1, h2, h3 { font-weight: 400; text-wrap: balance; }
 /* ---------- Bienvenida ---------- */
 .page--welcome {
   z-index: 36; transform: none; opacity: 0;
-  padding: calc(var(--inset-top) + 15px) var(--space-6) calc(var(--inset-bottom) + 18px);
+  padding: calc(var(--inset-top) + 11px) var(--space-6) calc(var(--inset-bottom) + 18px);
   box-sizing: border-box; overflow: hidden;
   transition: opacity 360ms linear, background-color 500ms linear, visibility 0s linear 360ms;
 }
