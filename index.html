@@ -7,7 +7,7 @@
 <meta name="theme-color" content="#0a0a0a">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
 <meta name="apple-mobile-web-app-title" content="Somos">
 <meta name="description" content="Prototipo conceptual de la app de Somos para jóvenes que se van a vivir solos. Proyecto de Laboratorio de Prospectiva, Colegiatura Colombiana.">
 <link rel="manifest" href="manifest.webmanifest">
@@ -773,10 +773,11 @@ h1, h2, h3 { font-weight: 400; text-wrap: balance; }
   .panel { width: 100%; max-width: 414px; }
 }
 @media (max-width: 520px) {
-  /* En el teléfono la app ocupa la pantalla completa y respeta la isla, la muesca y la barra de inicio. */
+  /* En el teléfono la app ocupa la pantalla completa. Instalada en iPhone, la barra de estado es opaca (ver build.py),
+     así que la página empieza justo debajo de la isla y llega hasta el borde de abajo. */
   :root { --inset-top: max(env(safe-area-inset-top, 0px), 10px); --inset-bottom: env(safe-area-inset-bottom, 0px); --tab-bottom: max(calc(env(safe-area-inset-bottom, 0px) - 12px), 10px); }
   html, body { overflow: hidden; overscroll-behavior: none; }
-  .stage { display: block; padding: 0; position: fixed; top: 0; left: 0; width: 100%; height: 100%; height: var(--app-h, 100dvh); background-image: none; }
+  .stage { display: block; padding: 0; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-image: none; }
   .device-slot { width: 100%; height: 100%; }
   .device { width: 100%; height: 100%; padding: 0; border: 0; border-radius: 0; background: var(--surface); transform: none !important; }
   .device::before { display: none; }
@@ -2969,18 +2970,6 @@ document.addEventListener("keydown", (e) => { if (e.key === "Escape" && $("#page
 if ("serviceWorker" in navigator && location.protocol === "https:") {
   window.addEventListener("load", () => navigator.serviceWorker.register("sw.js").catch(() => {}));
 }
-
-/* En el teléfono, con la app instalada (iOS), el alto de la página a veces se queda corto: lo fijamos al alto real de la pantalla. */
-function fixStandaloneHeight() {
-  const standalone = window.navigator.standalone || (window.matchMedia && matchMedia("(display-mode: standalone)").matches);
-  if (!standalone) return;
-  const portrait = innerHeight >= innerWidth;
-  const h = Math.max(innerHeight, document.documentElement.clientHeight, portrait ? screen.height : screen.width);
-  document.documentElement.style.setProperty("--app-h", h + "px");
-}
-fixStandaloneHeight();
-window.addEventListener("resize", fixStandaloneHeight);
-window.addEventListener("orientationchange", () => setTimeout(fixStandaloneHeight, 300));
 
 init();
 
