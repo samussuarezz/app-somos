@@ -1,0 +1,453 @@
+<div class="stage">
+  <div class="device-slot" id="deviceSlot">
+    <div class="device" id="device">
+      <div class="app" id="app">
+
+        <header class="appbar" id="appbar">
+          <button class="logo-btn" type="button" data-nav="inicio" aria-label="Somos, ir al inicio">
+            <svg class="appbar__logo" id="headerLogo" viewBox="0 0 245.61 46.36" aria-hidden="true"><g id="headerLogoG">{{LOGO_PATHS}}</g></svg>
+          </button>
+          <div class="appbar__actions">
+            <button class="icon-btn" data-action="open-notifs" aria-label="Notificaciones" id="bellBtn">{{I:bell}}<span class="badge" id="badge">3</span></button>
+            <button class="avatar" data-action="open-account" aria-label="Tu cuenta">S</button>
+          </div>
+        </header>
+
+        <main class="screens" id="screens">
+
+          <!-- INICIO -->
+          <section class="screen is-active" id="scr-0" aria-label="Inicio">
+            <div class="greet" data-rise="60">
+              <p class="label muted" id="today">Lunes 28 de septiembre</p>
+              <h1 class="h1">Hola, Samu.</h1>
+            </div>
+
+            <button class="hero" id="hero" type="button" data-action="hero" data-rise="140" aria-label="Ver el detalle de tu red">
+              <span class="hero__dots" aria-hidden="true"></span>
+              <span class="hero__top">
+                <span class="label label--caps" id="heroLabel">Tu red en vivo</span>
+                <span class="pill" id="heroPill">{{I:check}}Estable</span>
+              </span>
+              <span class="hero__speed">
+                <span class="hero__num num" id="heroNum">874</span>
+              </span>
+              <span class="hero__unit label" id="heroUnit">MBPS de bajada</span>
+              <span class="hero__lamp lamp" id="heroLamp"></span>
+              <span class="hero__foot">
+                <span class="hero__stats label" id="heroSub"><span>866 MBPS de subida</span><span>3 ms de latencia</span></span>
+                <span class="link-btn" style="padding:0" id="heroLink">Ver tu red {{I:arrowRight}}</span>
+              </span>
+            </button>
+
+            <div id="homeAlert"></div>
+            <div id="homeNew" class="only-new" style="display:flex;flex-direction:column;gap:var(--space-6)"></div>
+
+            <div class="sec only-active" data-rise="220">
+              <div class="sec__row"><span class="label label--caps">Tu casa</span><span class="label">Laureles, Medellín</span></div>
+            </div>
+
+            <div class="bento only-active" data-rise="260">
+              <button class="card card--tap" type="button" data-nav="devices">
+                <span class="card__top">{{I:devices}}<span class="stack-icons" aria-hidden="true"><span>{{I:phone}}</span><span>{{I:laptop}}</span><span>{{I:gamepad}}</span></span></span>
+                <span class="big-stat num" id="homeDevCount">9</span>
+                <span class="label">dispositivos conectados</span>
+              </button>
+              <button class="card card--tap" type="button" data-nav="wifi">
+                <span class="card__top">{{I:wifi}}</span>
+                <span class="h3" id="homeSsid" style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap">Samu_5G</span>
+                <span class="label">Cambiar clave o compartir</span>
+              </button>
+              <div class="card span-2" id="homeBill"></div>
+              <button class="card card--tap span-2" type="button" data-nav="move">
+                <span class="card__row">{{I:box}}<span class="label label--caps">Mudanza</span></span>
+                <span class="h3">¿Te vas a mudar?</span>
+                <span class="body-s muted">Revisa si llegamos a tu nuevo edificio y llévate tu internet.</span>
+              </button>
+            </div>
+
+            <div class="sec only-active" data-rise="320">
+              <div class="sec__row"><span class="label label--caps">Para ti</span><span class="label" id="homeLoyaltyMeta">8 meses con Somos</span></div>
+            </div>
+            <button class="card card--tap only-active" type="button" data-nav="beneficios" data-rise="360">
+              <span class="h3" id="homeLoyaltyTitle">Te faltan 4 meses para tu mes de Pro gratis</span>
+              <span class="months" id="homeMonths" aria-hidden="true"></span>
+              <span class="label muted">Por cada mes con nosotros sumas un punto.</span>
+            </button>
+          </section>
+
+          <!-- RED -->
+          <section class="screen" id="scr-1" aria-label="Red">
+            <div class="sec">
+              <div class="sec__row"><span class="label label--caps">Red</span><span class="label" id="redMeta">En vivo</span></div>
+              <h2 class="h2">Tu red en casa</h2>
+            </div>
+            <div class="card only-new">
+              <span class="card__row">{{I:orb}}<span class="label label--caps">Por instalar</span></span>
+              <p class="h3">Tu red aparece aquí cuando instalemos tu Orb</p>
+              <p class="body-s muted">Ese día medimos la velocidad contigo y conectamos tus dispositivos.</p>
+            </div>
+
+            <div class="card card--flat" id="speedCard">
+              <div class="gauge-wrap">
+                <svg class="gauge" viewBox="0 0 260 260" aria-hidden="true">
+                  <g id="gDots"></g>
+                  <path class="gauge__track" id="gTrack"></path>
+                  <path class="gauge__val" id="gVal"></path>
+                </svg>
+                <div class="gauge__center" aria-live="polite">
+                  <span class="gauge__num num" id="gNum">874</span>
+                  <span class="label" id="gUnit">MBPS de bajada</span>
+                  <span class="label muted" id="gCap">Hoy · 9:41 a.m.</span>
+                </div>
+              </div>
+              <div class="phases" aria-hidden="true">
+                <span class="phase" data-ph="ping">Latencia</span>
+                <span class="phase" data-ph="down">Bajada</span>
+                <span class="phase" data-ph="up">Subida</span>
+              </div>
+              <div class="results">
+                <div class="result"><span class="label muted">Bajada</span><span class="result__v num" id="rDown">874</span><span class="label">MBPS</span></div>
+                <div class="result"><span class="label muted">Subida</span><span class="result__v num" id="rUp">866</span><span class="label">MBPS</span></div>
+                <div class="result"><span class="label muted">Latencia</span><span class="result__v num" id="rPing">3</span><span class="label">ms</span></div>
+              </div>
+              <div id="speedMsg"></div>
+              <button class="btn btn--primary btn--block btn--lg" id="runTest" type="button" data-action="speedtest">Medir velocidad</button>
+              <p class="label muted">Medimos desde tu Orb. Es la velocidad que llega a tu casa, sin contar el Wi‑Fi de tu celular.</p>
+            </div>
+
+            <div class="sec" id="wifiSec">
+              <div class="sec__row"><span class="label label--caps">Wi‑Fi</span><span class="label" id="wifiMeta">1 red activa</span></div>
+            </div>
+            <div class="card">
+              <div class="card__top">
+                <div style="min-width:0"><p class="h3" id="ssidLabel">Samu_5G</p><p class="label muted">Red principal</p></div>
+                <span class="pill">{{I:check}}Activa</span>
+              </div>
+              <div class="wifi-pass">
+                <span class="label num" id="passTxt">••••••••••••</span>
+                <button class="icon-btn" type="button" data-action="toggle-pass" id="passEye" aria-label="Mostrar clave">{{I:eye}}</button>
+              </div>
+              <div class="btn-row">
+                <button class="btn btn--secondary" type="button" data-action="open-password">{{I:lock}}Cambiar clave</button>
+                <button class="btn btn--secondary" type="button" data-action="open-qr">{{I:qr}}Compartir</button>
+              </div>
+              <div class="setting">
+                <div class="setting__text"><span class="body">Red de invitados</span><span class="label muted" id="guestTxt">Para visitas, sin darles tu clave</span></div>
+                <button class="switch" type="button" role="switch" aria-checked="false" data-action="guest" id="guestSw" aria-label="Red de invitados"></button>
+              </div>
+            </div>
+
+            <div class="sec" id="devicesSec">
+              <div class="sec__row"><span class="label label--caps">Dispositivos</span><span class="label" id="devMeta">9 conectados</span></div>
+            </div>
+            <div class="chips" role="group" aria-label="Filtrar dispositivos">
+              <button class="chip" type="button" aria-pressed="true" data-filter="all">Todos</button>
+              <button class="chip" type="button" aria-pressed="false" data-filter="active">Usando internet</button>
+              <button class="chip" type="button" aria-pressed="false" data-filter="paused">Pausados</button>
+            </div>
+            <div class="list" id="devList"></div>
+
+            <div class="sec">
+              <div class="sec__row"><span class="label label--caps">Tu Orb</span><span class="label">Router</span></div>
+            </div>
+            <div class="card orb-card">
+              <div class="lamp" id="orbLamp"></div>
+              <div class="orb-card__main">
+                <p class="h3">Orb · Sala</p>
+                <p class="label muted" id="orbState">Encendido hace 12 días · al día</p>
+                <button class="btn btn--secondary hold" type="button" id="holdBtn" style="align-self:flex-start;margin-top:6px"><span class="hold__fill"></span><span id="holdTxt">Mantén para reiniciar</span></button>
+              </div>
+            </div>
+          </section>
+
+          <!-- PAGOS -->
+          <section class="screen" id="scr-2" aria-label="Pagos">
+            <div class="sec">
+              <div class="sec__row"><span class="label label--caps">Pagos</span><span class="label">Cliente desde feb. 2026</span></div>
+              <h2 class="h2">Tu factura</h2>
+            </div>
+            <div class="card only-new" id="newBill"></div>
+            <div class="card" id="invoice"></div>
+            <div class="card card--flat" style="gap:14px">
+              <div class="setting">
+                <div class="setting__text"><span class="body">Pago automático</span><span class="label muted" id="autoTxt">Lo cobramos el día 1. Te avisamos 3 días antes.</span></div>
+                <button class="switch" type="button" role="switch" aria-checked="false" data-action="autopay" id="autoSw" aria-label="Pago automático"></button>
+              </div>
+            </div>
+            <div class="sec">
+              <div class="sec__row"><span class="label label--caps">Historial</span><span class="label">2026</span></div>
+            </div>
+            <div class="list" id="history"></div>
+          </section>
+
+          <!-- BENEFICIOS -->
+          <section class="screen" id="scr-3" aria-label="Beneficios">
+            <div class="sec">
+              <div class="sec__row"><span class="label label--caps">Para ti</span><span class="label">Fidelidad</span></div>
+              <h2 class="h2">Beneficios</h2>
+            </div>
+
+            <div class="card only-active" id="loyalty">
+              <p class="h3" id="loyaltyTitle">Llevas 8 meses con nosotros</p>
+              <div class="months" id="months" aria-label="8 de 12 meses cumplidos" role="img"></div>
+              <div class="months-legend"><span class="label muted">Feb.</span><span class="label">Hoy</span><span class="label muted">12 meses</span></div>
+              <dl class="rows">
+                <div><dt>6 meses</dt><dd>Somos TV · listo</dd></div>
+                <div><dt>12 meses</dt><dd>1 mes de Pro</dd></div>
+                <div><dt>24 meses</dt><dd>Orb 2 adicional</dd></div>
+              </dl>
+            </div>
+
+            <article class="plan plan--3 only-active" id="tvCard">
+              <p class="label label--caps">Desbloqueado por tus 6 meses</p>
+              <h3 class="plan__name">Somos TV</h3>
+              <p class="body-s">Más de 100 canales en vivo. Tu primer mes va por nuestra cuenta.</p>
+              <dl class="rows">
+                <div><dt>Este mes</dt><dd>$0</dd></div>
+                <div><dt>Después</dt><dd>$24.000 / mes</dd></div>
+              </dl>
+              <div id="tvAction"><button class="btn btn--primary btn--block" type="button" data-action="tv">Activar mes gratis</button></div>
+            </article>
+
+            <article class="plan plan--2 only-active" id="proCard">
+              <p class="label label--caps">Sube de plan</p>
+              <h3 class="plan__name">Pro</h3>
+              <p class="plan__price"><span class="price num">$100.000</span><span class="label muted">/ mes</span></p>
+              <dl class="rows">
+                <div><dt>Velocidad</dt><dd>Hasta 2.0 GBPS</dd></div>
+                <div><dt>Puntos por cable</dt><dd>Ilimitados</dd></div>
+                <div><dt>Orb 2</dt><dd>1 incluido</dd></div>
+                <div><dt>Soporte</dt><dd>VIP 24/7</dd></div>
+              </dl>
+              <p class="label muted">Estratos 1 a 3 · IVA incluido · sin cláusulas</p>
+              <div id="proAction"><button class="btn btn--primary btn--block" type="button" data-action="pro">Prueba 30 días gratis</button></div>
+            </article>
+
+            <div class="card">
+              <span class="card__row">{{I:users}}<span class="label label--caps">Referidos</span></span>
+              <p class="h3">Comparte tu internet con tus amigos</p>
+              <p class="body-s muted">Te dejo aquí tu código para que se lo compartas a tus amigos y vecinos. Si alguno se pasa a Somos, te regalamos el siguiente mes.</p>
+              <div class="code-box"><span class="label" id="refCode">SAMU-503</span><button class="btn btn--primary" type="button" data-action="copy-code">{{I:copy}}Copiar</button></div>
+              <dl class="rows">
+                <div><dt>Amigos que se pasaron</dt><dd>2</dd></div>
+                <div><dt>Meses gratis ganados</dt><dd>2</dd></div>
+              </dl>
+            </div>
+
+            <div class="sec" id="moveSec">
+              <div class="sec__row"><span class="label label--caps">Cobertura</span><span class="label">Medellín · Bogotá</span></div>
+            </div>
+            <div class="card" id="moveCard">
+              <p class="h3">¿Te vas a mudar?</p>
+              <p class="body-s muted">Escribe la dirección de tu nuevo lugar y te decimos si ya llegamos.</p>
+              <form class="field" id="moveForm" autocomplete="off">
+                <label for="moveInput">Dirección nueva</label>
+                <div class="input-wrap">
+                  <input class="input" id="moveInput" name="moveInput" type="text" placeholder="Ej.: Calle 10 Sur #43-12, Envigado">
+                  <button class="icon-btn" type="submit" aria-label="Revisar cobertura">{{I:search}}</button>
+                </div>
+              </form>
+              <div class="suggest" id="suggest">
+                <button type="button" data-addr="Calle 10 Sur #43-12, Envigado">{{I:pin}}Calle 10 Sur #43-12, Envigado</button>
+                <button type="button" data-addr="Cra. 7 #59-40, Chapinero, Bogotá">{{I:pin}}Cra. 7 #59-40, Chapinero, Bogotá</button>
+                <button type="button" data-addr="Cra. 50 #52-30, Bello">{{I:pin}}Cra. 50 #52-30, Bello</button>
+              </div>
+              <div id="moveResult"></div>
+            </div>
+
+            <div class="card card--flat">
+              <span class="label label--caps">Nuevas coberturas</span>
+              <div>
+                <div class="news">{{I:pin}}<div class="list-item__main"><span class="body">Envigado, zona centro</span><span class="label muted">Desde esta semana</span></div><span class="pill">{{I:check}}Nuevo</span></div>
+                <div class="news">{{I:pin}}<div class="list-item__main"><span class="body">Chapinero Alto, Bogotá</span><span class="label muted">Desde septiembre</span></div><span class="pill">{{I:check}}Nuevo</span></div>
+                <div class="news">{{I:pin}}<div class="list-item__main"><span class="body">Sabaneta, Mayorca</span><span class="label muted">En construcción</span></div><span class="pill pill--neutral">Pronto</span></div>
+              </div>
+            </div>
+          </section>
+
+          <!-- AYUDA -->
+          <section class="screen" id="scr-4" aria-label="Ayuda">
+            <div class="sec">
+              <div class="sec__row"><span class="label label--caps">Ayuda</span><span class="label">24/7</span></div>
+              <h2 class="h2">Estoy acá para ayudarte.</h2>
+            </div>
+
+            <div class="card" id="diagCard">
+              <span class="card__row">{{I:pulse}}<span class="label label--caps">Diagnóstico</span></span>
+              <p class="h3">Revisa tu conexión</p>
+              <p class="body-s muted" id="diagLead">Revisamos tu Orb, la fibra hasta tu edificio y tu zona. Toma unos segundos.</p>
+              <div class="steps" id="diagSteps" hidden></div>
+              <div id="diagResult"></div>
+              <button class="btn btn--primary btn--block" type="button" data-action="diag" id="diagBtn">Revisar ahora</button>
+            </div>
+
+            <div class="sec">
+              <div class="sec__row"><span class="label label--caps">Habla con nosotros</span><span class="label">Personas reales</span></div>
+            </div>
+            <div class="channels">
+              <button class="channel" type="button" data-action="open-chat">
+                <span class="list-item__icon">{{I:chat}}</span>
+                <span class="channel__main"><span class="body">Chat</span><span class="label muted">Te responde una persona</span></span>{{I:chevR}}
+              </button>
+              <button class="channel" type="button" data-action="open-whatsapp">
+                <span class="list-item__icon">{{I:bubble}}</span>
+                <span class="channel__main"><span class="body">WhatsApp</span><span class="label muted">+57 323 396 8936</span></span>{{I:chevR}}
+              </button>
+              <button class="channel" type="button" data-action="open-visit">
+                <span class="list-item__icon">{{I:calendar}}</span>
+                <span class="channel__main"><span class="body">Visita técnica</span><span class="label muted">Elige el día y la hora</span></span>{{I:chevR}}
+              </button>
+            </div>
+
+            <div class="sec">
+              <div class="sec__row"><span class="label label--caps">Preguntas frecuentes</span></div>
+            </div>
+            <div id="faqs"></div>
+
+            <div class="card demo" id="demoCard">
+              <span class="label label--caps">Modo demostración</span>
+              <p class="body-s muted">Controles para probar el prototipo con usuarios.</p>
+              <div class="btn-row">
+                <button class="btn btn--secondary" type="button" data-nav="unstable" data-unstable-label><span class="ul">Simular inestabilidad</span></button>
+                <button class="btn btn--secondary" type="button" data-nav="splash">Ver apertura</button>
+                <button class="btn btn--secondary" type="button" data-nav="welcome">Nuevo usuario</button>
+                <button class="btn btn--primary only-new" type="button" data-nav="install">Simular instalación</button>
+              </div>
+            </div>
+            <p class="label credit">Prototipo conceptual. No es la app oficial de Somos. Samuel Suárez · Laboratorio de Prospectiva · Colegiatura Colombiana.</p>
+          </section>
+        </main>
+
+        <nav class="tabbar" id="tabbar" role="tablist" aria-label="Secciones">
+          <span class="tab__ind" id="tabInd" aria-hidden="true"></span>
+          <button class="tab" role="tab" aria-selected="true" data-tab="0" type="button">{{I:home}}Inicio</button>
+          <button class="tab" role="tab" aria-selected="false" data-tab="1" type="button">{{I:orb}}Red</button>
+          <button class="tab" role="tab" aria-selected="false" data-tab="2" type="button">{{I:receipt}}Pagos</button>
+          <button class="tab" role="tab" aria-selected="false" data-tab="3" type="button">{{I:gift}}Para ti</button>
+          <button class="tab" role="tab" aria-selected="false" data-tab="4" type="button">{{I:support}}Ayuda</button>
+        </nav>
+
+        <!-- Notificaciones -->
+        <section class="page" id="pageNotifs" aria-label="Notificaciones">
+          <div class="page__bar">
+            <button class="icon-btn" type="button" data-action="close-page" aria-label="Volver">{{I:back}}</button>
+            <div class="page__title"><span class="h3">Notificaciones</span><span class="label muted" id="notifMeta">Todo al día</span></div>
+          </div>
+          <div class="page__scroll" id="notifList"></div>
+        </section>
+
+        <!-- Chat -->
+        <section class="page" id="pageChat" aria-label="Chat con soporte">
+          <div class="page__bar">
+            <button class="icon-btn" type="button" data-action="close-page" aria-label="Volver">{{I:back}}</button>
+            <span class="sello" aria-hidden="true"><svg viewBox="0 0 150.62 104.54">{{SIMBOLO}}</svg></span>
+            <div class="page__title"><span class="body">Laura · Soporte Somos</span><span class="label muted">En línea</span></div>
+          </div>
+          <div class="page__scroll" id="chatScroll">
+            <div class="msgs" id="msgs"></div>
+            <div class="quick" id="quick"></div>
+          </div>
+          <form class="composer" id="composer" autocomplete="off">
+            <label for="chatInput" class="label" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)">Mensaje</label>
+            <input class="input" id="chatInput" name="chatInput" type="text" placeholder="Escribe tu mensaje">
+            <button class="icon-btn" type="submit" aria-label="Enviar">{{I:send}}</button>
+          </form>
+        </section>
+
+        <!-- Bienvenida (usuario nuevo) -->
+        <section class="page page--welcome" id="pageWelcome" aria-label="Bienvenida">
+          <span class="welcome__dots" aria-hidden="true"></span>
+          <svg class="welcome__logo welcome__fade" id="welcomeLogo" viewBox="0 0 245.61 46.36" role="img" aria-label="Somos"><g id="welcomeLogoG">{{LOGO_PATHS}}</g></svg>
+          <div class="welcome__lamp lamp" id="welcomeLamp"></div>
+          <div class="welcome__body welcome__fade">
+            <span class="pill pill--neutral" id="inviteChip" hidden>{{I:users}}Samu te invitó</span>
+            <h1 class="h1">Hola, Humano.</h1>
+            <p class="body muted">¿Te vas a vivir solo? Revisa si llegamos a tu nuevo lugar y llega con internet desde el primer día.</p>
+            <div class="welcome__actions">
+              <button class="btn btn--primary btn--lg btn--block" type="button" data-action="move-start">Me voy a mudar</button>
+              <button class="btn btn--secondary btn--lg btn--block" type="button" data-action="welcome-client">Ya tengo Somos</button>
+            </div>
+            <p class="label muted welcome__note">Prototipo conceptual</p>
+          </div>
+        </section>
+
+        <!-- Me mudo -->
+        <section class="page page--move" id="pageMove" aria-label="Me mudo">
+          <div class="page__bar">
+            <button class="icon-btn" type="button" data-action="mv-back" aria-label="Volver">{{I:back}}</button>
+            <div class="page__title"><span class="body">Me mudo</span><span class="label muted" id="mvStepLabel">Paso 1 de 5</span></div>
+          </div>
+          <div class="mv-progress" aria-hidden="true"><span id="mvProg"></span></div>
+          <div class="page__scroll" id="mvBody"></div>
+          <div class="mv-foot" id="mvFoot"></div>
+        </section>
+
+        <div class="scrim" id="scrim" data-action="close-sheet"></div>
+        <section class="sheet" id="sheet" role="dialog" aria-modal="true" aria-labelledby="sheetTitle" hidden>
+          <div class="sheet__grab" id="sheetGrab"><span></span></div>
+          <div class="sheet__body" id="sheetBody"></div>
+        </section>
+
+        <button class="push" id="push" type="button" data-action="push-tap" tabindex="-1" aria-live="polite">
+          <span class="push__icon" id="pushIcon">{{I:alert}}</span>
+          <span class="push__body">
+            <span class="label muted">Somos · ahora</span>
+            <span class="body" id="pushTitle" style="font-size:15px;line-height:1.3">Intermitencia en tu zona</span>
+            <span class="label" id="pushText">Ya estamos trabajando en Laureles.</span>
+          </span>
+        </button>
+        <div class="toast" id="toast" role="status" aria-live="polite">{{I:check}}<span id="toastTxt">Listo</span></div>
+
+        <!-- Apertura -->
+        <div class="splash" id="splash" aria-label="Somos" role="img">
+          <div class="splash__fx" id="splashFx">
+            <div class="splash__dots"></div>
+            <div class="splash__beam"></div>
+            <div class="splash__haze"></div>
+          </div>
+          <svg class="splash__logo" id="splashLogo" viewBox="-80 -8 405.61 62" aria-hidden="true"></svg>
+          <div class="splash__lamp lamp" id="splashLamp"></div>
+          <p class="splash__foot label">Prototipo conceptual</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <aside class="panel" aria-label="Recorrido del prototipo">
+    <div class="panel__head">
+      <div class="sec"><div class="sec__row"><span class="label label--caps">Prototipo conceptual</span><span class="label">v2 · oct. 2026</span></div></div>
+      <h1>App Somos</h1>
+      <p class="panel__lead">Para quien se va a vivir solo por primera vez: revisa si Somos llega a su torre, contrata sin trámites y llega a una casa con internet. Después, su red, su Orb y su factura en un solo lugar.</p>
+    </div>
+    <div class="panel__group">
+      <p class="label label--caps muted">Nuevo usuario</p>
+      <div class="index-grid">
+        <button class="index-row" type="button" data-nav="welcome">Bienvenida</button>
+        <button class="index-row" type="button" data-nav="mudanza">Me mudo</button>
+      </div>
+      <button class="index-row" type="button" data-nav="install">Simular instalación<span class="label">tras Me mudo</span></button>
+    </div>
+    <div class="panel__group">
+      <p class="label label--caps muted">Cliente</p>
+      <div class="index-grid">
+        <button class="index-row" type="button" data-nav="inicio">Inicio</button>
+        <button class="index-row" type="button" data-nav="speed">Velocidad</button>
+        <button class="index-row" type="button" data-nav="devices">Dispositivos</button>
+        <button class="index-row" type="button" data-nav="wifi-pass">Clave Wi‑Fi</button>
+        <button class="index-row" type="button" data-nav="pay">Pagar factura</button>
+        <button class="index-row" type="button" data-nav="move">Mudanza</button>
+        <button class="index-row" type="button" data-nav="beneficios">Fidelidad</button>
+        <button class="index-row" type="button" data-nav="ayuda">Soporte</button>
+        <button class="index-row" type="button" data-nav="chat">Chat</button>
+        <button class="index-row" type="button" data-nav="notifs">Avisos</button>
+      </div>
+    </div>
+    <div class="panel__group">
+      <p class="label label--caps muted">Simula un evento</p>
+      <button class="index-row" type="button" data-nav="unstable" data-unstable-label><span class="ul">Simular inestabilidad</span><span class="label">push</span></button>
+      <button class="index-row" type="button" data-nav="splash">Ver la apertura otra vez<span class="label">4 s</span></button>
+    </div>
+    <p class="label panel__note">Datos de ejemplo. Beneficios, coberturas y políticas son propuestas de este prototipo, no condiciones reales de Somos. Planes y precios de referencia tomados de somosinternet.com (Medellín, estratos 1 a 3).</p>
+    <p class="label panel__note">Samuel Suárez · Laboratorio de Prospectiva · Colegiatura Colombiana</p>
+  </aside>
+</div>
