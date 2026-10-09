@@ -290,7 +290,41 @@ function welcomeToHome() {
 }
 function afterSplash() {
   if (!DATA.client && HASH === "mudanza" && !afterSplash.done) { afterSplash.done = true; setTimeout(() => openMove(true), 250); }
+  else setTimeout(reinstallNotice, 450);
 }
+
+/* ============ iPhone: instalación anterior con barra translúcida ============ */
+/* Desde iOS 26, una app instalada con la barra de estado translúcida queda corta abajo y el iPhone desenfoca el encabezado.
+   La versión actual pide la barra opaca, pero el iPhone guarda esa configuración al instalar: hay que volver a agregarla. */
+function screenInfo() {
+  const p = document.createElement("div");
+  p.style.cssText = "position:fixed;left:0;top:0;width:0;height:0;visibility:hidden;pointer-events:none;padding-top:env(safe-area-inset-top);padding-bottom:env(safe-area-inset-bottom)";
+  document.body.appendChild(p);
+  const cs = getComputedStyle(p), top = parseFloat(cs.paddingTop) || 0, bottom = parseFloat(cs.paddingBottom) || 0;
+  p.remove();
+  const standalone = navigator.standalone === true || !!(window.matchMedia && matchMedia("(display-mode: standalone)").matches);
+  return { standalone, top, bottom, vw: innerWidth, vh: innerHeight, sw: screen.width, sh: screen.height };
+}
+function checkScreen() {
+  const s = screenInfo(), old = s.standalone && s.top > 20;
+  document.documentElement.classList.toggle("is-standalone", s.standalone);
+  document.documentElement.classList.toggle("is-old-install", old);
+  const d = $("#screenDiag");
+  if (d) d.textContent = `Pantalla: ${s.standalone ? "app instalada" : "navegador"}${s.standalone ? (old ? ", barra translúcida (instalación anterior)" : ", barra opaca") : ""}. Ventana ${s.vw}×${s.vh}, pantalla ${s.sw}×${s.sh}, márgenes ${Math.round(s.top)} arriba y ${Math.round(s.bottom)} abajo.`;
+  return old;
+}
+function reinstallNotice() {
+  if (!checkScreen()) return;
+  try { if (localStorage.getItem("somos-aviso-reinstalar") === "1") return; localStorage.setItem("somos-aviso-reinstalar", "1"); } catch (e) { /* sin almacenamiento: se muestra igual */ }
+  openSheet(sheetHead("Vuelve a agregar la app", "Tu iPhone guardó la configuración anterior") +
+    `<div class="state state--warning">${ic("alert")}<div class="state__body"><p class="state__title">Instalación anterior</p><p class="state__text">Por eso queda un espacio abajo y el logo se ve borroso. Se arregla instalándola otra vez.</p></div></div>
+     <p class="body-s"><b>1.</b> Mantén presionado el ícono de Somos y elige <b>Eliminar app</b>.</p>
+     <p class="body-s"><b>2.</b> Abre el link en Safari y recarga la página.</p>
+     <p class="body-s"><b>3.</b> Toca Compartir y luego <b>Agregar a pantalla de inicio</b>.</p>
+     <button class="btn btn--primary btn--block" type="button" data-action="close-sheet">Entendido</button>`);
+}
+checkScreen();
+window.addEventListener("resize", checkScreen);
 
 /* Estado del cliente: nuevo (espera la instalación) o activo */
 function applyClientState() {
