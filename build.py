@@ -9,7 +9,7 @@ import base64, hashlib, json, pathlib, re, sys
 
 ROOT = pathlib.Path(__file__).parent
 SRC = ROOT / "src"
-JS_FILES = ["core.js", "screens.js", "mudanza.js"]
+JS_FILES = ["core.js", "screens.js", "mudanza.js", "experiencia.js"]
 
 LOGO = [
     "M13.39,2.41h26.55v6.1H13.03c-3.89,0-6.2,2.68-6.2,5.99s2.31,5.89,6.2,5.89h14.72c8.04,0,12.46,4.84,12.46,11.93s-4.42,12.14-12.46,12.14H.99v-6.36h26.92c3.84,0,6.2-2.42,6.2-5.73s-2.37-5.89-6.2-5.89h-14.51C5.35,26.49.72,21.65.72,14.55S5.35,2.41,13.39,2.41Z",
@@ -65,6 +65,15 @@ ICONS = {
     "bank": "M3 9h18L12 3 3 9ZM5.5 9v9M9.8 9v9M14.2 9v9M18.5 9v9M3 21h18",
     "card": "M2 5h20v14H2zM2 10h20M6 15h4",
     "wallet": "M3 6h17v14H3zM3 6l12-3v3M15 11h6v4h-6z",
+    "bookmark": "M6 3h12v18l-6-4.5L6 21V3Z",
+    "van": "M2 7h12v9H2zM14 10h4l3 3v3h-7zM7.5 18a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0ZM18.5 18a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0Z",
+    "sliders": "M4 7h9M17 7h3M15 4v6M4 17h3M11 17h9M9 14v6",
+    "wifiOff": "M2 8.5a15 15 0 0 1 20 0M5.5 12a10 10 0 0 1 13 0M9 15.5a5 5 0 0 1 6 0M12 19.5v.5M3 3l18 18",
+    "moon": "M20 14.5A8 8 0 1 1 9.5 4a6.5 6.5 0 0 0 10.5 10.5Z",
+    "compare": "M4 5h7v14H4zM13 5h7v14h-7z",
+    "refresh": "M20 12a8 8 0 1 1-2.3-5.6M20 4v4.5h-4.5",
+    "edit": "M4 20h4L19 9l-4-4L4 16v4ZM13 7l4 4",
+    "star": "M12 3l2.6 5.6 6.1.7-4.5 4.2 1.2 6L12 16.6 6.6 19.5l1.2-6L3.3 9.3l6.1-.7L12 3Z",
 }
 
 
