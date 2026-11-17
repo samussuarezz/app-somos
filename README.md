@@ -38,8 +38,23 @@ Agrega estas terminaciones al link:
 | `…/#mudanza` | Un QR en el edificio o la inmobiliaria: entra directo a Me mudo |
 | `…/#invitado` | El link que te manda un amigo: la bienvenida dice quién te invitó |
 | `…/#cliente` | Alguien que ya tiene Somos: entra directo al inicio |
+| `…/#paga?…` | El link que le llega por WhatsApp a quien paga (lo arma la app al final de Me mudo) |
 
 En la pestaña **Ayuda** (o tocando la inicial arriba a la derecha) está el **modo demostración**: simular una falla en la red, el día de la instalación con el técnico en camino, el primer día, quedarse sin conexión, un pago rechazado, volver a la bienvenida y ver la apertura otra vez.
+
+## Lo que dejó el cruce de la investigación (v4, oct. y nov. 2026)
+
+**v5 (nov. 2026):** se limpiaron los textos de toda la app. Cada pantalla deja el título, el dato y, como mucho, una línea de apoyo; se quitaron las notas de "prototipo" repetidas (queda una en la bienvenida y otra en Tu cuenta) y la lista "Antes de la instalación".
+
+La investigación (documental, social listening, 5 entrevistas y encuesta) dejó tres cosas que la app no resolvía:
+
+| Hallazgo | Evidencia | Qué hace la app |
+|---|---|---|
+| Casi nunca elige ni paga el joven: lo hace la familia o viene con el arriendo | Usuarios 1 y 3; la encuestada que vive sola no paga | **¿Quién paga?** en Me mudo: yo, mi familia o mitad y mitad con el roomie. Si paga la familia, le llega un resumen por WhatsApp con el precio, la primera factura y que no hay permanencia, y registra su medio de pago desde el celular (`#paga`). |
+| La cobertura frena el deseo | Usuaria 4; 126 me gusta a "en casas todavía no"; 6 preguntas de "¿llega a…?" en Instagram | **Avísame cuando llegue:** cuando no llegamos a la torre, al edificio o a una casa, muestra cuántos vecinos ya lo pidieron y avisa por WhatsApp. Nunca llama para vender (2.302 me gusta a "¿cuál es la solución pa' que lo dejen de llamar?"). |
+| Al mudarse otra vez, pedirían un traslado | Usuario 2; vacío V5 del planning | **Traslado** en 3 pasos: nueva dirección, cobertura allá con el precio según el estrato del nuevo edificio, y el día. Sin costo y sin perder los meses con Somos. |
+
+Avisar 3 días antes de cada cobro, avisar con un mes si cambia el precio, el traslado sin costo y que hoy no se instale en casas son propuestas o supuestos de este prototipo, no políticas confirmadas de Somos.
 
 ## Lo que se cuidó en la experiencia (v3, oct. 2026)
 
