@@ -7,6 +7,7 @@
    por referidos (aquí: un mes por amigo, hasta 3). */
 
 const HASH = (location.hash || "").replace("#", "").toLowerCase();
+const PAGA = /^#paga/i.test(location.hash || ""); // link que recibe quien paga
 DATA.client = HASH === "cliente" ? "active" : null; // null = aún no elige; "new" = contrató y espera la instalación
 DATA.userName = "Samu";
 
@@ -18,25 +19,37 @@ const LUGARES = [
   { id: "prados", city: "Bogotá", name: "Conjunto Prados de Suba", addr: "Calle 145 #91-20, Suba", estrato: 3, towers: ["Torre 1", "Torre 2"], cover: { "Torre 1": true, "Torre 2": false }, vecinos: { "Torre 1": 7 }, speed: { "Torre 1": 861 } }
 ];
 const PLANES = {
-  essential: { name: "Essential", n: 1, fit: "Para ti y tu roomie: series en 4K, videollamadas y juegos al mismo tiempo.", price: { "1-3": 63000, "4-6": 75000 }, rows: [["Velocidad", "Hasta 900 MBPS"], ["Puntos por cable", "Hasta 2"], ["Orb 2", "No incluido"], ["Soporte", "24/7"]] },
-  pro: { name: "Pro", n: 2, fit: "Para casas de 4 o más, o si descargan juegos y archivos grandes seguido.", price: { "1-3": 100000, "4-6": 120000 }, rows: [["Velocidad", "Hasta 2.0 GBPS"], ["Puntos por cable", "Ilimitados"], ["Orb 2", "1 incluido"], ["Soporte", "VIP 24/7"]] }
+  essential: { name: "Essential", n: 1, fit: "Para ti y tu roomie.", price: { "1-3": 63000, "4-6": 75000 }, rows: [["Velocidad", "Hasta 900 MBPS"], ["Puntos por cable", "Hasta 2"], ["Orb 2", "No incluido"], ["Soporte", "24/7"]] },
+  pro: { name: "Pro", n: 2, fit: "Para casas de 4 o más.", price: { "1-3": 100000, "4-6": 120000 }, rows: [["Velocidad", "Hasta 2.0 GBPS"], ["Puntos por cable", "Ilimitados"], ["Orb 2", "1 incluido"], ["Soporte", "VIP 24/7"]] }
 };
-const MV_STEPS = ["donde", "cobertura", "plan", "datos", "instalacion", "listo"];
+/* Dos recorridos con el mismo motor: contratar por primera vez y llevarse el internet al mudarse (traslado). */
+const MV_FLOWS = {
+  nuevo: ["donde", "cobertura", "plan", "datos", "instalacion", "listo"],
+  traslado: ["donde", "cobertura", "instalacion", "listo"]
+};
+const mvSteps = () => MV_FLOWS[MV.mode] || MV_FLOWS.nuevo;
+const curStep = () => mvSteps()[MV.step];
+const PAYERS = [["yo", "Yo"], ["familia", "Mi familia"], ["roomie", "Yo y mi roomie"]];
+const PAYER_WHO = ["Mamá", "Papá", "Otro familiar"];
+/* El cliente de ejemplo tiene Essential en estrato 1 a 3; en el traslado el precio sigue el estrato del nuevo edificio. */
+const CLIENTE = { plan: "essential", estrato: "1-3" };
 const SLOTS_INST = [
   { id: "am", chip: "Mañana · 8 a 12", frase: "en la mañana, entre las 8 y las 12" },
   { id: "pm", chip: "Tarde · 1 a 5", frase: "en la tarde, entre la 1 y las 5" }
 ];
 const slotDe = (id) => SLOTS_INST.find((x) => x.id === id) || SLOTS_INST[0];
 const MV = {};
-function resetMove() {
-  Object.assign(MV, { step: 0, city: "Medellín", place: null, free: "", tower: null, apt: "504", estrato: "1-3", estratoEdit: false, needs: { people: 2, acts: [] }, plan: "essential",
-    name: "Valentina Ríos", cc: "1.036.000.000", phone: "300 000 0000", mail: "valentina@correo.com", split: false, day: null, slot: null, requested: null });
+function resetMove(mode = "nuevo") {
+  Object.assign(MV, { mode, step: 0, city: "Medellín", kind: "apto", place: null, free: "", tower: null, apt: mode === "traslado" ? "" : "504", estrato: "1-3", estratoEdit: false, needs: { people: 2, acts: [] }, plan: "essential",
+    name: "Valentina Ríos", cc: "1.036.000.000", phone: "300 000 0000", mail: "valentina@correo.com", split: false, day: null, slot: null, requested: null,
+    payer: "yo", payerWho: "Mamá", payerPhone: "", payerConfirmed: false, wait: false, waitPhone: mode === "traslado" ? "300 000 0000" : "" });
 }
 resetMove();
 
 const hashStr = (t) => { let h = 7; for (const c of t) h = (h * 31 + c.charCodeAt(0)) >>> 0; return h; };
 function coverageOf() {
   const p = MV.place;
+  if (MV.kind === "casa") return { ok: false, casa: true, towers: false, others: [], vecinos: 0, speed: 0 };
   if (p && p.towers) {
     const others = p.towers.filter((t) => t !== MV.tower && p.cover[t]);
     return { ok: !!p.cover[MV.tower], towers: true, others, vecinos: (p.vecinos || {})[MV.tower] || 0, speed: (p.speed || {})[MV.tower] || 0 };
@@ -48,6 +61,10 @@ function coverageOf() {
 const mvTitle = () => (MV.place ? (MV.tower ? `${MV.tower} · ${MV.place.name}` : MV.place.name) : MV.free.trim());
 const mvPrice = () => PLANES[MV.plan].price[MV.estrato];
 const mvValid = () => (MV.place ? !MV.place.towers || !!MV.tower : MV.free.trim().length > 5);
+/* Vecinos que ya pidieron que lleguemos: dato de ejemplo, estable para cada edificio y torre. */
+const waitCount = () => 8 + (hashStr(mvTitle() || "casa") % 27);
+const waToNumber = (t) => { const d = String(t || "").replace(/\D/g, ""); return d.length === 10 ? "57" + d : d; };
+const waLink = (phone, text) => `https://wa.me/${waToNumber(phone)}?text=${encodeURIComponent(text)}`;
 
 /* Ilustración técnica de línea: las torres del conjunto, con las ventanas encendidas donde ya llega la fibra. */
 function towersArt() {
@@ -81,52 +98,86 @@ function placeBtn(pl) {
     <button class="icon-btn save-btn" type="button" aria-pressed="${saved}" data-action="save-place" data-id="${pl.id}" aria-label="Guardar ${pl.name} para comparar">${ic("bookmark")}</button></div>`;
 }
 function suggestions() {
+  if (MV.kind === "casa") return `<p class="label muted">Escribe la dirección de la casa y toca Revisar cobertura.</p>`;
   const q = MV.free.trim().toLowerCase();
   return LUGARES.filter((l) => l.city === MV.city && (!q || MV.place || (l.name + " " + l.addr).toLowerCase().includes(q))).map(placeBtn).join("") ||
-    `<p class="label muted">No está en la lista. Igual podemos revisarla: toca Revisar cobertura.</p>`;
+    `<p class="label muted">No está en la lista. Toca Revisar cobertura.</p>`;
 }
 
 function mvStepHTML() {
-  const step = MV_STEPS[MV.step];
+  const step = curStep();
   if (step === "donde") {
+    const tras = MV.mode === "traslado", casa = MV.kind === "casa";
     return {
       body: `<div class="mv-step step-in">
-        <div class="mv-lead"><h2 class="h2">¿A dónde te mudas?</h2><p class="body-s muted">Revisamos tu edificio y, si es un conjunto, tu torre. A veces llegamos a una torre y a otra todavía no.</p></div>
-        <div id="mvSaved">${savedStrip()}</div>
+        <div class="mv-lead"><h2 class="h2">${tras ? "¿A dónde te vas?" : "¿A dónde te mudas?"}</h2><p class="body-s muted">${tras ? "Revisamos tu nuevo edificio y tu torre." : "Revisamos tu edificio y tu torre."}</p></div>
+        ${tras ? "" : `<div id="mvSaved">${savedStrip()}</div>`}
         <div class="field"><span class="label">Ciudad</span><div class="chips">${["Medellín", "Bogotá"].map((c) => `<button class="chip" type="button" aria-pressed="${MV.city === c}" data-action="mv-city" data-v="${c}">${c}</button>`).join("")}</div></div>
-        <div class="field"><label for="mvAddr">Dirección o nombre del edificio</label>
-          <div class="input-wrap"><input class="input" id="mvAddr" name="mvAddr" type="text" autocomplete="off" value="${MV.place ? MV.place.addr : MV.free}" placeholder="Ej.: Cra. 76 #33-40"><span class="icon-btn" aria-hidden="true" style="pointer-events:none">${ic("search")}</span></div></div>
+        <div class="field"><span class="label">Es un</span><div class="chips">${[["apto", "Apartamento"], ["casa", "Casa"]].map(([v, t]) => `<button class="chip" type="button" aria-pressed="${MV.kind === v}" data-action="mv-kind" data-v="${v}">${t}</button>`).join("")}</div></div>
+        <div class="field"><label for="mvAddr">${casa ? "Dirección de la casa" : "Dirección o nombre del edificio"}</label>
+          <div class="input-wrap"><input class="input" id="mvAddr" name="mvAddr" type="text" autocomplete="off" value="${esc(MV.place ? MV.place.addr : MV.free)}" placeholder="Ej.: Cra. 76 #33-40"><span class="icon-btn" aria-hidden="true" style="pointer-events:none">${ic("search")}</span></div></div>
         <div class="place-list" id="mvPlaces" role="radiogroup" aria-label="Edificios encontrados">${suggestions()}</div>
-        <div id="mvTowers">${towersField()}</div>
-        <div class="field"><label for="mvApt">Apartamento</label><div class="input-wrap"><input class="input" id="mvApt" name="mvApt" type="text" inputmode="numeric" value="${MV.apt}" style="padding-right:18px"></div></div>
+        <div id="mvTowers">${casa ? "" : towersField()}</div>
+        ${casa ? "" : `<div class="field"><label for="mvApt">Apartamento</label><div class="input-wrap"><input class="input" id="mvApt" name="mvApt" type="text" inputmode="numeric" value="${esc(MV.apt)}" style="padding-right:18px"></div></div>`}
       </div>`,
       foot: `<button class="btn btn--primary btn--lg btn--block" type="button" data-action="mv-next" id="mvCta" ${mvValid() ? "" : "disabled"}>Revisar cobertura</button>`
     };
   }
   if (step === "cobertura") {
-    const c = coverageOf(), donde = MV.tower ? "tu torre" : "tu edificio";
-    const head = c.ok ? `Llegamos a ${donde}` : c.towers && c.others.length ? `Todavía no llegamos a la ${MV.tower}` : "Todavía no llegamos a ese edificio";
-    let body = `<div class="mv-step step-in"><div class="mv-lead"><h2 class="h2">${head}</h2><p class="label muted">${mvTitle()}${MV.apt ? " · apto " + MV.apt : ""}</p></div>${towersArt()}${MV.place ? saveBigBtn(MV.place) : ""}`;
+    const c = coverageOf(), donde = MV.tower ? "tu torre" : "tu edificio", tras = MV.mode === "traslado";
+    const head = c.ok ? `Llegamos a ${donde}` : c.casa ? "Todavía no instalamos en casas" : c.towers && c.others.length ? `Todavía no llegamos a la ${MV.tower}` : "Todavía no llegamos a ese edificio";
+    let body = `<div class="mv-step step-in"><div class="mv-lead"><h2 class="h2">${head}</h2><p class="label muted">${esc(mvTitle())}${MV.apt && !c.casa ? " · apto " + esc(MV.apt) : ""}</p></div>${c.casa ? "" : towersArt()}${MV.place && !tras ? saveBigBtn(MV.place) : ""}`;
     let foot = "";
-    if (c.ok) {
-      body += `<div class="state">${ic("check")}<div class="state__body"><p class="state__title">Puedes tener Somos desde el día que llegues</p><p class="state__text">Fibra óptica hasta tu edificio, sin cláusulas y con 30 días gratis.</p></div></div>
-        <div class="sec"><div class="sec__row"><span class="label label--caps">Tus vecinos con Somos</span><span class="label">${cap(FACT.prevMes)}</span></div></div>
+    if (c.ok && tras) {
+      const p = MV.place, est = p && p.estrato ? (p.estrato <= 3 ? "1-3" : "4-6") : CLIENTE.estrato;
+      MV.estrato = est; MV.plan = CLIENTE.plan;
+      const antes = PLANES[CLIENTE.plan].price[CLIENTE.estrato], ahora = PLANES[CLIENTE.plan].price[est];
+      body += `<div class="state">${ic("check")}<div class="state__body"><p class="state__title">Tu internet se muda contigo</p><p class="state__text">Lo instalamos allá el mismo día. Sin costo.</p></div></div>
         <div class="results">
           <div class="result"><span class="label muted">Aptos</span><span class="result__v num">${c.vecinos}</span><span class="label">con Somos</span></div>
           <div class="result"><span class="label muted">Velocidad</span><span class="result__v num">${c.speed}</span><span class="label">MBPS medios</span></div>
           <div class="result"><span class="label muted">Fallas</span><span class="result__v num">0</span><span class="label">el mes pasado</span></div>
         </div>
-        <p class="label muted">Medido por los Orb de ${donde}, sin datos de nadie en particular.</p>`;
+        <div class="card card--flat"><span class="label label--caps">Así queda tu plan</span>
+          <dl class="rows">
+            <div><dt>Plan</dt><dd>${PLANES[CLIENTE.plan].name}</dd></div>
+            <div><dt>Precio allá</dt><dd>${money(ahora)} / mes</dd></div>
+            <div><dt>Traslado</dt><dd>$0</dd></div>
+            <div><dt>Tus meses con Somos</dt><dd>Siguen contando</dd></div>
+          </dl>
+          ${ahora !== antes ? `<p class="label muted">${p && p.estrato ? `Estrato ${p.estrato}` : "Otro estrato"}. Hoy pagas ${money(antes)}.</p>` : `<p class="label muted">Pagas lo mismo que hoy.</p>`}
+        </div>`;
+      foot = `<button class="btn btn--primary btn--lg btn--block" type="button" data-action="mv-next">Elegir el día</button><button class="link-btn" type="button" data-action="mv-back">Revisar otra dirección</button>`;
+    } else if (c.ok) {
+      body += `<div class="state">${ic("check")}<div class="state__body"><p class="state__title">Puedes tener Somos desde el día que llegues</p><p class="state__text">Sin cláusulas y con 30 días gratis.</p></div></div>
+        <div class="sec"><div class="sec__row"><span class="label label--caps">Tus vecinos con Somos</span><span class="label">${cap(FACT.prevMes)}</span></div></div>
+        <div class="results">
+          <div class="result"><span class="label muted">Aptos</span><span class="result__v num">${c.vecinos}</span><span class="label">con Somos</span></div>
+          <div class="result"><span class="label muted">Velocidad</span><span class="result__v num">${c.speed}</span><span class="label">MBPS medios</span></div>
+          <div class="result"><span class="label muted">Fallas</span><span class="result__v num">0</span><span class="label">el mes pasado</span></div>
+        </div>`;
       foot = `<button class="btn btn--primary btn--lg btn--block" type="button" data-action="mv-next">Ver planes</button><button class="link-btn" type="button" data-action="mv-back">Revisar otra dirección</button>`;
-    } else if (MV.requested) {
-      body += `<div class="state step-in">${ic("check")}<div class="state__body"><p class="state__title">Empezamos la gestión</p><p class="state__text">${MV.requested === "no" ? "Gracias por contarnos. Te avisamos apenas lleguemos a esa zona." : "Te escribimos por WhatsApp cuando tengamos fecha para " + (MV.tower ? "tu torre" : "tu edificio") + "."}</p></div></div>`;
-      foot = `<button class="btn btn--secondary btn--lg btn--block" type="button" data-action="mv-back">Revisar otra dirección</button>`;
-    } else if (c.towers && c.others.length) {
-      body += `<div class="state state--warning">${ic("alert")}<div class="state__body"><p class="state__title">Estamos cerca</p><p class="state__text">Ya llegamos a la ${c.others.join(" y la ")} de tu conjunto. Podemos empezar la gestión para tu torre.</p></div></div>`;
-      foot = `<button class="btn btn--primary btn--lg btn--block" type="button" data-action="mv-request" data-v="torre">Pedir que lleguemos a mi torre</button><button class="link-btn" type="button" data-action="mv-back">Revisar otra dirección</button>`;
     } else {
-      body += `<div class="state state--warning">${ic("alert")}<div class="state__body"><p class="state__title">Todavía no llegamos</p><p class="state__text">Podemos empezar la gestión si el edificio tiene al menos 5 pisos. ¿Me confirmas eso?</p></div></div>`;
-      foot = `<div class="btn-row"><button class="btn btn--secondary" type="button" data-action="mv-request" data-v="si">Tiene 5 o más</button><button class="btn btn--secondary" type="button" data-action="mv-request" data-v="no">Tiene menos</button></div>`;
+      // Sin cobertura: en vez de un "no", una lista de espera con los vecinos que ya lo pidieron.
+      const lugar = c.casa ? "las casas de tu zona" : MV.tower ? `la ${MV.tower}` : "tu edificio";
+      const n = waitCount() + (MV.wait ? 1 : 0);
+      const why = c.casa
+        ? `<div class="state state--warning">${ic("alert")}<div class="state__body"><p class="state__title">Hoy llegamos a edificios y conjuntos</p><p class="state__text">A las casas todavía no.</p></div></div>`
+        : c.towers && c.others.length
+          ? `<div class="state state--warning">${ic("alert")}<div class="state__body"><p class="state__title">Estamos cerca</p><p class="state__text">Ya llegamos a la ${c.others.join(" y la ")}. Falta la tuya.</p></div></div>`
+          : `<div class="state state--warning">${ic("alert")}<div class="state__body"><p class="state__title">Todavía no llegamos</p><p class="state__text">Este edificio todavía no tiene nuestra fibra.</p></div></div>`;
+      body += why + `<div class="card wait">
+          <span class="card__row">${ic("users")}<span class="label label--caps">Avísame cuando llegue</span></span>
+          <p class="wait__count"><span class="num">${n}</span><span class="body-s">${MV.wait ? `vecinos ya lo pidieron, contigo` : `vecinos ya lo pidieron`}</span></p>
+          ${MV.wait
+            ? `<div class="state step-in">${ic("check")}<div class="state__body"><p class="state__title">Listo, quedaste en la lista</p><p class="state__text">Te escribimos al ${esc(MV.waitPhone)} apenas lleguemos.</p></div></div>`
+            : `<p class="body-s muted">Nunca te llamamos para venderte.</p>
+               <div class="field"><label for="mvWaitPhone">¿A qué WhatsApp te avisamos?</label><div class="input-wrap"><input class="input" id="mvWaitPhone" name="mvWaitPhone" type="text" inputmode="tel" autocomplete="off" value="${esc(MV.waitPhone)}" placeholder="300 000 0000" style="padding-right:18px"></div></div>`}
+        </div>
+        ${tras ? `<p class="label muted">Tu internet sigue donde vives hoy. Si te mudas antes, cancelas sin multa.</p>` : ""}`;
+      foot = MV.wait
+        ? `<button class="btn btn--secondary btn--lg btn--block" type="button" data-action="mv-back">Revisar otra dirección</button>`
+        : `<button class="btn btn--primary btn--lg btn--block" type="button" data-action="mv-wait" id="mvWaitBtn" ${MV.waitPhone.replace(/\D/g, "").length >= 10 ? "" : "disabled"}>Avísame cuando llegue</button><button class="link-btn" type="button" data-action="mv-back">Revisar otra dirección</button>`;
     }
     return { body: body + "</div>", foot };
   }
@@ -136,10 +187,10 @@ function mvStepHTML() {
     const pr = mvPrice();
     const estratoField = auto
       ? `<div class="estrato-auto"><div class="setting__text"><span class="body">Estrato ${p.estrato}</span><span class="label muted">Según la dirección de tu edificio</span></div><button class="link-btn" type="button" data-action="mv-estrato-edit">Cambiar</button></div>`
-      : `<div class="field"><span class="label">Tu estrato</span><div class="chips">${[["1-3", "Estrato 1 a 3"], ["4-6", "Estrato 4 a 6"]].map(([v, t]) => `<button class="chip" type="button" aria-pressed="${MV.estrato === v}" data-action="mv-estrato" data-v="${v}">${t}</button>`).join("")}</div><p class="label muted">¿No lo sabes? Aparece en el recibo de la luz o del agua del apartamento.</p></div>`;
+      : `<div class="field"><span class="label">Tu estrato</span><div class="chips">${[["1-3", "Estrato 1 a 3"], ["4-6", "Estrato 4 a 6"]].map(([v, t]) => `<button class="chip" type="button" aria-pressed="${MV.estrato === v}" data-action="mv-estrato" data-v="${v}">${t}</button>`).join("")}</div><p class="label muted">Aparece en el recibo de la luz o del agua.</p></div>`;
     return {
       body: `<div class="mv-step step-in">
-        <div class="mv-lead"><h2 class="h2">Elige tu plan</h2><p class="body-s muted">Los dos son fibra con subida igual a la bajada. Puedes cambiar cuando quieras.</p></div>
+        <div class="mv-lead"><h2 class="h2">Elige tu plan</h2></div>
         ${estratoField}
         <div id="mvNeeds">${needsHTML()}</div>
         <div role="radiogroup" aria-label="Planes" style="display:flex;flex-direction:column;gap:16px">
@@ -159,7 +210,7 @@ function mvStepHTML() {
             <div><dt>Cancelar</dt><dd>Cuando quieras, desde la app</dd></div>
           </dl>
         </div>
-        <p class="label muted">IVA incluido. Planes y precios de somosinternet.com.</p>
+        <p class="label muted">IVA incluido.</p>
       </div>`,
       foot: `<button class="btn btn--primary btn--lg btn--block" type="button" data-action="mv-next">Seguir con ${PLANES[MV.plan].name}</button>`
     };
@@ -174,9 +225,9 @@ function mvStepHTML() {
         ${f("mvCc", "Cédula", MV.cc, 'inputmode="numeric" autocomplete="off"')}
         ${f("mvPhone", "Celular con WhatsApp", MV.phone, 'inputmode="tel" autocomplete="off"')}
         ${f("mvMail", "Correo", MV.mail, 'type="email" autocomplete="off"')}
-        <div class="setting"><div class="setting__text"><span class="body">Dividir la factura con un roomie</span><span class="label muted">Cada uno paga su parte desde la app.</span></div>
-          <button class="switch" type="button" role="switch" aria-checked="${MV.split}" data-action="mv-split" aria-label="Dividir la factura con un roomie"></button></div>
-        <p class="label muted">Datos de ejemplo. Este prototipo no guarda ni envía lo que escribas.</p>
+        <div class="field"><span class="label">¿Quién paga el internet?</span>
+          <div class="chips" role="radiogroup" aria-label="Quién paga">${PAYERS.map(([v, t]) => `<button class="chip" type="button" role="radio" aria-checked="${MV.payer === v}" aria-pressed="${MV.payer === v}" data-action="mv-payer" data-v="${v}">${t}</button>`).join("")}</div></div>
+        <div id="mvPayer">${payerFields()}</div>
       </div>`,
       foot: `<button class="btn btn--primary btn--lg btn--block" type="button" data-action="mv-next" id="mvCta">Seguir</button>`
     };
@@ -189,10 +240,10 @@ function mvStepHTML() {
       const iso = d.toISOString().slice(0, 10), off = d.getDay() === 0;
       return `<button class="day ${d.getDate() === 1 ? "is-first" : ""}" type="button" data-action="mv-day" data-v="${iso}" aria-pressed="${MV.day === iso}" aria-label="${fechaLarga(d)}${off ? ", sin instalaciones" : ""}" ${off ? "disabled" : ""}>${d.getDate()}</button>`;
     }).join("");
-    const resumen = MV.day && MV.slot ? `<div class="state step-in">${ic("calendar")}<div class="state__body"><p class="state__title">${cap(fechaLarga(isoDate(MV.day)))}</p><p class="state__text">Llegamos ${slotDe(MV.slot).frase} con tu Orb y lo dejamos funcionando. Toma unos 30 minutos.</p></div></div>` : "";
+    const resumen = MV.day && MV.slot ? `<div class="state step-in">${ic("calendar")}<div class="state__body"><p class="state__title">${cap(fechaLarga(isoDate(MV.day)))}</p><p class="state__text">Llegamos ${slotDe(MV.slot).frase}. Toma unos 30 minutos.</p></div></div>` : "";
     return {
       body: `<div class="mv-step step-in">
-        <div class="mv-lead"><h2 class="h2">¿Qué día llegas?</h2><p class="body-s muted">Agenda la instalación para el día de tu mudanza y llega a una casa con internet.</p></div>
+        <div class="mv-lead"><h2 class="h2">¿Qué día llegas?</h2><p class="body-s muted">Elige el día de tu mudanza.</p></div>
         <div class="field"><div class="cal-head"><span class="label">Día</span><span class="label muted">${cap(meses)}</span></div>
           <div class="cal">${["L", "M", "M", "J", "V", "S", "D"].map((w) => `<span class="cal__wd" aria-hidden="true">${w}</span>`).join("")}${cells}</div></div>
         <div class="field"><span class="label">Franja</span><div class="chips">${SLOTS_INST.map((t) => `<button class="chip" type="button" aria-pressed="${MV.slot === t.id}" data-action="mv-slot" data-v="${t.id}">${t.chip}</button>`).join("")}</div></div>
@@ -202,7 +253,25 @@ function mvStepHTML() {
     };
   }
   // listo
-  const d = isoDate(MV.day), code = (MV.name.split(" ")[0] || "AMIGO").toUpperCase().normalize("NFD").replace(/[̀-ͯ]/g, "") + "-" + (MV.apt || "100");
+  const d = isoDate(MV.day);
+  if (MV.mode === "traslado") {
+    return {
+      body: `<div class="mv-step mv-done step-in">
+        <div class="center-col" style="padding:8px 0 0"><div class="lamp" id="mvLamp"></div>
+          <h2 class="h1" style="text-align:center">Tu internet se muda contigo.</h2>
+          <p class="body-s muted">El ${fechaLarga(d)}, ${slotDe(MV.slot).frase}, desconectamos tu Orb y lo dejamos funcionando en tu nuevo lugar.</p></div>
+        <dl class="rows">
+          <div><dt>Dónde</dt><dd>${esc(mvTitle())}${MV.apt ? ", apto " + esc(MV.apt) : ""}</dd></div>
+          <div><dt>Plan</dt><dd>${PLANES[MV.plan].name} · ${money(mvPrice())} / mes</dd></div>
+          <div><dt>Traslado</dt><dd>$0</dd></div>
+          <div><dt>Tus meses con Somos</dt><dd>Siguen contando</dd></div>
+        </dl>
+        <p class="label muted">Empaca el Orb con su adaptador. Te escribimos un día antes.</p>
+      </div>`,
+      foot: `<button class="btn btn--primary btn--lg btn--block" type="button" data-action="mv-finish">Volver al inicio</button>`
+    };
+  }
+  const I = mvInstall();
   return {
     body: `<div class="mv-step mv-done step-in">
       <div class="center-col" style="padding:8px 0 0"><div class="lamp" id="mvLamp"></div>
@@ -212,17 +281,55 @@ function mvStepHTML() {
         <div><dt>Plan</dt><dd>${PLANES[MV.plan].name}</dd></div>
         <div><dt>Primeros 30 días</dt><dd>$0</dd></div>
         <div><dt>Después</dt><dd>${money(mvPrice())} / mes</dd></div>
-        <div><dt>Dónde</dt><dd>${mvTitle()}${MV.apt ? ", apto " + MV.apt : ""}</dd></div>
+        <div><dt>Dónde</dt><dd>${esc(mvTitle())}${MV.apt ? ", apto " + esc(MV.apt) : ""}</dd></div>
+        <div><dt>Paga</dt><dd>${MV.payer === "familia" ? MV.payerWho : MV.payer === "roomie" ? "Tú y tu roomie, mitad y mitad" : "Tú"}</dd></div>
       </dl>
-      <p class="label muted">Te escribimos por WhatsApp un día antes.${MV.split ? " A tu roomie le llega su parte de la factura cada mes." : ""}</p>
+      ${payerCardHTML(I, "listo")}
       <div class="card">
         <span class="card__row">${ic("users")}<span class="label label--caps">¿Alguien más se muda?</span></span>
-        <p class="body-s muted">Comparte tu código con tu roomie o tus amigos. Por cada uno que se pase a Somos te regalamos un mes, hasta 3.</p>
-        <div class="code-box"><span class="label">${code}</span><button class="btn btn--primary" type="button" data-action="copy" data-copy="${code}" data-ok="Código copiado">${ic("copy")}Copiar</button></div>
+        <p class="body-s muted">Un mes gratis por cada amigo, hasta 3.</p>
+        <div class="code-box"><span class="label">${I.code}</span><button class="btn btn--primary" type="button" data-action="copy" data-copy="${I.code}" data-ok="Código copiado">${ic("copy")}Copiar</button></div>
       </div>
     </div>`,
     foot: `<button class="btn btn--primary btn--lg btn--block" type="button" data-action="mv-finish">Entrar a la app</button>`
   };
+}
+/* Lo que se contrata, armado desde el flujo (también lo usa el resumen de quien paga). */
+function mvInstall() {
+  const youngName = (MV.name.trim().split(" ")[0] || "Humano");
+  return { day: MV.day, slot: MV.slot, plan: MV.plan, estrato: MV.estrato, price: mvPrice(), where: mvTitle() + (MV.apt ? ", apto " + MV.apt : ""), apt: MV.apt,
+    split: MV.payer === "roomie", checks: {}, youngName, payerWho: MV.payerWho,
+    payer: { who: MV.payer, phone: MV.payerPhone, confirmed: !!MV.payerConfirmed },
+    code: youngName.toUpperCase().normalize("NFD").replace(/[̀-ͯ]/g, "") + "-" + (MV.apt || "100") };
+}
+/* Quién paga: muchas veces no es el joven (cruce de la investigación, oct. 2026). */
+function payerFields() {
+  if (MV.payer === "roomie") return `<div class="state step-in">${ic("users")}<div class="state__body"><p class="state__title">Cada uno paga su parte</p><p class="state__text">A cada uno le llega su mitad de la factura.</p></div></div>`;
+  if (MV.payer !== "familia") return "";
+  return `<div class="payer step-in">
+      <div class="field"><span class="label">¿Quién de tu familia?</span><div class="chips">${PAYER_WHO.map((w) => `<button class="chip" type="button" aria-pressed="${MV.payerWho === w}" data-action="mv-payer-who" data-v="${w}">${w}</button>`).join("")}</div></div>
+      <div class="field"><label for="mvPayerPhone">Su WhatsApp</label><div class="input-wrap"><input class="input" id="mvPayerPhone" name="mvPayerPhone" type="text" inputmode="tel" autocomplete="off" value="${esc(MV.payerPhone)}" placeholder="Opcional" style="padding-right:18px"></div></div>
+      <div class="state">${ic("send")}<div class="state__body"><p class="state__title">Le mandamos el resumen</p><p class="state__text">Paga desde su celular. Tú manejas el internet.</p></div></div>
+    </div>`;
+}
+/* Link que recibe quien paga: abre la app en #paga con el resumen (sin datos personales). */
+function payerLink(I) {
+  const q = new URLSearchParams({ n: I.youngName, q: I.payerWho, p: I.plan, e: I.estrato, d: I.day, s: I.slot, w: I.where });
+  return location.origin + location.pathname + "#paga?" + q.toString();
+}
+function payerMessage(I) {
+  return `${I.payerWho === "Otro familiar" ? "Hola." : "Hola, " + I.payerWho + "."} Elegí Somos para mi internet: ${PLANES[I.plan].name}, 30 días gratis y luego ${money(I.price)} al mes, sin permanencia. Resumen y pago: ${payerLink(I)}`;
+}
+function payerCardHTML(I, where) {
+  const P = I.payer;
+  if (!P || P.who !== "familia") return "";
+  const done = P.confirmed;
+  return `<div class="card ${done ? "" : "card--payer"}">
+      <span class="card__row">${ic("wallet")}<span class="label label--caps">Quién paga</span>${done ? `<span class="pill" style="margin-left:auto">${ic("check", "i--16")}Listo</span>` : ""}</span>
+      <p class="h3">${done ? `${I.payerWho} registró su medio de pago` : `A ${I.payerWho.toLowerCase() === "otro familiar" ? "tu familiar" : "tu " + I.payerWho.toLowerCase()} le llega el resumen`}</p>
+      <p class="body-s muted">${done ? `Le avisamos antes de cada cobro.` : "Paga desde su celular."}</p>
+      ${done ? "" : `<div class="btn-row"><a class="btn btn--primary" href="${waLink(P.phone, payerMessage(I))}" target="_blank" rel="noopener" data-action="payer-wa" data-where="${where}">${ic("send")}Enviar por WhatsApp</a><button class="btn btn--secondary" type="button" data-action="payer-preview">Ver lo que le llega</button></div>`}
+    </div>`;
 }
 function towersField() {
   if (!MV.place || !MV.place.towers) return "";
@@ -235,17 +342,20 @@ function renderMove(dir = 1) {
   const b = $("#mvBody");
   b.innerHTML = body; $("#mvFoot").innerHTML = foot;
   b.scrollTop = 0;
-  const shown = Math.min(MV.step + 1, 5);
-  $("#mvStepLabel").textContent = MV.step >= 5 ? "Listo" : `Paso ${shown} de 5`;
-  $("#mvProg").style.width = (MV.step >= 5 ? 100 : (shown / 5) * 100) + "%";
-  if (MV_STEPS[MV.step] === "listo") {
+  const total = mvSteps().length - 1, done = curStep() === "listo", shown = Math.min(MV.step + 1, total);
+  $("#pageMove .page__title .body").textContent = MV.mode === "traslado" ? "Traslado" : "Me mudo";
+  $("#pageMove").setAttribute("aria-label", MV.mode === "traslado" ? "Traslado" : "Me mudo");
+  $("#mvStepLabel").textContent = done ? "Listo" : `Paso ${shown} de ${total}`;
+  $("#mvProg").style.width = (done ? 100 : (shown / total) * 100) + "%";
+  if (done) {
     const L = mountLamp($("#mvLamp"), { mode: "fn", temp: true });
     const t0 = performance.now();
     L.fn = (now) => (now - t0 < 500 ? 0.03 : lampOn(now - t0 - 500) * (0.94 + 0.04 * Math.sin(now / 800)));
     setLevel(L, 0.03);
   }
-  if (MV_STEPS[MV.step] === "donde") mountDonde();
-  if (MV_STEPS[MV.step] === "datos") mountDatos();
+  if (curStep() === "donde") mountDonde();
+  if (curStep() === "datos") mountDatos();
+  if (curStep() === "cobertura") mountWait();
 }
 function mountDonde() {
   const addr = $("#mvAddr"), apt = $("#mvApt");
@@ -254,20 +364,41 @@ function mountDonde() {
     $("#mvPlaces").innerHTML = suggestions(); $("#mvTowers").innerHTML = "";
     $("#mvCta").disabled = !mvValid();
   });
-  apt.addEventListener("input", () => (MV.apt = apt.value.trim()));
+  if (apt) apt.addEventListener("input", () => (MV.apt = apt.value.trim()));
 }
 function mountDatos() {
   [["mvName", "name"], ["mvCc", "cc"], ["mvPhone", "phone"], ["mvMail", "mail"]].forEach(([id, k]) => {
     const el = $("#" + id);
     el.addEventListener("input", () => { MV[k] = el.value; $("#mvCta").disabled = !(MV.name.trim() && MV.cc.trim()); });
   });
+  mountPayerPhone();
 }
-function openMove(fresh = true) {
-  if (fresh) resetMove();
+function mountPayerPhone() {
+  const el = $("#mvPayerPhone");
+  if (el) el.addEventListener("input", () => (MV.payerPhone = el.value));
+}
+function mountWait() {
+  const el = $("#mvWaitPhone");
+  if (!el) return;
+  el.addEventListener("input", () => { MV.waitPhone = el.value; $("#mvWaitBtn").disabled = MV.waitPhone.replace(/\D/g, "").length < 10; });
+}
+function openMove(fresh = true, mode = "nuevo") {
+  if (fresh) resetMove(mode);
   renderMove();
   const p = $("#pageMove");
   p.classList.add("is-open");
   setTimeout(() => { const b = p.querySelector("[data-action=mv-back]"); b && b.focus({ preventScroll: true }); }, 80);
+}
+/* Traslado: el cliente se lleva su internet. Puede entrar con una dirección ya escrita (pestaña Para ti o chat). */
+function openTraslado(addr) {
+  if (!DATA.client) { DATA.client = "active"; applyClientState(); }
+  resetMove("traslado");
+  if (addr && addr.trim()) {
+    const hit = LUGARES.find((l) => (l.name + " " + l.addr).toLowerCase().includes(addr.trim().toLowerCase()));
+    if (hit) { MV.place = hit; MV.city = hit.city; } else MV.free = addr.trim();
+    if (!hit || !hit.towers) MV.step = 1; // con torres, primero elige la torre
+  }
+  openMove(false);
 }
 function closeMove() { $("#pageMove").classList.remove("is-open"); }
 
@@ -298,6 +429,7 @@ function welcomeToHome() {
   }, dur + 40);
 }
 function afterSplash() {
+  if (PAGA && !afterSplash.done) { afterSplash.done = true; setTimeout(() => openPayer(payerFromUrl(), "link"), 250); return; }
   if (!DATA.client && HASH === "mudanza" && !afterSplash.done) { afterSplash.done = true; setTimeout(() => openMove(true), 250); }
   else setTimeout(reinstallNotice, 450);
 }
@@ -347,6 +479,7 @@ function applyClientState() {
   } else if (heroLamp.mode === "fn" && !heroLamp.restarting) heroLamp.mode = "auto";
   renderHero(false);
   renderNewClient();
+  renderMoveCard();
 }
 function installDays() {
   if (!DATA.install) return 0;
@@ -359,21 +492,15 @@ function renderNewClient() {
   $("#homeNew").innerHTML = `
     ${techCardHTML()}
     ${TECH.on ? "" : `<button class="btn btn--secondary btn--block" type="button" data-action="resched">${ic("calendar")}Cambiar la fecha de instalación</button>`}
-    <div class="card">
-      <span class="label label--caps">Antes de la instalación</span>
-      <div>
-        ${[["cedula", "Ten a mano tu cédula."], ["lugar", "Piensa dónde va el Orb: un lugar central y a la vista."], ["admin", "Avísale a la administración que vamos ese día."]].map(([k, t]) =>
-          `<button class="check-row" type="button" role="checkbox" aria-checked="${!!(I.checks && I.checks[k])}" data-action="check" data-v="${k}"><span class="check-row__box">${ic("check")}</span><span class="body-s">${t}</span></button>`).join("")}
-      </div>
-    </div>
+    ${payerCardHTML(I, "home")}
     <div class="card card--flat">
       <span class="label label--caps">Tu primera factura</span>
-      <div><p class="price num">${money(bill.prorAmt)}</p><p class="label muted">Llega el ${fechaLarga(bill.firstBill)} y cobra solo ${bill.prorDays} días.</p></div>
+      <div><p class="price num">${money(bill.prorAmt)}</p><p class="label muted">Llega el ${fechaLarga(bill.firstBill)}.</p></div>
       <button class="link-btn" type="button" data-nav="pagos" style="align-self:flex-start">Ver por qué${ic("arrowRight", "i--16")}</button>
     </div>
     <div class="card">
       <span class="card__row">${ic("users")}<span class="label label--caps">Tu código</span></span>
-      <p class="body-s muted">Por cada amigo que se pase a Somos te regalamos un mes, hasta 3.</p>
+      <p class="body-s muted">Un mes gratis por cada amigo, hasta 3.</p>
       <div class="code-box"><span class="label">${I.code}</span><button class="btn btn--primary" type="button" data-action="copy" data-copy="${I.code}" data-ok="Código copiado">${ic("copy")}Copiar</button></div>
     </div>`;
   $("#newBill").innerHTML = billTimelineHTML(I);
@@ -382,7 +509,7 @@ function openInstallSheet() {
   const I = DATA.install; if (!I) return;
   openSheet(sheetHead("Tu instalación", cap(fechaLarga(isoDate(I.day)))) +
     `<dl class="rows"><div><dt>Franja</dt><dd>${slotDe(I.slot).chip}</dd></div><div><dt>Dónde</dt><dd>${I.where}</dd></div><div><dt>Plan</dt><dd>${PLANES[I.plan].name}</dd></div></dl>
-     <p class="body-s muted">El técnico llega con tu Orb, lo instala y mide la velocidad contigo. Toma unos 30 minutos. Ese día ves en la app cuando va en camino.</p>
+     <p class="body-s muted">El técnico instala tu Orb en unos 30 minutos. Ese día lo ves venir en la app.</p>
      <button class="btn btn--secondary btn--block" type="button" data-action="resched">${ic("calendar")}Cambiar la fecha</button>
      <div class="card demo" style="padding:16px;gap:10px"><span class="label label--caps">Modo demostración</span>
        <div class="btn-row"><button class="btn btn--primary" type="button" data-nav="tech">Simular el día</button><button class="btn btn--secondary" type="button" data-nav="install">Instalar ya</button></div></div>`);
@@ -404,10 +531,10 @@ function simulateInstall() {
   }, REDUCED ? 100 : 1300);
 }
 function finishMove() {
-  const where = mvTitle() + (MV.apt ? ", apto " + MV.apt : "");
-  DATA.install = { day: MV.day, slot: MV.slot, plan: MV.plan, price: mvPrice(), where, apt: MV.apt, split: MV.split, checks: {}, code: (MV.name.split(" ")[0] || "AMIGO").toUpperCase().normalize("NFD").replace(/[̀-ͯ]/g, "") + "-" + (MV.apt || "100") };
+  if (MV.mode === "traslado") { finishTraslado(); return; }
+  DATA.install = mvInstall();
   DATA.client = "new";
-  DATA.userName = (MV.name.trim().split(" ")[0] || "Humano");
+  DATA.userName = DATA.install.youngName;
   applyClientState();
   goTab(0, true); $("#scr-0").scrollTop = 0;
   hideWelcome();
@@ -416,6 +543,123 @@ function finishMove() {
   DATA.notifs.unshift({ id: "inst", icon: "calendar", title: "Agendamos tu instalación", text: `${cap(fechaLarga(isoDate(MV.day)))}, ${slotDe(MV.slot).frase}. Te escribimos un día antes.`, when: "Hoy", time: hora(new Date()), unread: true });
   renderNotifs();
 }
+function finishTraslado() {
+  const d = isoDate(MV.day);
+  DATA.traslado = { day: MV.day, slot: MV.slot, where: mvTitle() + (MV.apt ? ", apto " + MV.apt : ""), price: mvPrice() };
+  closeMove();
+  goTab(0, true); $("#scr-0").scrollTop = 0;
+  renderMoveCard();
+  DATA.notifs.unshift({ id: "tras", icon: "box", title: "Agendamos tu traslado", text: `${cap(fechaLarga(d))}, ${slotDe(MV.slot).frase}. Reinstalamos tu Orb en ${DATA.traslado.where}.`, when: "Hoy", time: hora(new Date()), unread: true });
+  renderNotifs();
+  toast(`Tu internet se muda el ${fechaLarga(d)}`, "box");
+}
+/* Tarjeta de mudanza del inicio: invita a trasladar o muestra el traslado agendado. */
+function renderMoveCard() {
+  const c = $("#homeMoveCard"); if (!c) return;
+  const T = DATA.traslado;
+  c.innerHTML = T
+    ? `<span class="card__row">${ic("box")}<span class="label label--caps">Traslado agendado</span></span>
+       <span class="h3">Tu internet se muda el ${fechaLarga(isoDate(T.day))}</span>
+       <span class="body-s muted">${esc(T.where)} · ${slotDe(T.slot).chip}</span>`
+    : `<span class="card__row">${ic("box")}<span class="label label--caps">Mudanza</span></span>
+       <span class="h3">¿Te vas a mudar?</span>
+       <span class="body-s muted">Llévate tu internet a tu nuevo edificio.</span>`;
+}
+
+/* ============ Para quien paga ============
+   Lo que ve la mamá, el papá o el familiar que paga cuando abre el link que le mandan por WhatsApp (#paga).
+   Sale del cruce de la investigación: el internet casi nunca lo elige y lo paga el mismo joven.
+   Avisar antes de cada cobro y con un mes si cambia el precio son propuestas del prototipo, no políticas de Somos. */
+const PAYER = { I: null, src: "link", method: "nequi", auto: true, done: false };
+function payerFromUrl() {
+  const raw = (location.hash.split("?")[1] || "");
+  const q = new URLSearchParams(raw);
+  const plan = PLANES[q.get("p")] ? q.get("p") : "essential";
+  const estrato = q.get("e") === "4-6" ? "4-6" : "1-3";
+  const day = /^\d{4}-\d{2}-\d{2}$/.test(q.get("d") || "") ? q.get("d") : isoOf(addDays(NOW, 7));
+  return { youngName: (q.get("n") || "Tu familiar").slice(0, 40), payerWho: (q.get("q") || "").slice(0, 30), plan, estrato, price: PLANES[plan].price[estrato],
+    day, slot: q.get("s") === "pm" ? "pm" : "am", where: (q.get("w") || "su nuevo apartamento").slice(0, 120), payer: { who: "familia", confirmed: false } };
+}
+function samplePayer() {
+  if (DATA.install && DATA.install.payer && DATA.install.payer.who === "familia") return DATA.install;
+  return { youngName: "Valentina", payerWho: "Mamá", plan: "essential", estrato: "1-3", price: PLANES.essential.price["1-3"], day: isoOf(addDays(NOW, 7)), slot: "am",
+    where: "Torre 1 · Conjunto Mirador de Laureles, apto 504", payer: { who: "familia", confirmed: false } };
+}
+function payerHTML() {
+  const I = PAYER.I, b = firstBill(I), m = METHODS.find((x) => x.id === PAYER.method), who = I.payerWho;
+  const hola = !who || who === "Otro familiar" ? "Hola." : `Hola, ${esc(who)}.`;
+  if (PAYER.done) {
+    return {
+      body: `<div class="mv-step mv-done step-in">
+        <div class="center-col" style="padding:24px 0 0"><span class="done-badge"><svg class="i check-draw" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12l5 5L20 6"/></svg></span>
+          <h2 class="h2" style="text-align:center">Listo, quedó ${m.name}</h2>
+          <p class="body-s muted">La primera factura te llega el ${fechaLarga(b.firstBill)} por WhatsApp${PAYER.auto ? ` y se paga sola` : ""}.</p></div>
+        <dl class="rows">
+          <div><dt>Primera factura</dt><dd>${money(b.prorAmt)}</dd></div>
+          <div><dt>Después</dt><dd>${money(I.price)} / mes</dd></div>
+          <div><dt>Aviso antes de cobrar</dt><dd>3 días antes</dd></div>
+        </dl>
+      </div>`,
+      foot: `<button class="btn btn--primary btn--lg btn--block" type="button" data-action="payer-close">${PAYER.src === "link" ? "Conocer Somos" : "Volver"}</button>`
+    };
+  }
+  return {
+    body: `<div class="mv-step step-in">
+      <div class="mv-lead"><h2 class="h2">${hola}</h2><p class="body-s muted">${esc(I.youngName)} eligió Somos para su internet. Esto es lo que pagas.</p></div>
+      <dl class="rows">
+        <div><dt>Plan</dt><dd>${PLANES[I.plan].name}</dd></div>
+        <div><dt>Instalación</dt><dd>${cap(fechaCorta(isoDate(I.day)))} · ${slotDe(I.slot).chip.split(" · ")[0]}</dd></div>
+        <div><dt>Primeros 30 días</dt><dd>$0</dd></div>
+        <div><dt>Primera factura</dt><dd>${money(b.prorAmt)}</dd></div>
+        <div><dt>Desde ahí</dt><dd>${money(I.price)} / mes</dd></div>
+        <div><dt>Permanencia</dt><dd>Sin cláusulas</dd></div>
+        <div><dt>Estudio de crédito</dt><dd>No lo necesita</dd></div>
+      </dl>
+      <div class="state">${ic("check")}<div class="state__body"><p class="state__title">Sin sorpresas en la factura</p><p class="state__text">Te avisamos 3 días antes de cada cobro, y con un mes si cambia el precio.</p></div></div>
+      <div class="field"><span class="label">¿Cómo quieres pagar?</span>
+        <div role="radiogroup" aria-label="Medio de pago" style="display:flex;flex-direction:column;gap:8px">
+        ${METHODS.map((x) => `<button class="method" type="button" role="radio" aria-checked="${x.id === PAYER.method}" data-action="payer-method" data-id="${x.id}"><span class="list-item__icon" style="width:40px;height:40px">${ic(x.icon, "i--20")}</span><span class="list-item__main"><span class="body">${x.name}</span><span class="label muted">${x.sub}</span></span><span class="method__radio"></span></button>`).join("")}
+        </div></div>
+      <div class="setting"><div class="setting__text"><span class="body">Pago automático cada mes</span></div>
+        <button class="switch" type="button" role="switch" aria-checked="${PAYER.auto}" data-action="payer-auto" aria-label="Pago automático cada mes"></button></div>
+    </div>`,
+    foot: `<button class="btn btn--primary btn--lg btn--block" type="button" data-action="payer-confirm">Usar ${m.name}</button>`
+  };
+}
+function renderPayer() {
+  const { body, foot } = payerHTML();
+  $("#payerBody").innerHTML = body; $("#payerFoot").innerHTML = foot; $("#payerBody").scrollTop = 0;
+  $("#payerMeta").textContent = PAYER.done ? "Listo" : `Internet de ${PAYER.I.youngName}`;
+}
+function openPayer(I, src = "app") {
+  Object.assign(PAYER, { I, src, method: "nequi", auto: true, done: !!(I.payer && I.payer.confirmed) });
+  renderPayer();
+  $("#pagePayer").classList.add("is-open");
+}
+function closePayer() { $("#pagePayer").classList.remove("is-open"); }
+function confirmPayer() {
+  const I = PAYER.I;
+  PAYER.done = true;
+  if (I.payer) I.payer.confirmed = true;
+  if (PAYER.src === "app") {
+    if (DATA.install === I) {
+      renderNewClient();
+      DATA.notifs.unshift({ id: "payer", tone: "success", icon: "check", title: `${I.payerWho} registró su medio de pago`, text: `Paga con ${METHODS.find((x) => x.id === PAYER.method).name}. Le avisamos antes de cada cobro.`, when: "Hoy", time: hora(new Date()), unread: true });
+      renderNotifs();
+    } else if ($("#pageMove").classList.contains("is-open")) { MV.payerConfirmed = true; renderMove(); }
+  }
+  renderPayer();
+}
+document.addEventListener("click", (e) => {
+  const a = e.target.closest("[data-action]");
+  if (!a) return;
+  switch (a.dataset.action) {
+    case "payer-method": PAYER.method = a.dataset.id; renderPayer(); break;
+    case "payer-auto": PAYER.auto = !PAYER.auto; a.setAttribute("aria-checked", String(PAYER.auto)); break;
+    case "payer-confirm": confirmPayer(); break;
+    case "payer-close": closePayer(); break;
+  }
+});
 
 /* Acciones del flujo */
 document.addEventListener("click", (e) => {
@@ -426,8 +670,8 @@ document.addEventListener("click", (e) => {
     case "move-start": openMove(true); break;
     case "welcome-client": DATA.client = "active"; DATA.userName = "Samu"; welcomeToHome(); break;
     case "mv-back":
-      if (MV.step === 1 && MV.requested) { MV.requested = null; MV.step = 0; renderMove(-1); }
-      else if (MV.step === 0 || MV.step >= 5) closeMove();
+      if (curStep() === "cobertura" && MV.wait) { MV.wait = false; MV.step = 0; renderMove(-1); }
+      else if (MV.step === 0 || curStep() === "listo") closeMove();
       else { MV.step--; renderMove(-1); }
       break;
     case "mv-next": if (!a.disabled) { MV.step++; renderMove(1); } break;
@@ -439,11 +683,23 @@ document.addEventListener("click", (e) => {
       $("#mvCta").disabled = !mvValid();
       break;
     case "mv-tower": MV.tower = v; $$("[data-action=mv-tower]").forEach((b) => b.setAttribute("aria-pressed", String(b === a))); $("#mvCta").disabled = !mvValid(); break;
-    case "mv-request": MV.requested = v === "no" ? "no" : "si"; renderMove(); break;
+    case "mv-kind": MV.kind = v; MV.place = null; MV.tower = null; renderMove(); break;
+    case "mv-wait":
+      if (a.disabled) break;
+      MV.wait = true; renderMove();
+      toast("Te avisamos por WhatsApp cuando lleguemos", "bubble");
+      break;
+    case "mv-payer":
+      MV.payer = v; MV.split = v === "roomie";
+      $$("[data-action=mv-payer]").forEach((b) => { b.setAttribute("aria-checked", String(b === a)); b.setAttribute("aria-pressed", String(b === a)); });
+      $("#mvPayer").innerHTML = payerFields(); mountPayerPhone();
+      break;
+    case "mv-payer-who": MV.payerWho = v; $$("[data-action=mv-payer-who]").forEach((b) => b.setAttribute("aria-pressed", String(b === a))); break;
+    case "payer-preview": openPayer(DATA.install && DATA.client === "new" ? DATA.install : mvInstall(), "app"); break;
+    case "payer-wa": toast("Abrimos WhatsApp con el resumen", "send"); break;
     case "mv-estrato": MV.estrato = v; renderMove(); break;
     case "mv-estrato-edit": MV.estratoEdit = true; renderMove(); setTimeout(() => { const f = $("#mvBody .chip[data-action=mv-estrato]"); f && f.focus({ preventScroll: true }); }, 60); break;
     case "mv-plan": MV.plan = v; $$("[data-action=mv-plan]").forEach((b) => b.setAttribute("aria-checked", String(b === a))); $("#mvFoot .btn").textContent = `Seguir con ${PLANES[v].name}`; $("#mvPriceDd").textContent = `${money(mvPrice())} / mes`; break;
-    case "mv-split": MV.split = !MV.split; a.setAttribute("aria-checked", String(MV.split)); break;
     case "mv-day": MV.day = v; $$("[data-action=mv-day]").forEach((b) => b.setAttribute("aria-pressed", String(b === a))); refreshInstall(); break;
     case "mv-slot": MV.slot = v; $$("[data-action=mv-slot]").forEach((b) => b.setAttribute("aria-pressed", String(b === a))); refreshInstall(); break;
     case "mv-finish": finishMove(); break;
@@ -452,7 +708,7 @@ document.addEventListener("click", (e) => {
 });
 function refreshInstall() {
   $("#mvCta").disabled = !(MV.day && MV.slot);
-  if (MV.day && MV.slot) $("#mvResumen").innerHTML = `<div class="state step-in">${ic("calendar")}<div class="state__body"><p class="state__title">${cap(fechaLarga(isoDate(MV.day)))}</p><p class="state__text">Llegamos ${slotDe(MV.slot).frase} con tu Orb y lo dejamos funcionando. Toma unos 30 minutos.</p></div></div>`;
+  if (MV.day && MV.slot) $("#mvResumen").innerHTML = `<div class="state step-in">${ic("calendar")}<div class="state__body"><p class="state__title">${cap(fechaLarga(isoDate(MV.day)))}</p><p class="state__text">Llegamos ${slotDe(MV.slot).frase}. Toma unos 30 minutos.</p></div></div>`;
 }
 document.addEventListener("keydown", (e) => { if (e.key === "Escape" && $("#pageMove").classList.contains("is-open") && !sheet.classList.contains("is-open") && !openPageEl) closeMove(); });
 

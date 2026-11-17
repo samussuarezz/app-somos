@@ -44,7 +44,7 @@ const ETA = (() => { const d = addMin(REAL_NOW, 40); d.setMinutes(Math.ceil(d.ge
 DATA.notifs = [
   { id: "dev", tone: "warning", icon: "devices", title: "Se conectó un dispositivo nuevo", text: "Galaxy A54 entró a tu red hace 20 minutos. ¿Lo reconoces?", when: "Hoy", time: hora(addMin(REAL_NOW, -20)), unread: true, action: { label: "Revisar", act: "dev-review" } },
   { id: "orb", icon: "orb", title: "Tu Orb se actualizó anoche", text: "Mejoramos la estabilidad del Wi‑Fi. No tienes que hacer nada.", when: "Hoy", time: "3:00 a.m.", unread: true },
-  { id: "cov", icon: "pin", title: "Llegamos a Envigado", text: "Si tienes amigos por allá, ya se pueden pasar a Somos. Tu código es SAMU-503.", when: "Esta semana", time: "jue.", unread: true },
+  { id: "cov", icon: "pin", title: "Llegamos a Envigado", text: "Tus amigos de allá ya se pueden pasar. Tu código: SAMU-503.", when: "Esta semana", time: "jue.", unread: true },
   { id: "tvn", icon: "gift", title: "Desbloqueaste un mes de Somos TV", text: "Es por tus 6 meses con nosotros. Actívalo cuando quieras.", when: "Esta semana", time: "mar.", action: { label: "Ver beneficio", act: "nav-beneficios" } },
   { id: "pay-prev", tone: "success", icon: "check", title: `Recibimos tu pago de ${FACT.prevMes}`, text: "$63.000 con Nequi. Quedaste al día.", when: "Este mes", time: `3 ${FACT.prevMes.slice(0, 3)}.` }
 ];
@@ -91,7 +91,7 @@ function scrollToEl(i, sel) { const el = $(sel); setTimeout(() => scrollScreen(i
 
 function go(t) {
   if (!SPL.done && t !== "splash") { SPL.skip && SPL.skip(); setTimeout(() => go(t), 1050); return; }
-  if (t !== "unstable") { closeSheet(); closePage(true); }
+  if (t !== "unstable") { closeSheet(); closePage(true); closePayer(); closeFirst(); }
   if (t === "welcome") {
     closeMove(); DATA.client = null; DATA.userName = "Samu"; DATA.install = null; applyClientState();
     showWelcome(false); return;
@@ -103,6 +103,13 @@ function go(t) {
   if (t === "payfail") { togglePayFail(); return; }
   if (t === "firstday") { openFirstDay(); return; }
   if (t === "prefs") { openPrefs(); return; }
+  if (t === "paga") { openPayer(samplePayer(), "app"); return; }
+  if (t === "move" || t === "traslado") { hideWelcome(); openTraslado(); return; }
+  if (t === "sincobertura") {
+    showWelcome(true); resetMove("nuevo");
+    Object.assign(MV, { place: LUGARES.find((l) => l.id === "mirador"), tower: "Torre 2", step: 1 });
+    openMove(false); return;
+  }
   if (t !== "splash") {
     if (!DATA.client) { DATA.client = "active"; applyClientState(); }
     hideWelcome(); closeMove();
@@ -117,7 +124,6 @@ function go(t) {
     case "pagos": goTab(2); scrollScreen(2, 0); break;
     case "pay": goTab(2); scrollScreen(2, 0); setTimeout(() => (DATA.paid ? openReceipt(-1) : openPaySheet()), 320); break;
     case "beneficios": goTab(3); scrollScreen(3, 0); break;
-    case "move": goTab(3); scrollToEl(3, "#moveSec"); break;
     case "pro": goTab(3); scrollToEl(3, "#proCard"); break;
     case "ayuda": goTab(4); scrollScreen(4, 0); break;
     case "chat": openChat(); break;
@@ -268,7 +274,7 @@ function runSpeedTest() {
       cap.textContent = "Hoy · " + hora(new Date());
       if (!u) { DATA.down = T.down; DATA.up = T.up; DATA.ping = T.ping; renderHero(); }
       $("#speedMsg").innerHTML = u
-        ? `<div class="state state--warning step-in">${ic("alert")}<div class="state__body"><p class="state__title">Tu velocidad está más baja</p><p class="state__text">Es por la intermitencia en tu zona. Ya estamos trabajando y te avisamos cuando quede.</p></div></div>`
+        ? `<div class="state state--warning step-in">${ic("alert")}<div class="state__body"><p class="state__title">Tu velocidad está más baja</p><p class="state__text">Hay intermitencia en tu zona. Te avisamos cuando quede.</p></div></div>`
         : `<div class="state step-in">${ic("check")}<div class="state__body"><p class="state__title">Recibes lo que contrataste</p><p class="state__text">Tu plan Essential es de hasta 900 MBPS por cable, y la subida es casi igual a la bajada. ${enLaVida(T.down)}</p></div></div>`;
       btn.disabled = false; btn.textContent = "Medir de nuevo"; testing = false; $("#runPhone").disabled = false;
       return;
@@ -307,7 +313,7 @@ setInterval(() => {
 function openDevice(id) {
   const d = dev(id); if (!d) return;
   const html = sheetHead(d.name, d.type) +
-    (d.isNew ? `<div class="state state--warning">${ic("alert")}<div class="state__body"><p class="state__title">No reconocemos este dispositivo</p><p class="state__text">Entró a tu red hace 20 minutos. Si no es tuyo, bloquéalo y cambia tu clave.</p></div></div>
+    (d.isNew ? `<div class="state state--warning">${ic("alert")}<div class="state__body"><p class="state__title">No reconocemos este dispositivo</p><p class="state__text">Entró hace 20 minutos. Si no es tuyo, bloquéalo.</p></div></div>
       <div class="btn-row"><button class="btn btn--secondary" type="button" data-action="dev-mine" data-id="${d.id}">Es mío</button><button class="btn btn--primary" type="button" data-action="dev-block" data-id="${d.id}">Bloquear</button></div>` : "") +
     `<div class="card__row"><span class="list-item__icon" style="width:56px;height:56px">${ic(d.icon, "i--28")}</span>
       <div class="list-item__main"><span class="h3 num" data-live="${d.id}">${fmtRate(d)}</span><span class="label muted">Uso en este momento</span></div></div>
@@ -326,7 +332,7 @@ function openDevice(id) {
 function confirmBlock(id) {
   const d = dev(id);
   swapSheet(sheetHead(`¿Bloquear ${d.name}?`, d.type) +
-    `<div class="state state--danger">${ic("block")}<div class="state__body"><p class="state__title">No podrá volver a entrar</p><p class="state__text">Lo sacamos de tu red ahora mismo. Si fue un error, lo desbloqueas desde esta pantalla.</p></div></div>
+    `<div class="state state--danger">${ic("block")}<div class="state__body"><p class="state__title">No podrá volver a entrar</p><p class="state__text">Lo sacamos de tu red. Puedes desbloquearlo aquí.</p></div></div>
     <div class="btn-row"><button class="btn btn--secondary" type="button" data-action="dev" data-id="${id}">Cancelar</button><button class="btn btn--primary" type="button" data-action="dev-block-yes" data-id="${id}">Sí, bloquear</button></div>`);
 }
 
@@ -353,7 +359,7 @@ function openPasswordSheet() {
        </div>
        <span id="pwWord"></span>
      </div>
-     <div class="state state--warning">${ic("info")}<div class="state__body"><p class="state__title">Tus dispositivos se desconectan</p><p class="state__text">Al guardar, tus ${DATA.devices.length} dispositivos salen un momento de la red. Conéctalos con la clave nueva.</p></div></div>
+     <div class="state state--warning">${ic("info")}<div class="state__body"><p class="state__title">Tus dispositivos se desconectan</p><p class="state__text">Conéctalos de nuevo con la clave nueva.</p></div></div>
      <button class="btn btn--primary btn--block btn--lg" type="button" id="pwSave" data-action="pw-save" disabled>Guardar clave</button>`;
   openSheet(html, (root) => {
     const inp = $("#pwNew", root);
@@ -384,11 +390,10 @@ function savePassword() {
 let passShown = false;
 function maskPass() { $("#passTxt").textContent = passShown ? DATA.pass : "•".repeat(Math.max(8, DATA.pass.length)); }
 function openQR() {
-  const html = sheetHead("Comparte tu Wi‑Fi", "Escanea con la cámara para conectarte") +
+  const html = sheetHead("Comparte tu Wi‑Fi", "Escanea para conectarte") +
     `<div class="qr-card">${QR.svg(wifiString())}<span class="label" style="font-weight:700">${DATA.ssid}</span></div>
      <dl class="rows"><div><dt>Red</dt><dd>${DATA.ssid}</dd></div><div><dt>Clave</dt><dd class="num">${DATA.pass}</dd></div></dl>
-     <button class="btn btn--secondary btn--block" type="button" data-action="copy" data-copy="${DATA.pass}" data-ok="Clave copiada">${ic("copy")}Copiar clave</button>
-     <p class="label muted">Para visitas es mejor la red de invitados: se apaga sola en 24 horas.</p>`;
+     <button class="btn btn--secondary btn--block" type="button" data-action="copy" data-copy="${DATA.pass}" data-ok="Clave copiada">${ic("copy")}Copiar clave</button>`;
   if (sheet.classList.contains("is-open")) swapSheet(html); else openSheet(html);
 }
 
@@ -412,7 +417,7 @@ function restartOrb(reset) {
 /* ============ Pagos ============ */
 let payMethod = "nequi";
 const METHODS = [
-  { id: "nequi", name: "Nequi", sub: "Te llega una notificación para aprobar", icon: "phone" },
+  { id: "nequi", name: "Nequi", sub: "Apruebas desde tu celular", icon: "phone" },
   { id: "pse", name: "PSE", sub: "Débito desde tu banco", icon: "bank" },
   { id: "card", name: "Tarjeta", sub: "Crédito o débito", icon: "card" },
   { id: "davi", name: "Daviplata", sub: "Desde tu celular", icon: "wallet" }
@@ -451,8 +456,7 @@ function payStepHTML() {
        ${METHODS.map((m) => `<button class="method" type="button" role="radio" aria-checked="${m.id === payMethod}" data-action="method" data-id="${m.id}"><span class="list-item__icon" style="width:40px;height:40px">${ic(m.icon, "i--20")}</span><span class="list-item__main"><span class="body">${m.name}</span><span class="label muted">${m.sub}</span></span><span class="method__radio"></span></button>`).join("")}
        </div></div>
      <div class="slider" id="slider"><span class="slider__fill"></span><span class="slider__label">Desliza para pagar</span>
-       <button class="slider__knob" type="button" aria-label="Desliza para pagar $63.000. Con teclado, presiona Enter.">${ic("arrowRight")}</button></div>
-     <p class="label muted">Pago simulado: este prototipo no cobra ni pide datos reales.</p>`;
+       <button class="slider__knob" type="button" aria-label="Desliza para pagar $63.000. Con teclado, presiona Enter.">${ic("arrowRight")}</button></div>`;
 }
 function openPaySheet() { openSheet(payStepHTML(), mountSlider); }
 function mountSlider(root) {
@@ -490,25 +494,17 @@ function processPayment() {
 /* ============ Beneficios ============ */
 function coverage(a) { return !/bello|itag|suba|bosa|kennedy|soacha|copacabana|estrella|caldas|girardota/i.test(a); }
 function checkMove(addr) {
-  const out = $("#moveResult");
   if (!addr.trim()) { $("#moveInput").focus(); toast("Escribe la dirección de tu nuevo lugar", "info"); return; }
   $("#suggest").hidden = true;
-  out.innerHTML = `<div class="card__row step-in"><svg class="spinner" viewBox="0 0 56 56" style="width:24px;height:24px" aria-hidden="true"><circle cx="28" cy="28" r="24"/></svg><span class="label">Revisando cobertura…</span></div>`;
-  setTimeout(() => {
-    out.innerHTML = coverage(addr)
-      ? `<div class="state step-in">${ic("check")}<div class="state__body"><p class="state__title">Llegamos a ese edificio</p><p class="state__text">${addr}. Trasladamos tu servicio sin costo: elige el día de la mudanza y reinstalamos tu Orb.</p></div></div>
-         <button class="btn btn--primary btn--block step-in" type="button" data-action="open-visit" data-motive="Traslado">Agenda una cita</button>`
-      : `<div class="state state--warning step-in">${ic("alert")}<div class="state__body"><p class="state__title">Todavía no llegamos a ese edificio</p><p class="state__text">Podemos empezar la gestión si tiene al menos 5 pisos. ¿Me confirmas eso?</p></div></div>
-         <div class="btn-row step-in"><button class="btn btn--secondary" type="button" data-action="floors" data-v="yes">Tiene 5 o más</button><button class="btn btn--secondary" type="button" data-action="floors" data-v="no">Tiene menos</button></div>`;
-  }, REDUCED ? 200 : 1000);
+  openTraslado(addr);
 }
 
 /* ============ Ayuda ============ */
 const FAQS = [
-  ["¿Qué pasa con mi internet si me mudo?", "Revisamos si ya llegamos a tu nuevo edificio. Si llegamos, agendas el día y reinstalamos tu Orb allá. Si no, te decimos qué tan cerca estamos."],
+  ["¿Qué pasa con mi internet si me mudo?", "Si llegamos a tu nuevo edificio, lo trasladamos sin costo. Si no, te avisamos cuando lleguemos."],
   ["¿Tengo cláusula de permanencia?", "No. Puedes cancelar cuando quieras, sin multas."],
-  ["¿Por qué mi celular marca menos que el Orb?", "El Orb mide la velocidad que llega a tu casa. Por Wi‑Fi influyen la distancia, las paredes y tu celular. Por cable llegas a la velocidad de tu plan."],
-  ["¿Cómo le doy el Wi‑Fi a una visita?", "Activa la red de invitados en la pestaña Red o comparte el código QR. Así no tienes que dictar tu clave."]
+  ["¿Por qué mi celular marca menos que el Orb?", "Por Wi‑Fi influyen la distancia y las paredes. Por cable llegas a la velocidad de tu plan."],
+  ["¿Cómo le doy el Wi‑Fi a una visita?", "Activa la red de invitados o comparte el QR."]
 ];
 function renderFaqs() {
   $("#faqs").innerHTML = FAQS.map(([q, a], i) => `<div class="faq" data-open="false"><button class="faq__btn" type="button" aria-expanded="false" aria-controls="faq${i}" data-action="faq"><span>${q}</span>${ic("chevD")}</button><div class="faq__body" id="faq${i}"><div><p>${a}</p></div></div></div>`).join("");
@@ -531,7 +527,7 @@ function runDiag() {
     if (i === steps.length) {
       $("#diagResult").innerHTML = STATE.unstable
         ? `<div class="state state--warning step-in">${ic("alert")}<div class="state__body"><p class="state__title">Hay intermitencia en tu zona</p><p class="state__text">No es tu Orb ni tus dispositivos. Ya estamos trabajando en Laureles y estimamos que a las ${ETA} vuelva la normalidad.</p><button class="link-btn" type="button" data-action="alert-detail">Ver detalle${ic("arrowRight", "i--16")}</button></div></div>`
-        : `<div class="state step-in">${ic("check")}<div class="state__body"><p class="state__title">Todo está bien de nuestro lado</p><p class="state__text">Si algo va lento, acerca el dispositivo al Orb o reinícialo. Si sigue igual, escríbenos.</p></div></div>`;
+        : `<div class="state step-in">${ic("check")}<div class="state__body"><p class="state__title">Todo está bien de nuestro lado</p><p class="state__text">Si algo va lento, acércalo al Orb o reinícialo.</p></div></div>`;
       btn.disabled = false; btn.textContent = "Revisar otra vez"; diagRunning = false;
       return;
     }
@@ -583,14 +579,14 @@ function agentSay(t) {
 function reply(q) {
   const s = q.toLowerCase();
   if (/lent|velocidad|cae|falla|no (me )?funciona|sin internet/.test(s))
-    return STATE.unstable ? `Siento que estés teniendo problemas. Hay una intermitencia en Laureles y ya tenemos un equipo allá. Estimamos que a las ${ETA} todo esté normal. Te aviso apenas quede.`
-      : "Siento que estés teniendo problemas. Ya revisé tu Orb y la fibra hasta tu edificio, y todo está en orden. ¿Me dices en qué dispositivo lo notas? Lo revisamos juntos.";
-  if (/mud|trasl|nuevo (apto|apartamento|lugar)|cambio de casa/.test(s)) return "¡Qué buena noticia! Pásame la dirección de tu nuevo lugar y reviso si ya llegamos a ese edificio. Si llegamos, el traslado no tiene costo.";
-  if (/plan|pro\b|cambiar|subir|velocidad m/.test(s)) return "Hoy tienes Essential, hasta 900 MBPS. Si quieres, puedes probar Pro 30 días sin pagar más y decides después. ¿Te lo activo?";
-  if (/factura|pago|pagar|vence|cobr/.test(s)) return DATA.paid ? `Tu factura de ${FACT.mes} ya está paga. Gracias. La próxima llega el ${FACT.prox}.` : `Tu factura de ${FACT.mes} es de $63.000 y vence el ${FACT.vence}. La puedes pagar en la pestaña Pagos en menos de un minuto.`;
+    return STATE.unstable ? `Hay una intermitencia en Laureles y ya tenemos un equipo allá. Debe quedar a las ${ETA}. Te aviso.`
+      : "Revisé tu Orb y la fibra, y todo está en orden. ¿En qué dispositivo lo notas?";
+  if (/mud|trasl|nuevo (apto|apartamento|lugar)|cambio de casa/.test(s)) return "Pásame la dirección nueva y reviso si ya llegamos. El traslado no tiene costo.";
+  if (/plan|pro\b|cambiar|subir|velocidad m/.test(s)) return "Tienes Essential, hasta 900 MBPS. Puedes probar Pro 30 días gratis. ¿Te lo activo?";
+  if (/factura|pago|pagar|vence|cobr/.test(s)) return DATA.paid ? `Tu factura de ${FACT.mes} ya está paga. Gracias. La próxima llega el ${FACT.prox}.` : `Tu factura de ${FACT.mes} es de $63.000 y vence el ${FACT.vence}. La pagas en Pagos.`;
   if (/gracias|listo|perfecto|genial/.test(s)) return "Con gusto. Aquí estoy si necesitas algo más.";
-  if (/^s[ií]\b|dale|activa/.test(s)) return "Listo. Te dejo la prueba de Pro en la pestaña Para ti para que la actives con un toque.";
-  return "Gracias por contarme. Déjame revisarlo y te respondo en un momento. Si prefieres, también estamos en WhatsApp.";
+  if (/^s[ií]\b|dale|activa/.test(s)) return "Listo. Te dejé la prueba de Pro en Para ti.";
+  return "Déjame revisarlo y te respondo en un momento.";
 }
 function send(q) { if (!q.trim()) return; CHAT.used.add(q); meSay(q); renderQuick(); agentSay(reply(q)); }
 
@@ -614,7 +610,7 @@ function openNotifs() {
 /* ============ Inestabilidad ============ */
 function alertDetail() {
   openSheet(sheetHead("Intermitencia en tu zona", "Laureles, Medellín") +
-    `<div class="state state--warning">${ic("alert")}<div class="state__body"><p class="state__title">Estamos trabajando en eso</p><p class="state__text">Una falla en la fibra de la zona está afectando a varios edificios. No es tu Orb.</p></div></div>
+    `<div class="state state--warning">${ic("alert")}<div class="state__body"><p class="state__title">Estamos trabajando en eso</p><p class="state__text">Hay una falla en la fibra de la zona. No es tu Orb.</p></div></div>
      <dl class="rows">
        <div><dt>${hora(addMin(REAL_NOW, -13))}</dt><dd>Detectamos la falla</dd></div>
        <div><dt>${hora(addMin(REAL_NOW, -2))}</dt><dd>El equipo llegó a la zona</dd></div>
@@ -631,8 +627,8 @@ function setUnstable(on) {
   $("#redMeta").textContent = on ? "Intermitencia en tu zona" : "En vivo";
   DATA.notifs = DATA.notifs.filter((n) => n.id !== "zone" && n.id !== "zone-ok");
   if (on) {
-    DATA.notifs.unshift({ id: "zone", tone: "warning", icon: "alert", title: "Intermitencia en tu zona", text: `Ya estamos trabajando en Laureles. Estimamos que a las ${ETA} vuelva la normalidad.`, when: "Hoy", time: "ahora", unread: true, action: { label: "Ver detalle", act: "alert-detail" } });
-    notify("fallas", { title: "Intermitencia en tu zona", text: `Ya estamos trabajando en Laureles. Estimamos que a las ${ETA} vuelva la normalidad.`, tone: "warning", icon: "alert", onTap: alertDetail });
+    DATA.notifs.unshift({ id: "zone", tone: "warning", icon: "alert", title: "Intermitencia en tu zona", text: `Ya estamos trabajando. Debe quedar a las ${ETA}.`, when: "Hoy", time: "ahora", unread: true, action: { label: "Ver detalle", act: "alert-detail" } });
+    notify("fallas", { title: "Intermitencia en tu zona", text: `Ya estamos trabajando. Debe quedar a las ${ETA}.`, tone: "warning", icon: "alert", onTap: alertDetail });
   } else {
     DATA.notifs.unshift({ id: "zone-ok", tone: "success", icon: "check", title: "Tu red volvió a la normalidad", text: "Gracias por la paciencia. Todo está en orden.", when: "Hoy", time: "ahora", unread: true });
     notify("fallas", { title: "Tu red volvió a la normalidad", text: "Gracias por la paciencia. Todo está en orden.", tone: "success", icon: "check" });
@@ -709,14 +705,14 @@ document.addEventListener("click", (e) => {
     case "pro":
       openSheet(sheetHead("Prueba Pro 30 días", "Sin pagar más este mes") +
         `<dl class="rows"><div><dt>Hoy tienes</dt><dd>Essential · 900 MBPS</dd></div><div><dt>Durante la prueba</dt><dd>Pro · hasta 2.0 GBPS</dd></div><div><dt>Pagas</dt><dd>Lo mismo: $63.000</dd></div><div><dt>${EN30}</dt><dd>Decides si te quedas</dd></div></dl>
-         <p class="body-s muted">Si no haces nada, vuelves a Essential. Sin cláusulas y sin llamadas para convencerte.</p>
+         <p class="body-s muted">Si no haces nada, vuelves a Essential.</p>
          <button class="btn btn--primary btn--block btn--lg" type="button" data-action="pro-yes">Activar prueba</button>`);
       break;
     case "pro-yes": DATA.pro = true; $("#proAction").innerHTML = `<div class="state step-in">${ic("check")}<div class="state__body"><p class="state__title">Tu prueba de Pro arrancó</p><p class="state__text">El ${EN30} te preguntamos si te quedas. Si no respondes, vuelves a Essential.</p></div></div>`; closeSheet(); toast("Tu prueba de Pro arrancó"); break;
     case "copy-code": copyText("SAMU-503", "Código copiado"); break;
     case "floors":
       $("#moveResult").innerHTML = a.dataset.v === "yes"
-        ? `<div class="state step-in">${ic("check")}<div class="state__body"><p class="state__title">Empezamos la gestión</p><p class="state__text">Te escribimos cuando tengamos fecha. Mientras tanto, tu servicio actual sigue igual.</p></div></div>`
+        ? `<div class="state step-in">${ic("check")}<div class="state__body"><p class="state__title">Empezamos la gestión</p><p class="state__text">Te escribimos cuando tengamos fecha.</p></div></div>`
         : `<p class="body-s step-in">Gracias por contarme. Te avisamos apenas lleguemos a esa zona.</p>`;
       break;
     case "diag": runDiag(); break;
@@ -724,7 +720,7 @@ document.addEventListener("click", (e) => {
     case "faq": { const f = a.closest(".faq"), o = f.dataset.open !== "true"; f.dataset.open = String(o); a.setAttribute("aria-expanded", String(o)); break; }
     case "open-whatsapp":
       openSheet(sheetHead("WhatsApp", "Te responde una persona, todos los días") +
-        `<p class="h2 num" style="user-select:all">+57 323 396 8936</p><p class="body-s muted">Guárdalo como Somos y escríbenos cuando quieras. Ten a mano la cédula del titular.</p>
+        `<p class="h2 num" style="user-select:all">+57 323 396 8936</p><p class="body-s muted">Guárdalo como Somos y escríbenos cuando quieras.</p>
          <button class="btn btn--primary btn--block" type="button" data-action="copy" data-copy="+573233968936" data-ok="Número copiado">${ic("copy")}Copiar número</button>`);
       break;
     case "open-visit": openVisit(a.dataset.motive); break;

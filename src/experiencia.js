@@ -15,7 +15,7 @@ const isSaved = (id) => DATA.saved.includes(id);
 const esc = (t) => String(t).replace(/&/g, "&amp;").replace(/"/g, "&quot;").replace(/</g, "&lt;");
 function savedStrip() {
   const list = DATA.saved.map((id) => LUGARES.find((l) => l.id === id)).filter(Boolean);
-  if (!list.length) return `<p class="label muted saved-hint">${ic("bookmark", "i--16")}¿Estás viendo varios apartamentos? Guarda cada edificio y compáralos.</p>`;
+  if (!list.length) return "";
   return `<div class="saved-strip step-in">
     <div class="saved-strip__top"><span class="label label--caps">Tus opciones · ${list.length}</span>
       <button class="btn btn--secondary btn--sm" type="button" data-action="open-compare">${ic("compare")}Comparar</button></div>
@@ -68,8 +68,7 @@ function openCompare(swap) {
     </div>`;
   }).join("");
   const html = sheetHead("Compara tus opciones", list.length === 1 ? "Guarda otro edificio para ponerlos lado a lado" : `${list.length} edificios guardados`) +
-    `<div class="cmp-list" id="cmpList">${cards}</div>
-     <p class="label muted">Velocidad medida por los Orb de cada edificio, sin datos de nadie en particular. Precio del plan Essential con IVA.</p>`;
+    `<div class="cmp-list" id="cmpList">${cards}</div>`;
   if (swap && sheet.classList.contains("is-open")) swapSheet(html); else openSheet(html);
 }
 function pickCompared(id) {
@@ -93,7 +92,7 @@ const minutosPara = (gb, mbps) => Math.max(1, Math.round((gb * 8000) / mbps / 60
 function enLaVida(mbps) { return `Con eso, un juego de 100 GB baja en unos ${minutosPara(100, mbps)} minutos por cable.`; }
 function needsHTML() {
   const N = MV.needs, sel = (id) => N.acts.includes(id);
-  let res = `<p class="label muted">Toca lo que hacen en tu casa y te decimos cuál plan te alcanza.</p>`;
+  let res = `<p class="label muted">Toca lo que hacen en tu casa.</p>`;
   if (N.acts.length) {
     const per = ACTS.filter((a) => sel(a.id)).reduce((s, a) => s + a.mbps, 0), total = Math.max(5, per * N.people);
     const pro = sel("descargas") && N.people >= 3;
@@ -102,7 +101,7 @@ function needsHTML() {
       : `<div class="state step-in">${ic("check")}<div class="state__body"><p class="state__title">Te alcanza con Essential</p><p class="state__text">Todos al mismo tiempo usarían unos ${total} MBPS de 900. Te recomendamos el más barato porque te sobra.</p><button class="link-btn" type="button" data-action="needs-pick" data-v="essential">Elegir Essential${ic("arrowRight", "i--16")}</button></div></div>`;
   }
   const head = `<button class="needs__toggle" type="button" data-action="needs-toggle" aria-expanded="${!!N.open}" aria-controls="needsBody"><span class="card__row">${ic("pulse")}<span class="label label--caps">¿Cuánto internet necesitas?</span></span>${ic("chevD")}</button>`;
-  if (!N.open) return `<div class="card card--flat needs">${head}<p class="body-s muted">Te ayudamos a elegir según lo que hacen en tu casa.</p></div>`;
+  if (!N.open) return `<div class="card card--flat needs">${head}</div>`;
   return `<div class="card card--flat needs is-open">${head}
     <div class="needs__body" id="needsBody"><div class="field"><span class="label">¿Cuántos viven contigo, contándote?</span><div class="chips">${[1, 2, 3, 4].map((n) => `<button class="chip" type="button" aria-pressed="${N.people === n}" data-action="needs-people" data-v="${n}">${n === 4 ? "4 o más" : n}</button>`).join("")}</div></div>
     <div class="field"><span class="label">¿Qué hacen?</span><div class="chips">${ACTS.map((a) => `<button class="chip" type="button" aria-pressed="${sel(a.id)}" data-action="needs-act" data-v="${a.id}">${a.label}</button>`).join("")}</div></div>
@@ -226,7 +225,7 @@ function promiseRows(fresh) {
     ["Permanencia", "Sin cláusulas", "Así quedó en tu contrato"]
   ];
   return `<div class="promise">${rows.map(([k, a, b]) => `<div class="promise__row"><span class="promise__ok">${ic("check")}</span><div class="promise__main"><span class="label label--caps muted">${k}</span><span class="body-s">${a}</span><span class="label promise__got">${b}</span></div></div>`).join("")}</div>
-    <p class="label muted">Si algo no se cumple, te lo decimos nosotros primero y te lo compensamos en la factura.</p>`;
+    <p class="label muted">Si algo no se cumple, te lo compensamos en la factura.</p>`;
 }
 function openPromise() { openSheet(sheetHead("Lo que te prometimos", "4 de 4 cumplidas") + promiseRows(false)); }
 function fdStepHTML() {
@@ -235,11 +234,10 @@ function fdStepHTML() {
     const sug = [`Casa de ${who}`, "El nido", `Apto ${I.apt || "504"}`, "La base"];
     return {
       body: `<div class="mv-step step-in">
-        <div class="mv-lead"><h2 class="h2">Ponle nombre a tu Wi‑Fi</h2><p class="body-s muted">Es tu primera casa. Que tu red se llame como tú quieras.</p></div>
+        <div class="mv-lead"><h2 class="h2">Ponle nombre a tu Wi‑Fi</h2></div>
         <div class="field"><label for="fdName">Nombre de la red</label><div class="input-wrap"><input class="input" id="fdName" name="fdName" maxlength="32" autocomplete="off" value="${esc(FD.name)}" style="padding-right:18px"></div>
           <div class="chips">${sug.map((n) => `<button class="chip" type="button" data-action="fd-suggest" data-v="${n}">${n}</button>`).join("")}</div></div>
-        <div class="field"><label for="fdPass">Clave</label><div class="input-wrap"><input class="input num" id="fdPass" name="fdPass" autocomplete="off" value="${esc(FD.pass)}"><button class="icon-btn" type="button" data-action="fd-newpass" aria-label="Sugerir otra clave">${ic("refresh")}</button></div>
-          <p class="label muted">Te sugerimos una fácil de dictar y difícil de adivinar. Puedes cambiarla.</p></div>
+        <div class="field"><label for="fdPass">Clave</label><div class="input-wrap"><input class="input num" id="fdPass" name="fdPass" autocomplete="off" value="${esc(FD.pass)}"><button class="icon-btn" type="button" data-action="fd-newpass" aria-label="Sugerir otra clave">${ic("refresh")}</button></div></div>
       </div>`,
       foot: `<button class="btn btn--primary btn--lg btn--block" type="button" data-action="fd-next" id="fdCta">Guardar y seguir</button>`
     };
@@ -248,17 +246,16 @@ function fdStepHTML() {
     const msg = encodeURIComponent(`Wi‑Fi de la casa: ${DATA.ssid}\nClave: ${DATA.pass}`);
     return {
       body: `<div class="mv-step step-in">
-        <div class="mv-lead"><h2 class="h2">Compártelo con tu roomie</h2><p class="body-s muted">Que escanee el código con la cámara y queda conectado. Nadie tiene que dictar la clave.</p></div>
+        <div class="mv-lead"><h2 class="h2">Compártelo con tu roomie</h2><p class="body-s muted">Que escanee el código y queda conectado.</p></div>
         <div class="qr-card">${QR.svg(wifiString())}<span class="label" style="font-weight:700">${esc(DATA.ssid)}</span></div>
         <div class="btn-row"><button class="btn btn--secondary" type="button" data-action="copy" data-copy="${esc(DATA.pass)}" data-ok="Clave copiada">${ic("copy")}Copiar clave</button><a class="btn btn--secondary" href="https://wa.me/?text=${msg}" target="_blank" rel="noopener">${ic("bubble")}WhatsApp</a></div>
-        <p class="label muted">Para visitas es mejor la red de invitados: la activas en la pestaña Red y se apaga sola en 24 horas.</p>
       </div>`,
       foot: `<button class="btn btn--primary btn--lg btn--block" type="button" data-action="fd-next">Seguir</button>`
     };
   }
   return {
     body: `<div class="mv-step step-in">
-      <div class="mv-lead"><h2 class="h2">Lo que te prometimos</h2><p class="body-s muted">Lo revisamos contigo el primer día, para que nada quede en letra pequeña.</p></div>
+      <div class="mv-lead"><h2 class="h2">Lo que te prometimos</h2><p class="body-s muted">Sin letra pequeña.</p></div>
       ${promiseRows(true)}
     </div>`,
     foot: `<button class="btn btn--primary btn--lg btn--block" type="button" data-action="fd-done">Empezar a usar Somos</button>`
@@ -318,9 +315,9 @@ function billTimelineHTML(I) {
   ];
   return `<span class="label label--caps">Tu primera factura</span>
     <p class="invoice__amount num">${money(b.prorAmt)}</p>
-    <p class="body-s muted">Llega el ${fechaLarga(b.firstBill)}. Es más baja porque solo cobra los ${b.prorDays} días que usas después de los 30 gratis.</p>
+    <p class="body-s muted">Llega el ${fechaLarga(b.firstBill)}. Solo cobra ${b.prorDays} días.</p>
     <ol class="timeline">${items.map(([w, t, a], i) => `<li class="timeline__item ${i === 2 ? "is-key" : ""}"><span class="timeline__dot"></span><div class="timeline__main"><span class="label muted">${w}</span><span class="body-s">${t}</span></div><span class="label timeline__amt">${a}</span></li>`).join("")}</ol>
-    <p class="label muted">Así se calcula: ${money(I.price)} ÷ ${b.dim} días × ${b.prorDays} días. Vence 5 días después de llegar.</p>
+    <p class="label muted">${money(I.price)} ÷ ${b.dim} días × ${b.prorDays} días.</p>
     ${I.split ? `<div class="state">${ic("users")}<div class="state__body"><p class="state__title">La dividen con tu roomie</p><p class="state__text">Cada uno paga ${half(b.prorAmt)} la primera vez y ${half(I.price)} desde el ${fechaCorta(b.second)}</p></div></div>` : ""}
     <dl class="rows"><div><dt>Plan</dt><dd>${PLANES[I.plan].name}</dd></div><div><dt>Permanencia</dt><dd>Sin cláusulas</dd></div><div><dt>Estudio de crédito</dt><dd>No hizo falta</dd></div></dl>`;
 }
@@ -342,10 +339,9 @@ function notify(kind, opts) {
 function openPrefs() {
   const sw = (k) => `<button class="switch" type="button" role="switch" aria-checked="${!!DATA.prefs[k]}" data-action="pref" data-k="${k}" aria-label="${(PREFS.find((p) => p[0] === k) || [0, "Horario de silencio"])[1]}"></button>`;
   openSheet(sheetHead("Qué avisos recibir", "Tú decides cuáles te llegan") +
-    `<div class="pref-list">${PREFS.map(([k, t, d]) => `<div class="setting"><div class="setting__text"><span class="body">${t}</span><span class="label muted">${d}</span></div>${sw(k)}</div>`).join("")}</div>
+    `<div class="pref-list">${PREFS.map(([k, t, d]) => `<div class="setting"><div class="setting__text"><span class="body">${t}</span></div>${sw(k)}</div>`).join("")}</div>
      <div class="card card--flat" style="gap:12px">
        <div class="setting"><div class="card__row" style="gap:12px">${ic("moon")}<div class="setting__text"><span class="body">Horario de silencio</span><span class="label muted">De 10:00 p.m. a 7:00 a.m.</span></div></div>${sw("quiet")}</div>
-       <p class="label muted">En ese horario no suena nada. Las fallas en tu zona y el día de tu instalación te llegan igual.</p>
      </div>
      <button class="btn btn--primary btn--block" type="button" data-action="close-sheet">Listo</button>`);
 }
@@ -431,8 +427,8 @@ async function runPhoneTest() {
   phoneTesting = false; btn.disabled = false; orbBtn.disabled = false; btn.lastChild.textContent = "Medir otra vez";
 }
 function phoneResult(down) {
-  const vs = `El Orb mide ${DATA.down} MBPS en la entrada de tu casa. La diferencia es normal: por Wi‑Fi influyen la distancia, las paredes y el celular.`;
-  if (down < 50) return `<div class="state state--warning step-in">${ic("alert")}<div class="state__body"><p class="state__title">A este celular le llega poco: ${down} MBPS</p><p class="state__text">Acércate al Orb o conéctate a la red de 5 GHz. Si estás con datos móviles, esto mide tu plan de celular, no tu internet de Somos.</p><button class="link-btn" type="button" data-action="diag-from-alert">Revisar mi conexión${ic("arrowRight", "i--16")}</button></div></div>`;
+  const vs = `El Orb mide ${DATA.down} MBPS. La diferencia es normal por Wi‑Fi.`;
+  if (down < 50) return `<div class="state state--warning step-in">${ic("alert")}<div class="state__body"><p class="state__title">A este celular le llega poco: ${down} MBPS</p><p class="state__text">Acércate al Orb o usa la red de 5 GHz.</p><button class="link-btn" type="button" data-action="diag-from-alert">Revisar mi conexión${ic("arrowRight", "i--16")}</button></div></div>`;
   return `<div class="state step-in">${ic("check")}<div class="state__body"><p class="state__title">A este celular le llegan ${down} MBPS</p><p class="state__text">Alcanza para ver 4K en ${Math.floor(down / 15)} pantallas al mismo tiempo. ${vs}</p></div></div>`;
 }
 function speedError(offline) {
@@ -464,7 +460,7 @@ function demoToggles() {
 }
 function payFailed(m) {
   swapSheet(`<div class="center-col"><span class="done-badge done-badge--danger">${ic("close")}</span>
-      <h2 class="h3" id="sheetTitle">${m.name} no aprobó el pago</h2><p class="label muted">No te cobramos nada. Pasa cuando la notificación vence o no hay saldo suficiente.</p></div>
+      <h2 class="h3" id="sheetTitle">${m.name} no aprobó el pago</h2><p class="label muted">No te cobramos nada. Intenta de nuevo.</p></div>
     <div class="state state--warning">${ic("info")}<div class="state__body"><p class="state__title">Tu internet sigue igual</p><p class="state__text">Tu factura vence el ${FACT.vence}. Tienes tiempo de pagar sin recargos.</p></div></div>
     <div class="btn-row"><button class="btn btn--secondary" type="button" data-action="pay-other">Otro medio</button><button class="btn btn--primary" type="button" data-action="pay-retry">Intentar otra vez</button></div>`);
 }

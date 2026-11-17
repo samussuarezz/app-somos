@@ -934,3 +934,13 @@ h1, h2, h3 { font-weight: 400; text-wrap: balance; }
 }
 .offline .i { width: 18px; height: 18px; }
 .app.is-offline .screen { padding-top: calc(var(--inset-top) + 136px); }
+
+/* ============ v4: lo que dejó el cruce de la investigación ============ */
+/* Lista de espera cuando todavía no llegamos */
+.wait__count { display: flex; align-items: baseline; gap: 12px; margin: 0; }
+.wait__count .num { font-size: 44px; line-height: 1; letter-spacing: -0.02em; }
+.wait__count .body-s { max-width: 22ch; }
+/* Quién paga */
+.payer { display: flex; flex-direction: column; gap: var(--space-4); }
+.card--payer { border-color: var(--ink); }
+.card .btn-row .btn { text-decoration: none; }
