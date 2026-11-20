@@ -44,6 +44,8 @@ En la pestaña **Ayuda** (o tocando la inicial arriba a la derecha) está el **m
 
 ## Lo que dejó el cruce de la investigación (v4, oct. y nov. 2026)
 
+**v6 (nov. 2026, tras las primeras pruebas):** botón claro de "Invitar a un amigo" (tarjeta en el inicio del cliente, en Para ti, en el Listo y en el inicio del cliente nuevo) que abre WhatsApp con el código, porque las dos primeras personas no encontraban cómo invitar. También se corrigió la fecha de instalación: de noche mostraba el día siguiente al elegido (se calculaba en hora UTC).
+
 **v5 (nov. 2026):** se limpiaron los textos de toda la app. Cada pantalla deja el título, el dato y, como mucho, una línea de apoyo; se quitaron las notas de "prototipo" repetidas (queda una en la bienvenida y otra en Tu cuenta) y la lista "Antes de la instalación".
 
 La investigación (documental, social listening, 5 entrevistas y encuesta) dejó tres cosas que la app no resolvía:

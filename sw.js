@@ -1,6 +1,6 @@
 // Guarda la app para abrirla sin conexión. La versión cambia con cada build, así el teléfono
 // recibe los cambios nuevos la próxima vez que abra la app con internet.
-const VERSION = "somos-489586e573";
+const VERSION = "somos-b815b17bdd";
 const SHELL = ["./", "index.html", "manifest.webmanifest", "icon-192.png", "icon-512.png", "apple-touch-icon.png"];
 self.addEventListener("install", (e) => { e.waitUntil(caches.open(VERSION).then((c) => c.addAll(SHELL)).then(() => self.skipWaiting())); });
 self.addEventListener("activate", (e) => {
