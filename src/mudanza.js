@@ -65,6 +65,7 @@ const mvValid = () => (MV.place ? !MV.place.towers || !!MV.tower : MV.free.trim(
 const waitCount = () => 8 + (hashStr(mvTitle() || "casa") % 27);
 const waToNumber = (t) => { const d = String(t || "").replace(/\D/g, ""); return d.length === 10 ? "57" + d : d; };
 const waLink = (phone, text) => `https://wa.me/${waToNumber(phone)}?text=${encodeURIComponent(text)}`;
+const inviteMsg = (code) => `Te invito a Somos. Revisa si llega a tu edificio y usa mi código ${code}: ${location.origin}${location.pathname}#invitado`;
 
 /* Ilustración técnica de línea: las torres del conjunto, con las ventanas encendidas donde ya llega la fibra. */
 function towersArt() {
@@ -237,7 +238,7 @@ function mvStepHTML() {
     const days = Array.from({ length: 21 }, (_, i) => addDays(start, i));
     const meses = [...new Set(days.map((d) => MESES[d.getMonth()]))].join(" y ");
     const cells = Array.from({ length: pad }, () => "<span></span>").join("") + days.map((d) => {
-      const iso = d.toISOString().slice(0, 10), off = d.getDay() === 0;
+      const iso = isoOf(d), off = d.getDay() === 0;
       return `<button class="day ${d.getDate() === 1 ? "is-first" : ""}" type="button" data-action="mv-day" data-v="${iso}" aria-pressed="${MV.day === iso}" aria-label="${fechaLarga(d)}${off ? ", sin instalaciones" : ""}" ${off ? "disabled" : ""}>${d.getDate()}</button>`;
     }).join("");
     const resumen = MV.day && MV.slot ? `<div class="state step-in">${ic("calendar")}<div class="state__body"><p class="state__title">${cap(fechaLarga(isoDate(MV.day)))}</p><p class="state__text">Llegamos ${slotDe(MV.slot).frase}. Toma unos 30 minutos.</p></div></div>` : "";
@@ -288,7 +289,8 @@ function mvStepHTML() {
       <div class="card">
         <span class="card__row">${ic("users")}<span class="label label--caps">¿Alguien más se muda?</span></span>
         <p class="body-s muted">Un mes gratis por cada amigo, hasta 3.</p>
-        <div class="code-box"><span class="label">${I.code}</span><button class="btn btn--primary" type="button" data-action="copy" data-copy="${I.code}" data-ok="Código copiado">${ic("copy")}Copiar</button></div>
+        <button class="btn btn--primary btn--block" type="button" data-action="invite" data-code="${I.code}">${ic("send")}Invitar a un amigo</button>
+        <div class="code-box"><span class="label">${I.code}</span><button class="btn btn--secondary" type="button" data-action="copy" data-copy="${I.code}" data-ok="Código copiado">${ic("copy")}Copiar</button></div>
       </div>
     </div>`,
     foot: `<button class="btn btn--primary btn--lg btn--block" type="button" data-action="mv-finish">Entrar a la app</button>`
@@ -501,7 +503,8 @@ function renderNewClient() {
     <div class="card">
       <span class="card__row">${ic("users")}<span class="label label--caps">Tu código</span></span>
       <p class="body-s muted">Un mes gratis por cada amigo, hasta 3.</p>
-      <div class="code-box"><span class="label">${I.code}</span><button class="btn btn--primary" type="button" data-action="copy" data-copy="${I.code}" data-ok="Código copiado">${ic("copy")}Copiar</button></div>
+      <button class="btn btn--primary btn--block" type="button" data-action="invite" data-code="${I.code}">${ic("send")}Invitar a un amigo</button>
+        <div class="code-box"><span class="label">${I.code}</span><button class="btn btn--secondary" type="button" data-action="copy" data-copy="${I.code}" data-ok="Código copiado">${ic("copy")}Copiar</button></div>
     </div>`;
   $("#newBill").innerHTML = billTimelineHTML(I);
 }

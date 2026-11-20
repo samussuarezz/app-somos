@@ -710,6 +710,7 @@ document.addEventListener("click", (e) => {
       break;
     case "pro-yes": DATA.pro = true; $("#proAction").innerHTML = `<div class="state step-in">${ic("check")}<div class="state__body"><p class="state__title">Tu prueba de Pro arrancó</p><p class="state__text">El ${EN30} te preguntamos si te quedas. Si no respondes, vuelves a Essential.</p></div></div>`; closeSheet(); toast("Tu prueba de Pro arrancó"); break;
     case "copy-code": copyText("SAMU-503", "Código copiado"); break;
+    case "invite": window.open(waLink("", inviteMsg(a.dataset.code || "SAMU-503")), "_blank", "noopener"); toast("Abrimos WhatsApp con tu invitación", "send"); break;
     case "floors":
       $("#moveResult").innerHTML = a.dataset.v === "yes"
         ? `<div class="state step-in">${ic("check")}<div class="state__body"><p class="state__title">Empezamos la gestión</p><p class="state__text">Te escribimos cuando tengamos fecha.</p></div></div>`

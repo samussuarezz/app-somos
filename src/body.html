@@ -64,6 +64,12 @@
                 <span class="h3">¿Te vas a mudar?</span>
                 <span class="body-s muted">Llévate tu internet a tu nuevo edificio.</span>
               </button>
+              <button class="card card--tap span-2" type="button" data-action="invite" data-code="SAMU-503" id="homeInviteCard">
+                <span class="card__row">{{I:users}}<span class="label label--caps">Referidos</span></span>
+                <span class="h3">Invita a un amigo</span>
+                <span class="body-s muted">Un mes gratis por cada amigo, hasta 3.</span>
+                <span class="btn btn--primary btn--block" aria-hidden="true" style="box-sizing:border-box">{{I:send}}Invitar por WhatsApp</span>
+              </button>
             </div>
 
             <div class="sec only-active" data-rise="320">
@@ -236,7 +242,8 @@
               <span class="card__row">{{I:users}}<span class="label label--caps">Referidos</span></span>
               <p class="h3">Comparte tu internet con tus amigos</p>
               <p class="body-s muted">Si un amigo se pasa a Somos, tu siguiente mes es gratis.</p>
-              <div class="code-box"><span class="label" id="refCode">SAMU-503</span><button class="btn btn--primary" type="button" data-action="copy-code">{{I:copy}}Copiar</button></div>
+              <button class="btn btn--primary btn--block" type="button" data-action="invite" data-code="SAMU-503">{{I:send}}Invitar a un amigo</button>
+              <div class="code-box"><span class="label" id="refCode">SAMU-503</span><button class="btn btn--secondary" type="button" data-action="copy-code">{{I:copy}}Copiar</button></div>
               <dl class="rows">
                 <div><dt>Amigos que se pasaron</dt><dd>2</dd></div>
                 <div><dt>Meses gratis ganados</dt><dd>2</dd></div>
@@ -453,7 +460,7 @@
 
   <aside class="panel" aria-label="Recorrido del prototipo">
     <div class="panel__head">
-      <div class="sec"><div class="sec__row"><span class="label label--caps">Prototipo conceptual</span><span class="label">v5 · nov. 2026</span></div></div>
+      <div class="sec"><div class="sec__row"><span class="label label--caps">Prototipo conceptual</span><span class="label">v6 · nov. 2026</span></div></div>
       <h1>App Somos</h1>
       <p class="panel__lead">Para quien se va a vivir solo por primera vez: revisa si Somos llega a su torre y llega a una casa con internet.</p>
     </div>
